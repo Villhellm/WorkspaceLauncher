@@ -17,11 +17,15 @@ namespace WorkspaceLauncher.ViewModels
 			set { _profiles = value; }
 		}
 
-		private Configuration CurrentConfiguration; 
-
 		public ShellViewModel()
 		{
-
+			Configuration.CreateAndVerifyConfigurationFile();
+			Configuration.AddProfile("Test");
+			Configuration.RenameProfile("Test", "Testicle");
+			Configuration.RemoveProgram("Testicle", "asdf");
+			Configuration.AlwaysOnTop = true;
+			Profiles = Configuration.Profiles;
 		}
+
 	}
 }
