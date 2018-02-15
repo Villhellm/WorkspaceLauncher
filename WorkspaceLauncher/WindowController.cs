@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WorkspaceLauncher.Models;
 
@@ -168,6 +169,53 @@ namespace WorkspaceLauncher
 
 				}
 			}
+		}
+
+		private static void PositionAll(List<WindowsProgram> Programs)
+		{
+			foreach (WindowsProgram Prog in Programs)
+			{
+				try
+				{
+					PositionWindow(Prog.ProcessName, Prog.XPos, Prog.YPos, Prog.WindowWidth, Prog.WindowHeight, Prog.Status);
+				}
+				catch (InvalidOperationException)
+				{
+
+				}
+			}
+		}
+
+		private static void WaitForLaunch(List<WindowsProgram> Programs)
+		{
+			bool IsOpen = false;
+			foreach (WindowsProgram Elmnt in Programs)
+			{
+				while (!IsOpen)
+				{
+					Process[] ProcessList = Process.GetProcesses();
+					foreach (Process Proc in ProcessList)
+					{
+						if (!String.IsNullOrEmpty(Proc.MainWindowTitle))
+						{
+							if (Proc.ProcessName == Elmnt.ProcessName)
+							{
+								IsOpen = true;
+							}
+						}
+					}
+				}
+				IsOpen = false;
+				Thread.Sleep(100);
+			}
+
+		}
+
+		public static void LaunchAndPosition(List<WindowsProgram> Programs)
+		{
+			LaunchAll(Programs);
+			WaitForLaunch(Programs);
+			PositionAll(Programs);
 		}
 
 		private static bool IsProcessOpen(string ProcessName)

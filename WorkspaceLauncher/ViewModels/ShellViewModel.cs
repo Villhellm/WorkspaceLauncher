@@ -32,6 +32,19 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			Configuration.CreateAndVerifyConfigurationFile();
 			Profiles = Configuration.Profiles;
+			LaunchCommand = new Command(Launch, CanExecute);
+		}
+
+		public ICommand LaunchCommand { get; set; }
+
+		public bool CanExecute(object parameter)
+		{
+			return true;
+		}
+
+		public void Launch(object parameter)
+		{
+			WindowController.LaunchAll(SelectedProfile.Programs);
 		}
 	}
 }

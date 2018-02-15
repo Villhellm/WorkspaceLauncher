@@ -29,9 +29,9 @@
 		</StackPanel>
 		<StackPanel Grid.Row="1" Grid.Column="1">
 			<Button x:Name="SetPrograms" Content="Set Programs"/>
-			<Button x:Name="Launch" Content="Launch" Command="{Binding Launch}" Click="Launch_Click"/>
+			<Button x:Name="Launch" Content="Launch" Command="{Binding LaunchCommand}"/>
 			<Button x:Name="Move" Content="Move"/>
-			<Button x:Name="LaunchAndMove" Content="Launch and Move"/>
+			<Button x:Name="LaunchAndMove" Content="Launch and Move" Command="{Binding LaunchMoveCommand}"/>
 		</StackPanel>
 	</Grid>
 </Window>
