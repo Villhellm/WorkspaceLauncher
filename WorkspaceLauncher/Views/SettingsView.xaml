@@ -1,0 +1,76 @@
+﻿<Window x:Class="WorkspaceLauncher.Views.SettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkspaceLauncher.Views"
+        mc:Ignorable="d"
+        Title="SettingsView" Height="450" Width="725">
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="100"/>
+			<RowDefinition/>
+			<RowDefinition Height="75"/>
+		</Grid.RowDefinitions>
+		<StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Version"/>
+				<TextBlock Text="{Binding Version}"/>
+				<Button Content="Check for updates"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<CheckBox Content="Check for updates" IsChecked="{Binding CheckForUpdates}"/>
+				<CheckBox Content="Always on top" IsChecked="{Binding AlwaysOnTop}"/>
+			</StackPanel>
+			<StackPanel>
+				<TextBlock Text="Profile to load on start"/>
+				<ComboBox SelectedItem="{Binding LaunchProfile}" ItemsSource="{Binding ProfilesList}"/>
+			</StackPanel>
+		</StackPanel>
+		<StackPanel Grid.Row="1">
+			<TextBlock Text="Profiles"/>
+			<ListBox Height="200" ItemsSource="{Binding Profiles}" DisplayMemberPath="ProfileName" SelectedItem="{Binding SelectedProfile}"/>
+		</StackPanel>
+		<StackPanel Grid.Row="1" Grid.Column="1">
+			<TextBlock Text="Programs"/>
+			<ListBox Height="200" ItemsSource="{Binding Programs}" DisplayMemberPath="ProcessName" SelectedItem="{Binding SelectedProgram}"/>
+		</StackPanel>
+		<StackPanel Grid.Row = "2" Grid.ColumnSpan="2" Orientation="Horizontal">
+			<StackPanel>
+				<TextBlock Text="Window State"/>
+				<ComboBox ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding WindowState}"/>
+			</StackPanel>
+			<StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Window Width"/>
+					<TextBox Width="75" Text="{Binding WindowWidth}"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Window Height"/>
+					<TextBox Width="75" Text="{Binding WindowHeight}"/>
+				</StackPanel>
+			</StackPanel>
+			<StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="X Position"/>
+					<TextBox Width="75" Text="{Binding WindowX}"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Y Position"/>
+					<TextBox Width="75" Text="{Binding WindowY}"/>
+				</StackPanel>
+			</StackPanel>
+			<StackPanel Width="300">
+				<TextBlock Text="Launch Path"/>
+				<TextBox Text="{Binding LaunchPath}"/>
+				<TextBlock Text="Start Arguments"/>
+				<TextBox Text="{Binding StartArguments}"/>
+			</StackPanel>
+			<Button Content="Find File"/>
+		</StackPanel>
+	</Grid>
+</Window>

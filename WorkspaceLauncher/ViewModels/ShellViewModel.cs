@@ -65,6 +65,12 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
+		public ICommand SettingsCommand { get { return new Command(Settings); } }
+		public void Settings(object parameter)
+		{
+			SettingsViewModel SettingsVM = new SettingsViewModel();
+		}
+
 		public ICommand LaunchMoveCommand { get { return new Command(LaunchAndMove); } }
 		public void LaunchAndMove(object parameter)
 		{

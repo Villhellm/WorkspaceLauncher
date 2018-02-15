@@ -76,11 +76,19 @@
     </ApplicationDefinition>
     <Compile Include="Command.cs" />
     <Compile Include="ViewModels\SelectProcessesViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\SelectProcessesView.xaml.cs">
       <DependentUpon>SelectProcessesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowController.cs" />
     <Page Include="Views\SelectProcessesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
