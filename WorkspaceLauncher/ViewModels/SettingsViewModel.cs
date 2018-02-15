@@ -58,7 +58,7 @@ namespace WorkspaceLauncher.ViewModels
 				return ReturnDic;
 			}
 		}
-		public int WindowState { get { return SelectedProgram.Status; } set { } }
+		public int WindowState { get { if (SelectedProgram != null) { return SelectedProgram.Status; } return 0; } set { } }
 		public int WindowHeight { get { return SelectedProgram.WindowHeight; } set { } }
 		public int WindowWidth { get { return SelectedProgram.WindowWidth; } set { } }
 		public int WindowX { get { return SelectedProgram.XPos; } set { } }
