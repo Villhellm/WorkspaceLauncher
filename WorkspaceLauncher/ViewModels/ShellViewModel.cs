@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 using WorkspaceLauncher.Models;
 
 namespace WorkspaceLauncher.ViewModels
@@ -17,15 +19,19 @@ namespace WorkspaceLauncher.ViewModels
 			set { _profiles = value; }
 		}
 
+		private Profile _selectedProfile;
+
+		public Profile SelectedProfile
+		{
+			get { return _selectedProfile; }
+			set { _selectedProfile = value; }
+		}
+
+
 		public ShellViewModel()
 		{
 			Configuration.CreateAndVerifyConfigurationFile();
-			Configuration.AddProfile("Test");
-			Configuration.RenameProfile("Test", "Testicle");
-			Configuration.RemoveProgram("Testicle", "asdf");
-			Configuration.AlwaysOnTop = true;
 			Profiles = Configuration.Profiles;
 		}
-
 	}
 }

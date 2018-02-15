@@ -25,5 +25,10 @@ namespace WorkspaceLauncher.Views
 			InitializeComponent();
 			DataContext = new ShellViewModel();
 		}
+
+		private void Launch_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }

@@ -25,11 +25,11 @@
 		</Menu>
 		<StackPanel Grid.Row="1">
 			<TextBlock Text="Profiles"/>
-			<ListBox x:Name="ProfileList" Height="175" ItemsSource="{Binding Profiles}"/>
+			<ListBox x:Name="ProfileList" Height="175" ItemsSource="{Binding Profiles}" DisplayMemberPath="ProfileName" SelectedItem="{Binding SelectedProfile}"/>
 		</StackPanel>
 		<StackPanel Grid.Row="1" Grid.Column="1">
 			<Button x:Name="SetPrograms" Content="Set Programs"/>
-			<Button x:Name="Launch" Content="Launch"/>
+			<Button x:Name="Launch" Content="Launch" Command="{Binding Launch}" Click="Launch_Click"/>
 			<Button x:Name="Move" Content="Move"/>
 			<Button x:Name="LaunchAndMove" Content="Launch and Move"/>
 		</StackPanel>
