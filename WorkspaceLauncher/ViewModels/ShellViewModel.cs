@@ -17,7 +17,7 @@ namespace WorkspaceLauncher.ViewModels
 		public List<Profile> Profiles
 		{
 			get { return _profiles; }
-			set { _profiles = value; }
+			set { _profiles = value; OnPropertyChanged("Profiles"); }
 		}
 
 		private Profile _selectedProfile;
@@ -44,11 +44,13 @@ namespace WorkspaceLauncher.ViewModels
 			Profiles = Configuration.Profiles;
 		}
 
-		public ICommand LaunchCommand { get { return new Command(Launch); } }
-		public ICommand LaunchMoveCommand { get { return new Command(LaunchAndMove); } }
-		public ICommand MoveCommand { get { return new Command(Move); } }
-		public ICommand SetProgramsCommand { get; }
+		public ICommand SetProgramsCommand { get { return new Command(SetPrograms); } }
+		public void SetPrograms(object parameter)
+		{
 
+		}
+
+		public ICommand LaunchCommand { get { return new Command(Launch); } }
 		public void Launch(object parameter)
 		{
 			if (SelectedProfile != null)
@@ -56,6 +58,8 @@ namespace WorkspaceLauncher.ViewModels
 				WindowController.LaunchAll(SelectedProfile.Programs);
 			}
 		}
+
+		public ICommand LaunchMoveCommand { get { return new Command(LaunchAndMove); } }
 		public void LaunchAndMove(object parameter)
 		{
 			if (SelectedProfile != null)
@@ -63,11 +67,23 @@ namespace WorkspaceLauncher.ViewModels
 				WindowController.LaunchAndPositionAll(SelectedProfile.Programs);
 			}
 		}
+
+		public ICommand MoveCommand { get { return new Command(Move); } }
 		public void Move(object parameter)
 		{
 			if (SelectedProfile != null)
 			{
 				WindowController.PositionAll(SelectedProfile.Programs);
+			}
+		}
+
+		public ICommand DeleteProfileCommand { get { return new Command(DeleteProfile); } }
+		public void DeleteProfile(object parameter)
+		{
+			if (SelectedProfile != null)
+			{
+				Configuration.DeleteProfile(SelectedProfile.ProfileName);
+				Profiles = Configuration.Profiles;
 			}
 		}
 	}

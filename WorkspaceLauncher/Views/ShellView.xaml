@@ -19,7 +19,7 @@
 			<MenuItem Header="File">
 				<MenuItem Header="Add Profile" x:Name="AddProfile"/>
 				<MenuItem Header="Rename Profile" x:Name="RenameProfile"/>
-				<MenuItem Header="Delete Profile" x:Name="DeleteProfile"/>
+				<MenuItem Header="Delete Profile" x:Name="DeleteProfile" Command="{Binding DeleteProfileCommand}"/>
 				<MenuItem Header="Settings" x:Name="Settings"/>
 			</MenuItem>
 		</Menu>
