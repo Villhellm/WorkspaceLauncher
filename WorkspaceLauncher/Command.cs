@@ -5,16 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace WorkspaceLauncher.ViewModels
+namespace WorkspaceLauncher
 {
 	public class Command : ICommand
 	{
 		private Action<object> _executeMethod;
-		private Func<object, bool> _canExecuteMethod;
 
-		public Command(Action<object> _executeMethod, Func<object,bool> _canExecuteMethod)
+		public Command(Action<object> _executeMethod)
 		{
-			this._canExecuteMethod = _canExecuteMethod;
 			this._executeMethod = _executeMethod;
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using WorkspaceLauncher.Models;
 
 namespace WorkspaceLauncher.ViewModels
 {
-	public class ShellViewModel
+	public class ShellViewModel : INotifyPropertyChanged
 	{
 		private List<Profile> _profiles;
 
@@ -21,30 +22,53 @@ namespace WorkspaceLauncher.ViewModels
 
 		private Profile _selectedProfile;
 
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void OnPropertyChanged(string Property)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged.Invoke(this, new PropertyChangedEventArgs(Property));
+			}
+		}
+
 		public Profile SelectedProfile
 		{
 			get { return _selectedProfile; }
-			set { _selectedProfile = value; }
+			set { _selectedProfile = value; OnPropertyChanged("SelectedProfile"); }
 		}
-
 
 		public ShellViewModel()
 		{
 			Configuration.CreateAndVerifyConfigurationFile();
 			Profiles = Configuration.Profiles;
-			LaunchCommand = new Command(Launch, CanExecute);
 		}
 
-		public ICommand LaunchCommand { get; set; }
-
-		public bool CanExecute(object parameter)
-		{
-			return true;
-		}
+		public ICommand LaunchCommand { get { return new Command(Launch); } }
+		public ICommand LaunchMoveCommand { get { return new Command(LaunchAndMove); } }
+		public ICommand MoveCommand { get { return new Command(Move); } }
+		public ICommand SetProgramsCommand { get; }
 
 		public void Launch(object parameter)
 		{
-			WindowController.LaunchAll(SelectedProfile.Programs);
+			if (SelectedProfile != null)
+			{
+				WindowController.LaunchAll(SelectedProfile.Programs);
+			}
+		}
+		public void LaunchAndMove(object parameter)
+		{
+			if (SelectedProfile != null)
+			{
+				WindowController.LaunchAndPositionAll(SelectedProfile.Programs);
+			}
+		}
+		public void Move(object parameter)
+		{
+			if (SelectedProfile != null)
+			{
+				WindowController.PositionAll(SelectedProfile.Programs);
+			}
 		}
 	}
 }

@@ -171,7 +171,7 @@ namespace WorkspaceLauncher
 			}
 		}
 
-		private static void PositionAll(List<WindowsProgram> Programs)
+		public static void PositionAll(List<WindowsProgram> Programs)
 		{
 			foreach (WindowsProgram Prog in Programs)
 			{
@@ -211,7 +211,7 @@ namespace WorkspaceLauncher
 
 		}
 
-		public static void LaunchAndPosition(List<WindowsProgram> Programs)
+		public static void LaunchAndPositionAll(List<WindowsProgram> Programs)
 		{
 			LaunchAll(Programs);
 			WaitForLaunch(Programs);
