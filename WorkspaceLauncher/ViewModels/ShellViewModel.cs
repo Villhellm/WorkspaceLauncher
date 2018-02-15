@@ -47,7 +47,13 @@ namespace WorkspaceLauncher.ViewModels
 		public ICommand SetProgramsCommand { get { return new Command(SetPrograms); } }
 		public void SetPrograms(object parameter)
 		{
-
+			if (SelectedProfile != null)
+			{
+				int OldSelected = Profiles.IndexOf(SelectedProfile);
+				SelectProcessesViewModel SelectProcessesDialog = new SelectProcessesViewModel(SelectedProfile);
+				Profiles = Configuration.Profiles;
+				SelectedProfile = Profiles[OldSelected];
+			}
 		}
 
 		public ICommand LaunchCommand { get { return new Command(Launch); } }

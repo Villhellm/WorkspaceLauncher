@@ -28,7 +28,7 @@
 			<ListBox x:Name="ProfileList" Height="175" ItemsSource="{Binding Profiles}" DisplayMemberPath="ProfileName" SelectedItem="{Binding SelectedProfile}"/>
 		</StackPanel>
 		<StackPanel Grid.Row="1" Grid.Column="1">
-			<Button x:Name="SetPrograms" Content="Set Programs"/>
+			<Button x:Name="SetPrograms" Content="Set Programs" Command="{Binding SetProgramsCommand}"/>
 			<Button x:Name="Launch" Content="Launch" Command="{Binding LaunchCommand}"/>
 			<Button x:Name="Move" Content="Move" Command="{Binding MoveCommand}"/>
 			<Button x:Name="LaunchAndMove" Content="Launch and Move" Command="{Binding LaunchMoveCommand}"/>

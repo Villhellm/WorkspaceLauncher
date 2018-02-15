@@ -1,0 +1,26 @@
+﻿<Window x:Class="WorkspaceLauncher.Views.SelectProcessesView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkspaceLauncher.Views"
+        mc:Ignorable="d"
+        Title="SelectProcessesView" Height="400" Width="500">
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<StackPanel>
+			<Button Content="Refresh" Click="Button_Click_2"/>
+			<TextBlock Text="Open Windows"/>
+			<ListBox x:Name="OpenProcesses" ItemsSource="{Binding OpenWindows}" DisplayMemberPath="ProcessName" Height="300" SelectionMode="Multiple"/>
+			<Button Content="Save state of selected process" Click="Button_Click"/>
+		</StackPanel>
+		<StackPanel Grid.Column="1">
+			<Button Content="Clear saved" Click="Button_Click_1"/>
+			<TextBlock Text="Currently Saved"/>
+			<ListBox ItemsSource="{Binding SelectedProfile.Programs}" DisplayMemberPath="ProcessName" Height="300"/>
+		</StackPanel>
+    </Grid>
+</Window>
