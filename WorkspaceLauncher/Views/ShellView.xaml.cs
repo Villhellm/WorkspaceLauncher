@@ -23,7 +23,6 @@ namespace WorkspaceLauncher.Views
 		public ShellView()
 		{
 			InitializeComponent();
-			DataContext = new ShellViewModel();
 		}
 	}
 }

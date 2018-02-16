@@ -100,19 +100,14 @@ namespace WorkspaceLauncher.ViewModels
 			set
 			{
 				_selectedProfile = value;
-				OnPropertyChanged("Programs");
 				OnPropertyChanged("SelectedProfile");
-				SelectedProgram = Programs[0];
+				OnPropertyChanged("Programs");
 			}
 		}
 
-		public List<WindowsProgram> Programs
-		{
-			get
-			{
-				return Configuration.Programs(SelectedProfile);
-			}
-		}
+		private List<WindowsProgram> _programs;
+
+		public List<WindowsProgram> Programs { get { return _programs; } set { _programs = value; } }
 
 		public WindowsProgram SelectedProgram
 		{
@@ -133,8 +128,8 @@ namespace WorkspaceLauncher.ViewModels
 			{
 				Dictionary<int, string> ReturnDic = new Dictionary<int, string>();
 				ReturnDic.Add(1, "Normal");
-				ReturnDic.Add(2, "Maximized");
-				ReturnDic.Add(3, "Minimized");
+				ReturnDic.Add(2, "Minimized");
+				ReturnDic.Add(3, "Maximized");
 				ReturnDic.Add(0, "Hide");
 				return ReturnDic;
 			}
@@ -144,7 +139,10 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			Profiles = Configuration.Profiles;
 			SelectedProfile = Profiles[0];
+			Programs = Configuration.Programs(SelectedProfile);
+			SelectedProgram = Programs[0];
 			SettingsView SettingsDialog = new SettingsView();
+			SettingsDialog.Topmost = Configuration.AlwaysOnTop;
 			SettingsDialog.DataContext = this;
 			SettingsDialog.ShowDialog();
 		}

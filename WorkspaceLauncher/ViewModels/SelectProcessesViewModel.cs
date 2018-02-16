@@ -41,6 +41,7 @@ namespace WorkspaceLauncher.ViewModels
 			this.SelectedProfile = SelectedProfile;
 			RefreshOpenWindows();
 			SelectProcessesView NewDialog = new SelectProcessesView();
+			NewDialog.Topmost = Configuration.AlwaysOnTop;
 			NewDialog.DataContext = this;
 			NewDialog.ShowDialog();
 		}

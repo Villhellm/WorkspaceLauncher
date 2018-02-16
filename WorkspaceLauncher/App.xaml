@@ -1,8 +1,9 @@
 ﻿<Application x:Class="WorkspaceLauncher.App"
+			 x:Name="App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WorkspaceLauncher"
-             StartupUri="Views/ShellView.xaml">
+             xmlns:local="clr-namespace:WorkspaceLauncher">
 	<Application.Resources>
+		
 	</Application.Resources>
 </Application>

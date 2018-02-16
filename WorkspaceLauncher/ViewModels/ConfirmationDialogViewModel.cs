@@ -25,6 +25,7 @@ namespace WorkspaceLauncher.ViewModels
 			_title = Title;
 			_message = Message;
 			Dialog = new ConfirmationDialogView();
+			Dialog.Topmost = Configuration.AlwaysOnTop;
 			Dialog.DataContext = this;
 			Dialog.ShowDialog();
 		}

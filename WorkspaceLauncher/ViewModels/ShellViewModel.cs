@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using WorkspaceLauncher.Models;
+using WorkspaceLauncher.Views;
 
 namespace WorkspaceLauncher.ViewModels
 {
@@ -28,11 +29,17 @@ namespace WorkspaceLauncher.ViewModels
 			set { _selectedProfile = value; OnPropertyChanged("SelectedProfile"); }
 		}
 
+		ShellView MainWindow;
+
 		public ShellViewModel()
 		{
 			Configuration.CreateAndVerifyConfigurationFile();
 			Profiles = Configuration.Profiles;
 			SelectedProfile = Profiles[0];
+			MainWindow = new ShellView();
+			MainWindow.Topmost = Configuration.AlwaysOnTop;
+			MainWindow.DataContext = this;
+			MainWindow.Show();
 		}
 
 		public ICommand SetProgramsCommand { get { return new Command(SetPrograms); } }
@@ -97,6 +104,7 @@ namespace WorkspaceLauncher.ViewModels
 		public void Settings(object parameter)
 		{
 			SettingsViewModel SettingsVM = new SettingsViewModel();
+			MainWindow.Topmost = Configuration.AlwaysOnTop;
 		}
 
 		public ICommand LaunchMoveCommand { get { return new Command(LaunchAndMove); } }

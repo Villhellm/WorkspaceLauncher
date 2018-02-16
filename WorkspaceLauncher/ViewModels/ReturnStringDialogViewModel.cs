@@ -27,6 +27,7 @@ namespace WorkspaceLauncher.ViewModels
 			_title = Title;
 			_message = Message;
 			Dialog = new ReturnStringView();
+			Dialog.Topmost = Configuration.AlwaysOnTop;
 			Dialog.DataContext = this;
 			Dialog.ShowDialog();
 		}
