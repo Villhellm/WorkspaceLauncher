@@ -20,7 +20,7 @@
 		<StackPanel Grid.Column="1">
 			<Button Content="Clear saved" Click="Button_Click_1"/>
 			<TextBlock Text="Currently Saved"/>
-			<ListBox ItemsSource="{Binding SelectedProfile.Programs}" DisplayMemberPath="ProcessName" Height="300"/>
+			<ListBox ItemsSource="{Binding ProfilePrograms}" DisplayMemberPath="ProcessName" Height="300"/>
 		</StackPanel>
     </Grid>
 </Window>

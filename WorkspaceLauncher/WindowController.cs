@@ -177,7 +177,7 @@ namespace WorkspaceLauncher
 			{
 				try
 				{
-					PositionWindow(Prog.ProcessName, Prog.XPos, Prog.YPos, Prog.WindowWidth, Prog.WindowHeight, Prog.Status);
+					PositionWindow(Prog.ProcessName, Prog.XPos, Prog.YPos, Prog.WindowWidth, Prog.WindowHeight, Prog.WindowState);
 				}
 				catch (InvalidOperationException)
 				{

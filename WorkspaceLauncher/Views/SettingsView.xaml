@@ -33,7 +33,7 @@
 		</StackPanel>
 		<StackPanel Grid.Row="1">
 			<TextBlock Text="Profiles"/>
-			<ListBox Height="200" ItemsSource="{Binding Profiles}" DisplayMemberPath="ProfileName" SelectedItem="{Binding SelectedProfile}"/>
+			<ListBox Height="200" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}"/>
 		</StackPanel>
 		<StackPanel Grid.Row="1" Grid.Column="1">
 			<TextBlock Text="Programs"/>
@@ -42,33 +42,33 @@
 		<StackPanel Grid.Row = "2" Grid.ColumnSpan="2" Orientation="Horizontal">
 			<StackPanel>
 				<TextBlock Text="Window State"/>
-				<ComboBox ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding WindowState}"/>
+				<ComboBox ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding SelectedProgram.WindowState}"/>
 			</StackPanel>
 			<StackPanel>
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="Window Width"/>
-					<TextBox Width="75" Text="{Binding WindowWidth}"/>
+					<TextBox Width="75" Text="{Binding SelectedProgram.WindowWidth}"/>
 				</StackPanel>
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="Window Height"/>
-					<TextBox Width="75" Text="{Binding WindowHeight}"/>
+					<TextBox Width="75" Text="{Binding SelectedProgram.WindowHeight}"/>
 				</StackPanel>
 			</StackPanel>
 			<StackPanel>
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="X Position"/>
-					<TextBox Width="75" Text="{Binding WindowX}"/>
+					<TextBox Width="75" Text="{Binding SelectedProgram.XPos}"/>
 				</StackPanel>
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="Y Position"/>
-					<TextBox Width="75" Text="{Binding WindowY}"/>
+					<TextBox Width="75" Text="{Binding SelectedProgram.YPos}"/>
 				</StackPanel>
 			</StackPanel>
 			<StackPanel Width="300">
 				<TextBlock Text="Launch Path"/>
-				<TextBox Text="{Binding LaunchPath}"/>
+				<TextBox Text="{Binding SelectedProgram.StartPath}"/>
 				<TextBlock Text="Start Arguments"/>
-				<TextBox Text="{Binding StartArguments}"/>
+				<TextBox Text="{Binding SelectedProgram.Argument}"/>
 			</StackPanel>
 			<Button Content="Find File"/>
 		</StackPanel>

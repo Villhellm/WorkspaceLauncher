@@ -14,7 +14,7 @@ namespace WorkspaceLauncher
 		public static string AppDataRoamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\WorkspaceLauncher";
 		public static string ConfigurationFile = AppDataRoamingPath + @"\Configuration.xml";
 
-		private static XDocument xConfiguration
+		public static XDocument xConfiguration
 		{
 			get
 			{
@@ -63,6 +63,7 @@ namespace WorkspaceLauncher
 				xConfig.Save(ConfigurationFile);
 			}
 		}
+
 		public static bool AlwaysOnTop
 		{
 			get
@@ -76,6 +77,7 @@ namespace WorkspaceLauncher
 				xConfig.Save(ConfigurationFile);
 			}
 		}
+
 		public static bool CheckForUpdates
 		{
 			get
@@ -90,53 +92,34 @@ namespace WorkspaceLauncher
 			}
 		}
 
-		public static List<Profile> Profiles
+		public static List<string> Profiles
 		{
 			get
 			{
-				List<Profile> ReturnList = new List<Profile>();
-				string ProcessName = "";
-				string ProgramStartPath = "";
-				string ProgramArgument = "";
-				int WindowWidth = 0;
-				int WindowHeight = 0;
-				int WindowXPos = 0;
-				int WindowYPos = 0;
-				int WindowStatus;
+				List<string> ReturnList = new List<string>();
 
 				IEnumerable<XElement> xProfiles = xConfiguration.Element("Configs").Element("Profiles").Elements("Profile");
 				foreach (XElement xProfile in xProfiles)
-				{
-
-					List<WindowsProgram> ProgramList = new List<WindowsProgram>();
-					IEnumerable<XElement> xPrograms = xProfile.Element("Programs").Elements("Program");
-
-					foreach (XElement xProgram in xPrograms)
-					{
-						ProcessName = xProgram.Element("ProcessName").Value;
-						ProgramStartPath = xProgram.Element("StartPath").Value;
-						ProgramArgument = xProgram.Element("Argument").Value;
-						WindowWidth = Convert.ToInt32(xProgram.Element("WindowWidth").Value);
-						WindowHeight = Convert.ToInt32(xProgram.Element("WindowHeight").Value);
-						WindowXPos = Convert.ToInt32(xProgram.Element("WindowXPos").Value);
-						WindowYPos = Convert.ToInt32(xProgram.Element("WindowYPos").Value);
-						WindowStatus = Convert.ToInt32(xProgram.Element("WindowState").Value);
-						ProgramList.Add(new WindowsProgram(ProcessName, ProgramStartPath, ProgramArgument, WindowWidth, WindowHeight, WindowXPos, WindowYPos, WindowStatus));
-					}
-					ReturnList.Add(new Profile(xProfile.Element("Name").Value.ToString(), ProgramList));
+				{			
+					ReturnList.Add(xProfile.Element("Name").Value);
 				}
 				return ReturnList;
 			}
 		}
 
-		public static Profile Profile(string ProfileName)
+		public static List<WindowsProgram> Programs(string ProfileName)
 		{
-			return Profiles.Where(x => x.ProfileName == ProfileName).FirstOrDefault();
+			List<WindowsProgram> ReturnList = new List<WindowsProgram>();
+			foreach(XElement Program in xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x=>x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program"))
+			{
+				ReturnList.Add(new WindowsProgram(ProfileName, Program.Element("ProcessName").Value));
+			}
+			return ReturnList;
 		}
 
-		public static WindowsProgram Program(string ProfileName, string ProgramName)
+		public static XElement Program(XDocument ParentDocument, string ProfileName, string ProgramName)
 		{
-			return Profile(ProfileName).Programs.Where(x => x.ProcessName == ProgramName).FirstOrDefault();
+			return ParentDocument.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program").Where(x => x.Element("ProcessName").Value == ProgramName).First();
 		}
 
 		public static void CreateAndVerifyConfigurationFile()
@@ -264,12 +247,17 @@ namespace WorkspaceLauncher
 			xConfig.Save(ConfigurationFile);
 		}
 
-		public static void AddProgram(string ProfileName, WindowsProgram NewProgram)
+		public static WindowsProgram AddProgram(string ProfileName, string NewProgram)
 		{
 			XDocument xConfig = xConfiguration;
 			XElement xProfilePrograms = xConfig.Element("Configs").Element("Profiles").Elements("Profile").Single(x => (string)x.Element("Name") == ProfileName).Element("Programs");
-			xProfilePrograms.Add(new XElement("Program", new XElement("ProcessName", NewProgram.ProcessName), new XElement("StartPath", NewProgram.StartPath), new XElement("Argument", NewProgram.Argument), new XElement("WindowHeight", NewProgram.WindowHeight), new XElement("WindowWidth", NewProgram.WindowWidth), new XElement("WindowXPos", NewProgram.XPos), new XElement("WindowYPos", NewProgram.YPos), new XElement("WindowState", NewProgram.Status)));
-			xConfig.Save(ConfigurationFile);
+			if(xProfilePrograms.Elements("Program").Where(x=>x.Element("ProcessName").Value == NewProgram) == null)
+			{
+				xProfilePrograms.Add(new XElement("Program", new XElement("ProcessName", NewProgram), new XElement("StartPath"), new XElement("Argument"), new XElement("WindowHeight"), new XElement("WindowWidth"), new XElement("XPos"), new XElement("YPos"), new XElement("WindowState")));
+				xConfig.Save(ConfigurationFile);
+				return new WindowsProgram(ProfileName, NewProgram);
+			}
+			return null;
 		}
 
 		public static int AddProfile(string NewProfile)

@@ -12,27 +12,17 @@ namespace WorkspaceLauncher.ViewModels
 {
 	public class ShellViewModel : INotifyPropertyChanged
 	{
-		private List<Profile> _profiles;
+		private List<string> _profiles;
 
-		public List<Profile> Profiles
+		public List<string> Profiles
 		{
 			get { return _profiles; }
 			set { _profiles = value; OnPropertyChanged("Profiles"); }
 		}
 
-		private Profile _selectedProfile;
+		private string _selectedProfile;
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		private void OnPropertyChanged(string Property)
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged.Invoke(this, new PropertyChangedEventArgs(Property));
-			}
-		}
-
-		public Profile SelectedProfile
+		public string SelectedProfile
 		{
 			get { return _selectedProfile; }
 			set { _selectedProfile = value; OnPropertyChanged("SelectedProfile"); }
@@ -42,6 +32,7 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			Configuration.CreateAndVerifyConfigurationFile();
 			Profiles = Configuration.Profiles;
+			SelectedProfile = Profiles[0];
 		}
 
 		public ICommand SetProgramsCommand { get { return new Command(SetPrograms); } }
@@ -61,7 +52,7 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if (SelectedProfile != null)
 			{
-				WindowController.LaunchAll(SelectedProfile.Programs);
+				WindowController.LaunchAll(Configuration.Programs(SelectedProfile));
 			}
 		}
 
@@ -76,7 +67,7 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if (SelectedProfile != null)
 			{
-				WindowController.LaunchAndPositionAll(SelectedProfile.Programs);
+				WindowController.LaunchAndPositionAll(Configuration.Programs(SelectedProfile));
 			}
 		}
 
@@ -85,7 +76,7 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if (SelectedProfile != null)
 			{
-				WindowController.PositionAll(SelectedProfile.Programs);
+				WindowController.PositionAll(Configuration.Programs(SelectedProfile));
 			}
 		}
 
@@ -94,8 +85,18 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if (SelectedProfile != null)
 			{
-				Configuration.DeleteProfile(SelectedProfile.ProfileName);
+				Configuration.DeleteProfile(SelectedProfile);
 				Profiles = Configuration.Profiles;
+			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void OnPropertyChanged(string Property)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged.Invoke(this, new PropertyChangedEventArgs(Property));
 			}
 		}
 	}

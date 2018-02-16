@@ -13,12 +13,17 @@ namespace WorkspaceLauncher.ViewModels
 {
 	public class SelectProcessesViewModel : INotifyPropertyChanged
 	{
-		private Profile _selectedProfile;
+		private string _selectedProfile;
 
-		public Profile SelectedProfile
+		public string SelectedProfile
 		{
 			get { return _selectedProfile; }
 			set { _selectedProfile = value; OnPropertyChanged("SelectedProfile"); }
+		}
+
+		public List<WindowsProgram> ProfilePrograms
+		{
+			get { return Configuration.Programs(SelectedProfile); }
 		}
 
 		private List<Process> _openWindows;
@@ -31,7 +36,7 @@ namespace WorkspaceLauncher.ViewModels
 
 		public List<Process> SelectedProcesses { get; set; }
 
-		public SelectProcessesViewModel(Profile SelectedProfile)
+		public SelectProcessesViewModel(string SelectedProfile)
 		{
 			this.SelectedProfile = SelectedProfile;
 			RefreshOpenWindows();
@@ -54,37 +59,30 @@ namespace WorkspaceLauncher.ViewModels
 
 		public void SaveProcesses()
 		{
-			string ProcessName;
-			string ProgramStartPath;
-			int WindowWidth;
-			int WindowHeight;
-			int WindowXPos;
-			int WindowYPos;
-			int WindowStatus;
 
 			foreach(Process AProc in SelectedProcesses)
 			{
-				ProcessName = AProc.ProcessName;
-				ProgramStartPath= AProc.MainModule.FileName;
-				WindowWidth = WindowController.GetWindowWidth(AProc);
-				WindowHeight = WindowController.GetWindowHeight(AProc);
-				WindowXPos = WindowController.WindowXPosition(AProc);
-				WindowYPos = WindowController.WindowYPosition(AProc);
-				WindowStatus = WindowController.GetWindowStatus(AProc);
-				WindowsProgram ProgramToAdd = new WindowsProgram(ProcessName, ProgramStartPath, "", WindowWidth, WindowHeight, WindowXPos, WindowYPos, WindowStatus);
-				Configuration.AddProgram(SelectedProfile.ProfileName, ProgramToAdd);
+				WindowsProgram AddProgram = Configuration.AddProgram(SelectedProfile, AProc.ProcessName);
+				if(AddProgram != null)
+				{
+					AddProgram.StartPath = AProc.MainModule.FileName;
+					AddProgram.WindowWidth = WindowController.GetWindowWidth(AProc);
+					AddProgram.WindowHeight = WindowController.GetWindowHeight(AProc);
+					AddProgram.XPos = WindowController.WindowXPosition(AProc);
+					AddProgram.YPos = WindowController.WindowYPosition(AProc);
+					AddProgram.WindowState = WindowController.GetWindowStatus(AProc);
+				}
 			}
-			SelectedProfile = Configuration.Profile(SelectedProfile.ProfileName);
+			OnPropertyChanged("ProfilePrograms");
 		}
 
 		public void ClearProcesses()
 		{
-			foreach(WindowsProgram Prog in SelectedProfile.Programs)
+			foreach(WindowsProgram Prog in Configuration.Programs(SelectedProfile))
 			{
-				Configuration.RemoveProgram(SelectedProfile.ProfileName, Prog.ProcessName);
+				Configuration.RemoveProgram(SelectedProfile, Prog.ProcessName);
 			}
-			SelectedProfile = Configuration.Profile(SelectedProfile.ProfileName);
-
+			OnPropertyChanged("ProfilePrograms");
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
