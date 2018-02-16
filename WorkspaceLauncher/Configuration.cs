@@ -251,7 +251,7 @@ namespace WorkspaceLauncher
 		{
 			XDocument xConfig = xConfiguration;
 			XElement xProfilePrograms = xConfig.Element("Configs").Element("Profiles").Elements("Profile").Single(x => (string)x.Element("Name") == ProfileName).Element("Programs");
-			if(xProfilePrograms.Elements("Program").Where(x=>x.Element("ProcessName").Value == NewProgram) == null)
+			if(!xProfilePrograms.Elements("Program").Where(x=>x.Element("ProcessName").Value == NewProgram).Any())
 			{
 				xProfilePrograms.Add(new XElement("Program", new XElement("ProcessName", NewProgram), new XElement("StartPath"), new XElement("Argument"), new XElement("WindowHeight"), new XElement("WindowWidth"), new XElement("XPos"), new XElement("YPos"), new XElement("WindowState")));
 				xConfig.Save(ConfigurationFile);

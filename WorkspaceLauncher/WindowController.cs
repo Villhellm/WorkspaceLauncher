@@ -62,10 +62,10 @@ namespace WorkspaceLauncher
 					if (Prcs.ProcessName.ToLower().Contains(ProcessName))
 					{
 						Prog = Prcs.MainWindowHandle;
+						ShowWindow(Prog, Status);
 						MoveWindow(Prog, xPos, yPos, wWidth, wHeight, true);
 						WINDOWPLACEMENT Checker = new WINDOWPLACEMENT();
 						GetWindowPlacement(Prog, ref Checker);
-						ShowWindow(Prog, Status);
 					}
 				}
 			}
