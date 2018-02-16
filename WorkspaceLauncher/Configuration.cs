@@ -211,7 +211,9 @@ namespace WorkspaceLauncher
 				}
 			}
 			Ids.Sort();
-			return Ids[Ids.Count - 1]++;
+			int LatestId = Ids[Ids.Count - 1];
+			LatestId++;
+			return LatestId;
 		}
 
 		public static void VerifyPrograms(XElement Profile)
