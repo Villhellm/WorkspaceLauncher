@@ -47,23 +47,21 @@ namespace WorkspaceLauncher
 
 		public bool VersionCompare(string VersionOriginal, string VersionToCheck)
 		{
-			int VO1, VO2, VO3, VO4, VC1, VC2, VC3, VC4;
+			int VO1 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
+			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
+			int VO2 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
+			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
+			int VO3 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
+			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
+			int VO4 = Convert.ToInt32(VersionOriginal);
 
-			VO1 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
-			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
-			VO2 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
-			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
-			VO3 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
-			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
-			VO4 = Convert.ToInt32(VersionOriginal);
-
-			VC1 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
+			int VC1 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
 			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
-			VC2 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
+			int VC2 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
 			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
-			VC3 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
+			int VC3 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
 			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
-			VC4 = Convert.ToInt32(VersionToCheck);
+			int VC4 = Convert.ToInt32(VersionToCheck);
 
 			if (VC1 > VO1)
 				return true;
