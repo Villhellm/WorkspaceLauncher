@@ -6,6 +6,23 @@
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
         Title="Workspace Launcher" Height="250" Width="400" WindowStartupLocation="CenterScreen">
+	<Window.Resources>
+		<ResourceDictionary>
+			<Style TargetType="Button">
+				<Setter Property="Margin" Value="5,0,5,10"/>
+			</Style>
+			<Style TargetType="ListBox">
+				<Setter Property="Margin" Value="10,0,0,10"/>
+			</Style>
+			<Style TargetType="TextBlock">
+				<Setter Property="Margin" Value="10,0,0,0"/>
+				<Setter Property="Height" Value="20"/>
+			</Style>
+			<Style TargetType="StackPanel">
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
+		</ResourceDictionary>
+	</Window.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
