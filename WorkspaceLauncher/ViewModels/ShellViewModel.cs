@@ -50,6 +50,8 @@ namespace WorkspaceLauncher.ViewModels
 				SelectedProfile = Configuration.LaunchProfile;
 				LaunchAndMove(null);
 			}
+			GithubUpdater updater = new GithubUpdater();
+			updater.LaunchUpdaterAsync();
 		}
 
 		public ICommand SetProgramsCommand { get { return new Command(SetPrograms); } }

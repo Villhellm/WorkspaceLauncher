@@ -9,15 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkspaceLauncher.ViewModels;
 using System.Web;
+using System.Windows;
 
 namespace WorkspaceLauncher
 {
     public class GithubUpdater
     {
-		public static string ReleaseVersionURL = "https://raw.githubusercontent.com/Villhellm/WorkspaceLauncher/master/StreamStarter/Version.txt";
-		public static string ReleaseDownloadURL = "";
+		public static string ReleaseVersionURL = "https://raw.githubusercontent.com/Villhellm/WorkspaceLauncher/master/WorkspaceLauncher/CurrentRelease/Version.txt";
+		public static string ReleaseDownloadURL = "https://github.com/Villhellm/WorkspaceLauncher/blob/master/WorkspaceLauncher/CurrentRelease/WorkspaceLauncher.exe?raw=true";
 		static string MemeCacheBlockerUR = "?t=" + DateTime.Now.ToString().Replace(" ", "");
-		string ApplicationLocation { get { return ""; } }
+		string ApplicationLocation { get { return System.Reflection.Assembly.GetExecutingAssembly().Location; } }
 
 
 		public static string GetWebString(string URL)
@@ -51,12 +52,14 @@ namespace WorkspaceLauncher
 			UpdateChecker.RunWorkerAsync();
 		}
 
+		//TODO better version checking
+
 		public void CheckForUpdate(object sender, DoWorkEventArgs e)
 		{
 			if (Configuration.Version != "" && LatestVersion != Configuration.Version)
 			{
-				ConfirmationDialogViewModel DR = new ConfirmationDialogViewModel("Update", "Version " + LatestVersion + " is available, would you like to update?\n \n" + "Changes: ");
-				if (DR.DialogResult == 1)
+			 MessageBoxResult DR =	MessageBox.Show("Version " + LatestVersion + " is available, would you like to update ?\n \n" + "Changes: ", "Update", MessageBoxButton.YesNo);
+				if (DR == MessageBoxResult.Yes)
 				{
 					UpdateProgram();
 				}
