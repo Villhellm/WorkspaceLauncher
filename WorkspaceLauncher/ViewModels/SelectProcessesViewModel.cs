@@ -14,27 +14,7 @@ namespace WorkspaceLauncher.ViewModels
 	public class SelectProcessesViewModel : INotifyPropertyChanged
 	{
 		private string _selectedProfile;
-
-		public string SelectedProfile
-		{
-			get { return _selectedProfile; }
-			set { _selectedProfile = value; OnPropertyChanged("SelectedProfile"); }
-		}
-
-		public List<WindowsProgram> ProfilePrograms
-		{
-			get { return Configuration.Programs(SelectedProfile); }
-		}
-
 		private List<Process> _openWindows;
-
-		public List<Process> OpenWindows
-		{
-			get { return _openWindows; }
-			set { _openWindows = value; OnPropertyChanged("OpenWindows"); }
-		}
-
-		public List<Process> SelectedProcesses { get; set; }
 
 		public SelectProcessesViewModel(string SelectedProfile)
 		{
@@ -44,6 +24,30 @@ namespace WorkspaceLauncher.ViewModels
 			NewDialog.Topmost = Configuration.AlwaysOnTop;
 			NewDialog.DataContext = this;
 			NewDialog.ShowDialog();
+		}
+
+		public List<WindowsProgram> ProfilePrograms { get { return Configuration.Programs(SelectedProfile); } }
+
+		public List<Process> SelectedProcesses { get; set; }
+
+		public string SelectedProfile
+		{
+			get { return _selectedProfile; }
+			set
+			{
+				_selectedProfile = value;
+				OnPropertyChanged("SelectedProfile");
+			}
+		}
+
+		public List<Process> OpenWindows
+		{
+			get { return _openWindows; }
+			set
+			{
+				_openWindows = value;
+				OnPropertyChanged("OpenWindows");
+			}
 		}
 
 		public void RefreshOpenWindows()
@@ -61,10 +65,10 @@ namespace WorkspaceLauncher.ViewModels
 		public void SaveProcesses()
 		{
 
-			foreach(Process AProc in SelectedProcesses)
+			foreach (Process AProc in SelectedProcesses)
 			{
 				WindowsProgram AddProgram = Configuration.AddProgram(SelectedProfile, AProc.ProcessName);
-				if(AddProgram != null)
+				if (AddProgram != null)
 				{
 					AddProgram.StartPath = AProc.MainModule.FileName;
 					AddProgram.WindowWidth = WindowController.GetWindowWidth(AProc);
@@ -79,7 +83,7 @@ namespace WorkspaceLauncher.ViewModels
 
 		public void ClearProcesses()
 		{
-			foreach(WindowsProgram Prog in Configuration.Programs(SelectedProfile))
+			foreach (WindowsProgram Prog in Configuration.Programs(SelectedProfile))
 			{
 				Configuration.RemoveProgram(SelectedProfile, Prog.Id);
 			}

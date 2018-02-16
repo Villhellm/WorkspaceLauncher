@@ -10,14 +10,12 @@ namespace WorkspaceLauncher.Models
 	public class WindowsProgram
 	{
 		public string ParentProfileName { get; set; }
+
 		public int Id { get; set; }
 
 		public string ProcessName
 		{
-			get
-			{
-				return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("ProcessName").Value;
-			}
+			get { return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("ProcessName").Value; }
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
@@ -28,10 +26,7 @@ namespace WorkspaceLauncher.Models
 
 		public string StartPath
 		{
-			get
-			{
-				return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("StartPath").Value;
-			}
+			get { return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("StartPath").Value; }
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
@@ -42,10 +37,7 @@ namespace WorkspaceLauncher.Models
 
 		public string Argument
 		{
-			get
-			{
-				return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("Argument").Value;
-			}
+			get { return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("Argument").Value; }
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
@@ -56,10 +48,7 @@ namespace WorkspaceLauncher.Models
 
 		public int WindowWidth
 		{
-			get
-			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowWidth").Value);
-			}
+			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowWidth").Value); }
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
@@ -70,10 +59,7 @@ namespace WorkspaceLauncher.Models
 
 		public int WindowHeight
 		{
-			get
-			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowHeight").Value);
-			}
+			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowHeight").Value); }
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
@@ -84,10 +70,7 @@ namespace WorkspaceLauncher.Models
 
 		public int XPos
 		{
-			get
-			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("XPos").Value);
-			}
+			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("XPos").Value); }
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
@@ -98,10 +81,7 @@ namespace WorkspaceLauncher.Models
 
 		public int YPos
 		{
-			get
-			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("YPos").Value);
-			}
+			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("YPos").Value); }
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
@@ -112,10 +92,7 @@ namespace WorkspaceLauncher.Models
 
 		public int WindowState
 		{
-			get
-			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowState").Value);
-			}
+			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowState").Value); }
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;

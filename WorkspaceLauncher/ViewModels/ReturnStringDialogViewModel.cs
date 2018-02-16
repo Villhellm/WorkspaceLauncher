@@ -7,19 +7,11 @@ using WorkspaceLauncher.Views;
 
 namespace WorkspaceLauncher.ViewModels
 {
-    public class ReturnStringDialogViewModel
-    {
-		public string Value { get; set; }
-
+	public class ReturnStringDialogViewModel
+	{
 		private int _dialogResult;
-		public int DialogResult { get { return _dialogResult; } }
-
-		private string _message;
-		public string Message { get { return _message; } }
-
 		private string _title;
-		public string Title { get { return _title; } }
-
+		private string _message;
 		private ReturnStringView Dialog;
 
 		public ReturnStringDialogViewModel(string Title, string Message)
@@ -31,6 +23,13 @@ namespace WorkspaceLauncher.ViewModels
 			Dialog.DataContext = this;
 			Dialog.ShowDialog();
 		}
+		public string Value { get; set; }
+
+		public int DialogResult { get { return _dialogResult; } }
+
+		public string Message { get { return _message; } }
+
+		public string Title { get { return _title; } }
 
 		public void Close(int DialogResult)
 		{

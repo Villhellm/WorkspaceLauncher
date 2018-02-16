@@ -14,20 +14,26 @@ namespace WorkspaceLauncher
 		public static string AppDataRoamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\WorkspaceLauncher";
 		public static string ConfigurationFile = AppDataRoamingPath + @"\Configuration.xml";
 
-		public static XDocument xConfiguration
+		public static XDocument xConfiguration { get { return XDocument.Load(ConfigurationFile); } }
+
+		public static List<string> Profiles
 		{
 			get
 			{
-				return XDocument.Load(ConfigurationFile);
+				List<string> ReturnList = new List<string>();
+
+				IEnumerable<XElement> xProfiles = xConfiguration.Element("Configs").Element("Profiles").Elements("Profile");
+				foreach (XElement xProfile in xProfiles)
+				{
+					ReturnList.Add(xProfile.Element("Name").Value);
+				}
+				return ReturnList;
 			}
 		}
 
 		public static string Version
 		{
-			get
-			{
-				return xConfiguration.Element("Configs").Element("Version").Value;
-			}
+			get { return xConfiguration.Element("Configs").Element("Version").Value; }
 			set
 			{
 				XDocument xConfig = xConfiguration;
@@ -38,10 +44,7 @@ namespace WorkspaceLauncher
 
 		public static string LastOpenProfile
 		{
-			get
-			{
-				return xConfiguration.Element("Configs").Element("LastOpenProfile").Value;
-			}
+			get { return xConfiguration.Element("Configs").Element("LastOpenProfile").Value; }
 			set
 			{
 				XDocument xConfig = xConfiguration;
@@ -52,10 +55,7 @@ namespace WorkspaceLauncher
 
 		public static string LaunchProfile
 		{
-			get
-			{
-				return xConfiguration.Element("Configs").Element("LaunchProfile").Value;
-			}
+			get { return xConfiguration.Element("Configs").Element("LaunchProfile").Value; }
 			set
 			{
 				XDocument xConfig = xConfiguration;
@@ -66,10 +66,7 @@ namespace WorkspaceLauncher
 
 		public static bool AlwaysOnTop
 		{
-			get
-			{
-				return Convert.ToBoolean(xConfiguration.Element("Configs").Element("AlwaysOnTop").Value);
-			}
+			get { return Convert.ToBoolean(xConfiguration.Element("Configs").Element("AlwaysOnTop").Value); }
 			set
 			{
 				XDocument xConfig = xConfiguration;
@@ -80,10 +77,7 @@ namespace WorkspaceLauncher
 
 		public static bool CheckForUpdates
 		{
-			get
-			{
-				return Convert.ToBoolean(xConfiguration.Element("Configs").Element("CheckForUpdates").Value);
-			}
+			get { return Convert.ToBoolean(xConfiguration.Element("Configs").Element("CheckForUpdates").Value); }
 			set
 			{
 				XDocument xConfig = xConfiguration;
@@ -92,25 +86,10 @@ namespace WorkspaceLauncher
 			}
 		}
 
-		public static List<string> Profiles
-		{
-			get
-			{
-				List<string> ReturnList = new List<string>();
-
-				IEnumerable<XElement> xProfiles = xConfiguration.Element("Configs").Element("Profiles").Elements("Profile");
-				foreach (XElement xProfile in xProfiles)
-				{			
-					ReturnList.Add(xProfile.Element("Name").Value);
-				}
-				return ReturnList;
-			}
-		}
-
 		public static List<WindowsProgram> Programs(string ProfileName)
 		{
 			List<WindowsProgram> ReturnList = new List<WindowsProgram>();
-			foreach(XElement Program in xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x=>x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program"))
+			foreach (XElement Program in xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program"))
 			{
 				ReturnList.Add(new WindowsProgram(ProfileName, Convert.ToInt32(Program.Element("Id").Value)));
 			}
@@ -131,7 +110,7 @@ namespace WorkspaceLauncher
 			{
 				foreach (XElement Program in Profile.Element("Programs").Elements("Program"))
 				{
-					if(Program.Element("Id") != null)
+					if (Program.Element("Id") != null)
 					{
 						Ids.Add(Convert.ToInt32(Program.Element("Id").Value));
 					}
@@ -156,16 +135,16 @@ namespace WorkspaceLauncher
 				Directory.CreateDirectory(AppDataRoamingPath);
 				XDocument NewConfig = new XDocument();
 				NewConfig.Add(
-					new XElement("Configs", 
+					new XElement("Configs",
 						new XElement("Version"),
 						new XElement("AlwaysOnTop", "false"),
-						new XElement("CheckForUpdates","true"),
+						new XElement("CheckForUpdates", "true"),
 						new XElement("LaunchProfile", "None"),
 						new XElement("LastProfileOpen"),
 						new XElement("Profiles",
 							new XElement("Profile",
-								new XElement ("Name", "Default"),
-								new XElement ("Programs")
+								new XElement("Name", "Default"),
+								new XElement("Programs")
 						))
 					));
 				NewConfig.Save(ConfigurationFile);
@@ -277,7 +256,7 @@ namespace WorkspaceLauncher
 			XDocument xConfig = xConfiguration;
 			XElement xProfilePrograms = xConfig.Element("Configs").Element("Profiles").Elements("Profile").Single(x => (string)x.Element("Name") == ProfileName).Element("Programs");
 			int ProgramId = NextId(ProfileName);
-			xProfilePrograms.Add(new XElement("Program",new XElement("Id", ProgramId), new XElement("ProcessName", NewProgram), new XElement("StartPath"), new XElement("Argument"), new XElement("WindowHeight"), new XElement("WindowWidth"), new XElement("XPos"), new XElement("YPos"), new XElement("WindowState")));
+			xProfilePrograms.Add(new XElement("Program", new XElement("Id", ProgramId), new XElement("ProcessName", NewProgram), new XElement("StartPath"), new XElement("Argument"), new XElement("WindowHeight"), new XElement("WindowWidth"), new XElement("XPos"), new XElement("YPos"), new XElement("WindowState")));
 			xConfig.Save(ConfigurationFile);
 			return new WindowsProgram(ProfileName, ProgramId);
 		}
@@ -299,7 +278,7 @@ namespace WorkspaceLauncher
 			XDocument xConfig = xConfiguration;
 			xConfig.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).Remove();
 			xConfig.Save(ConfigurationFile);
-			if(LaunchProfile == ProfileName)
+			if (LaunchProfile == ProfileName)
 			{
 				LaunchProfile = "None";
 			}
@@ -313,7 +292,7 @@ namespace WorkspaceLauncher
 			{
 				SelectedProfile.Element("Name").Value = NewName;
 				xConfig.Save(ConfigurationFile);
-				if(LaunchProfile == OldName)
+				if (LaunchProfile == OldName)
 				{
 					LaunchProfile = NewName;
 				}

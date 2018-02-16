@@ -16,42 +16,49 @@ namespace WorkspaceLauncher.ViewModels
 	public class ShellViewModel : INotifyPropertyChanged
 	{
 		private List<string> _profiles;
-
-		public List<string> Profiles
-		{
-			get { return _profiles; }
-			set { _profiles = value; OnPropertyChanged("Profiles"); }
-		}
-
 		private string _selectedProfile;
-
-		public string SelectedProfile
-		{
-			get { return _selectedProfile; }
-			set { _selectedProfile = value; Configuration.LastOpenProfile = value; OnPropertyChanged("SelectedProfile"); }
-		}
-
-		ShellView MainWindow;
+		private ShellView _mainWindow;
 
 		public ShellViewModel()
 		{
 			Configuration.CreateAndVerifyConfigurationFile();
 			Profiles = Configuration.Profiles;
-			if(Profiles.Count > 0)
+			if (Profiles.Count > 0)
 			{
 				SelectedProfile = Profiles[0];
 			}
-			MainWindow = new ShellView();
-			MainWindow.Topmost = Configuration.AlwaysOnTop;
-			MainWindow.DataContext = this;
-			MainWindow.Show();
-			if(Configuration.LaunchProfile != "None")
+			_mainWindow = new ShellView();
+			_mainWindow.Topmost = Configuration.AlwaysOnTop;
+			_mainWindow.DataContext = this;
+			_mainWindow.Show();
+			if (Configuration.LaunchProfile != "None")
 			{
 				SelectedProfile = Configuration.LaunchProfile;
 				LaunchAndMove(null);
 			}
 			GithubUpdater updater = new GithubUpdater();
 			updater.LaunchUpdaterAsync();
+		}
+
+		public List<string> Profiles
+		{
+			get { return _profiles; }
+			set
+			{
+				_profiles = value;
+				OnPropertyChanged("Profiles");
+			}
+		}
+
+		public string SelectedProfile
+		{
+			get { return _selectedProfile; }
+			set
+			{
+				_selectedProfile = value;
+				Configuration.LastOpenProfile = value;
+				OnPropertyChanged("SelectedProfile");
+			}
 		}
 
 		public ICommand SetProgramsCommand { get { return new Command(SetPrograms); } }
@@ -116,7 +123,7 @@ namespace WorkspaceLauncher.ViewModels
 		public void Settings(object parameter)
 		{
 			SettingsViewModel SettingsVM = new SettingsViewModel();
-			MainWindow.Topmost = Configuration.AlwaysOnTop;
+			_mainWindow.Topmost = Configuration.AlwaysOnTop;
 		}
 
 		public ICommand LaunchMoveCommand { get { return new Command(LaunchAndMove); } }

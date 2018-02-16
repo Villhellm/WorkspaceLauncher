@@ -81,7 +81,6 @@
     </ApplicationDefinition>
     <Compile Include="Command.cs" />
     <Compile Include="GithubUpdater.cs" />
-    <Compile Include="Models\GithubReleaseClasses.cs" />
     <Compile Include="ViewModels\ConfirmationDialogViewModel.cs" />
     <Compile Include="ViewModels\ReturnStringDialogViewModel.cs" />
     <Compile Include="ViewModels\SelectProcessesViewModel.cs" />

@@ -7,18 +7,13 @@ using WorkspaceLauncher.Views;
 
 namespace WorkspaceLauncher.ViewModels
 {
-    public class ConfirmationDialogViewModel
-    {
-		private int _dialogResult;
-		public int DialogResult { get { return _dialogResult; } }
-
-		private string _message;
-		public string Message { get { return _message; } }
-
-		private string _title;
-		public string Title { get { return _title; } }
-
+	public class ConfirmationDialogViewModel
+	{
 		private ConfirmationDialogView Dialog;
+		private string _message;
+		private string _title;
+		private int _dialogResult;
+
 
 		public ConfirmationDialogViewModel(string Title, string Message)
 		{
@@ -29,6 +24,12 @@ namespace WorkspaceLauncher.ViewModels
 			Dialog.DataContext = this;
 			Dialog.ShowDialog();
 		}
+
+		public int DialogResult { get { return _dialogResult; } }
+
+		public string Message { get { return _message; } }
+
+		public string Title { get { return _title; } }
 
 		public void Close(int DialogResult)
 		{
