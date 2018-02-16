@@ -162,11 +162,9 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Version.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CurrentRelease\" />
+    <Resource Include="CurrentRelease\Version.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
