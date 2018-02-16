@@ -47,6 +47,43 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
+		public ICommand AddProfileCommand { get { return new Command(AddProfile); } }
+		public void AddProfile(object parameter)
+		{
+			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Add new profile","Please chooose a unique name for your new profile");
+			if(ProfileNamer.DialogResult == 1)
+			{
+				Configuration.AddProfile(ProfileNamer.Value);
+				Profiles = Configuration.Profiles;
+			}
+		}
+
+		public ICommand RenameProfileCommand { get { return new Command(RenameProfile); } }
+		public void RenameProfile(object parameter)
+		{
+			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Rename profile", "Please chooose a new name profile " + SelectedProfile);
+			if (ProfileNamer.DialogResult == 1)
+			{
+				Configuration.RenameProfile(SelectedProfile, ProfileNamer.Value);
+				Profiles = Configuration.Profiles;
+			}
+		}
+
+
+		public ICommand DeleteProfileCommand { get { return new Command(DeleteProfile); } }
+		public void DeleteProfile(object parameter)
+		{
+			if (SelectedProfile != null)
+			{
+				ConfirmationDialogViewModel ConfirmationBox = new ConfirmationDialogViewModel("Delete Profile", "Are you sure you want to delete " + SelectedProfile + "?");
+				if(ConfirmationBox.DialogResult == 1)
+				{
+					Configuration.DeleteProfile(SelectedProfile);
+					Profiles = Configuration.Profiles;
+				}
+			}
+		}
+
 		public ICommand LaunchCommand { get { return new Command(Launch); } }
 		public void Launch(object parameter)
 		{
@@ -77,16 +114,6 @@ namespace WorkspaceLauncher.ViewModels
 			if (SelectedProfile != null)
 			{
 				WindowController.PositionAll(Configuration.Programs(SelectedProfile));
-			}
-		}
-
-		public ICommand DeleteProfileCommand { get { return new Command(DeleteProfile); } }
-		public void DeleteProfile(object parameter)
-		{
-			if (SelectedProfile != null)
-			{
-				Configuration.DeleteProfile(SelectedProfile);
-				Profiles = Configuration.Profiles;
 			}
 		}
 

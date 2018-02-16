@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="Workspace Launcher" Height="250" Width="400">
+        Title="Workspace Launcher" Height="250" Width="400" WindowStartupLocation="CenterScreen">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
@@ -17,16 +17,27 @@
 		</Grid.RowDefinitions>
 		<Menu Grid.Row="0" Grid.ColumnSpan="2">
 			<MenuItem Header="File">
-				<MenuItem Header="Add Profile" x:Name="AddProfile"/>
-				<MenuItem Header="Rename Profile" x:Name="RenameProfile"/>
+				<MenuItem Header="Add Profile" x:Name="AddProfile" Command="{Binding AddProfileCommand}"/>
+				<MenuItem Header="Rename Profile" x:Name="RenameProfile" Command="{Binding RenameProfileCommand}"/>
 				<MenuItem Header="Delete Profile" x:Name="DeleteProfile" Command="{Binding DeleteProfileCommand}"/>
 				<MenuItem Header="Settings" x:Name="Settings" Command="{Binding SettingsCommand}"/>
 			</MenuItem>
 		</Menu>
-		<StackPanel Grid.Row="1">
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
 			<TextBlock Text="Profiles"/>
-			<ListBox x:Name="ProfileList" Height="175" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}"/>
-		</StackPanel>
+			<ListBox Grid.Row="1" x:Name="ProfileList" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}">
+				<ListBox.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="Delete profile" Command="{Binding DeleteProfileCommand}"/>
+						<MenuItem Header="Rename profile" Command="{Binding RenameProfileCommand}"/>
+					</ContextMenu>
+				</ListBox.ContextMenu>
+			</ListBox>
+		</Grid>
 		<StackPanel Grid.Row="1" Grid.Column="1">
 			<Button x:Name="SetPrograms" Content="Set Programs" Command="{Binding SetProgramsCommand}"/>
 			<Button x:Name="Launch" Content="Launch" Command="{Binding LaunchCommand}"/>

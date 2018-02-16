@@ -122,6 +122,27 @@ namespace WorkspaceLauncher
 			return ParentDocument.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program").Where(x => x.Element("Id").Value == Id.ToString()).First();
 		}
 
+		private static int NextId(string ProfileName)
+		{
+			List<int> Ids = new List<int>();
+			Ids.Add(0);
+			XElement Profile = xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First();
+			if (xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program").Any())
+			{
+				foreach (XElement Program in Profile.Element("Programs").Elements("Program"))
+				{
+					if(Program.Element("Id") != null)
+					{
+						Ids.Add(Convert.ToInt32(Program.Element("Id").Value));
+					}
+				}
+			}
+			Ids.Sort();
+			int LatestId = Ids[Ids.Count - 1];
+			LatestId++;
+			return LatestId;
+		}
+
 		public static void CreateAndVerifyConfigurationFile()
 		{
 			CreateConfigurationFile();
@@ -198,29 +219,15 @@ namespace WorkspaceLauncher
 			Xml.Save(ConfigurationFile);
 		}
 
-		private static int NextId(string ProfileName)
-		{
-			List<int> Ids = new List<int>();
-			Ids.Add(0);
-			XElement Profile = xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First();
-			if (xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program").Any())
-			{
-				foreach (XElement Program in Profile.Element("Programs").Elements("Program"))
-				{
-					Ids.Add(Convert.ToInt32(Program.Element("Id").Value));
-				}
-			}
-			Ids.Sort();
-			int LatestId = Ids[Ids.Count - 1];
-			LatestId++;
-			return LatestId;
-		}
-
 		public static void VerifyPrograms(XElement Profile)
 		{
 			IEnumerable<XElement> ElementsToVerify = Profile.Element("Programs").Elements("Program");
 			foreach (XElement Program in ElementsToVerify)
 			{
+				if (Program.Element("Id") == null)
+				{
+					Program.Add(new XElement("Id", NextId(Profile.Element("Name").Value)));
+				}
 				if (Program.Element("ProcessName") == null)
 				{
 					Program.Add(new XElement("ProcessName", 1));

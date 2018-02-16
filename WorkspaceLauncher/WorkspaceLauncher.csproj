@@ -56,6 +56,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -75,8 +77,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command.cs" />
+    <Compile Include="ViewModels\ConfirmationDialogViewModel.cs" />
+    <Compile Include="ViewModels\ReturnStringDialogViewModel.cs" />
     <Compile Include="ViewModels\SelectProcessesViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Views\ConfirmationDialogView.xaml.cs">
+      <DependentUpon>ConfirmationDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReturnStringView.xaml.cs">
+      <DependentUpon>ReturnStringView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SelectProcessesView.xaml.cs">
       <DependentUpon>SelectProcessesView.xaml</DependentUpon>
     </Compile>
@@ -84,6 +94,14 @@
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowController.cs" />
+    <Page Include="Views\ConfirmationDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReturnStringView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SelectProcessesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
