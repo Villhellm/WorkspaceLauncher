@@ -112,14 +112,14 @@ namespace WorkspaceLauncher
 			List<WindowsProgram> ReturnList = new List<WindowsProgram>();
 			foreach(XElement Program in xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x=>x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program"))
 			{
-				ReturnList.Add(new WindowsProgram(ProfileName, Program.Element("ProcessName").Value));
+				ReturnList.Add(new WindowsProgram(ProfileName, Convert.ToInt32(Program.Element("Id").Value)));
 			}
 			return ReturnList;
 		}
 
-		public static XElement Program(XDocument ParentDocument, string ProfileName, string ProgramName)
+		public static XElement Program(XDocument ParentDocument, string ProfileName, int Id)
 		{
-			return ParentDocument.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program").Where(x => x.Element("ProcessName").Value == ProgramName).First();
+			return ParentDocument.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program").Where(x => x.Element("Id").Value == Id.ToString()).First();
 		}
 
 		public static void CreateAndVerifyConfigurationFile()
@@ -198,6 +198,22 @@ namespace WorkspaceLauncher
 			Xml.Save(ConfigurationFile);
 		}
 
+		private static int NextId(string ProfileName)
+		{
+			List<int> Ids = new List<int>();
+			Ids.Add(0);
+			XElement Profile = xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First();
+			if (xConfiguration.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).First().Element("Programs").Elements("Program").Any())
+			{
+				foreach (XElement Program in Profile.Element("Programs").Elements("Program"))
+				{
+					Ids.Add(Convert.ToInt32(Program.Element("Id").Value));
+				}
+			}
+			Ids.Sort();
+			return Ids[Ids.Count - 1]++;
+		}
+
 		public static void VerifyPrograms(XElement Profile)
 		{
 			IEnumerable<XElement> ElementsToVerify = Profile.Element("Programs").Elements("Program");
@@ -239,11 +255,11 @@ namespace WorkspaceLauncher
 
 		}
 
-		public static void RemoveProgram(string ProfileName, string ProgramName)
+		public static void RemoveProgram(string ProfileName, int ProgramId)
 		{
 			XDocument xConfig = xConfiguration;
 			XElement xProfile = xConfig.Element("Configs").Element("Profiles").Elements("Profile").Single(x => (string)x.Element("Name") == ProfileName).Element("Programs");
-			xProfile.Elements("Program").Where(x => x.Element("ProcessName").Value == ProgramName).Remove();
+			xProfile.Elements("Program").Where(x => x.Element("Id").Value == ProgramId.ToString()).Remove();
 			xConfig.Save(ConfigurationFile);
 		}
 
@@ -251,13 +267,10 @@ namespace WorkspaceLauncher
 		{
 			XDocument xConfig = xConfiguration;
 			XElement xProfilePrograms = xConfig.Element("Configs").Element("Profiles").Elements("Profile").Single(x => (string)x.Element("Name") == ProfileName).Element("Programs");
-			if(!xProfilePrograms.Elements("Program").Where(x=>x.Element("ProcessName").Value == NewProgram).Any())
-			{
-				xProfilePrograms.Add(new XElement("Program", new XElement("ProcessName", NewProgram), new XElement("StartPath"), new XElement("Argument"), new XElement("WindowHeight"), new XElement("WindowWidth"), new XElement("XPos"), new XElement("YPos"), new XElement("WindowState")));
-				xConfig.Save(ConfigurationFile);
-				return new WindowsProgram(ProfileName, NewProgram);
-			}
-			return null;
+			int ProgramId = NextId(ProfileName);
+			xProfilePrograms.Add(new XElement("Program",new XElement("Id", ProgramId), new XElement("ProcessName", NewProgram), new XElement("StartPath"), new XElement("Argument"), new XElement("WindowHeight"), new XElement("WindowWidth"), new XElement("XPos"), new XElement("YPos"), new XElement("WindowState")));
+			xConfig.Save(ConfigurationFile);
+			return new WindowsProgram(ProfileName, ProgramId);
 		}
 
 		public static int AddProfile(string NewProfile)

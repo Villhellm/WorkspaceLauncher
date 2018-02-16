@@ -10,18 +10,32 @@ namespace WorkspaceLauncher.Models
 	public class WindowsProgram
 	{
 		public string ParentProfileName { get; set; }
-		public string ProcessName { get; set; }
+		public int Id { get; set; }
+
+		public string ProcessName
+		{
+			get
+			{
+				return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("ProcessName").Value;
+			}
+			set
+			{
+				XDocument xConfig = Configuration.xConfiguration;
+				Configuration.Program(xConfig, ParentProfileName, Id).Element("ProcessName").Value = value;
+				xConfig.Save(Configuration.ConfigurationFile);
+			}
+		}
 
 		public string StartPath
 		{
 			get
 			{
-				return Configuration.Program(Configuration.xConfiguration, ParentProfileName, ProcessName).Element("StartPath").Value;
+				return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("StartPath").Value;
 			}
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, ProcessName).Element("StartPath").Value = value;
+				Configuration.Program(xConfig, ParentProfileName, Id).Element("StartPath").Value = value;
 				xConfig.Save(Configuration.ConfigurationFile);
 			}
 		}
@@ -30,12 +44,12 @@ namespace WorkspaceLauncher.Models
 		{
 			get
 			{
-				return Configuration.Program(Configuration.xConfiguration, ParentProfileName, ProcessName).Element("Argument").Value;
+				return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("Argument").Value;
 			}
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, ProcessName).Element("Argument").Value = value;
+				Configuration.Program(xConfig, ParentProfileName, Id).Element("Argument").Value = value;
 				xConfig.Save(Configuration.ConfigurationFile);
 			}
 		}
@@ -44,12 +58,12 @@ namespace WorkspaceLauncher.Models
 		{
 			get
 			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, ProcessName).Element("WindowWidth").Value);
+				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowWidth").Value);
 			}
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, ProcessName).Element("WindowWidth").Value = value.ToString();
+				Configuration.Program(xConfig, ParentProfileName, Id).Element("WindowWidth").Value = value.ToString();
 				xConfig.Save(Configuration.ConfigurationFile);
 			}
 		}
@@ -58,12 +72,12 @@ namespace WorkspaceLauncher.Models
 		{
 			get
 			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, ProcessName).Element("WindowHeight").Value);
+				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowHeight").Value);
 			}
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, ProcessName).Element("WindowHeight").Value = value.ToString();
+				Configuration.Program(xConfig, ParentProfileName, Id).Element("WindowHeight").Value = value.ToString();
 				xConfig.Save(Configuration.ConfigurationFile);
 			}
 		}
@@ -72,12 +86,12 @@ namespace WorkspaceLauncher.Models
 		{
 			get
 			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, ProcessName).Element("XPos").Value);
+				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("XPos").Value);
 			}
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, ProcessName).Element("XPos").Value = value.ToString();
+				Configuration.Program(xConfig, ParentProfileName, Id).Element("XPos").Value = value.ToString();
 				xConfig.Save(Configuration.ConfigurationFile);
 			}
 		}
@@ -86,12 +100,12 @@ namespace WorkspaceLauncher.Models
 		{
 			get
 			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, ProcessName).Element("YPos").Value);
+				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("YPos").Value);
 			}
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, ProcessName).Element("YPos").Value = value.ToString();
+				Configuration.Program(xConfig, ParentProfileName, Id).Element("YPos").Value = value.ToString();
 				xConfig.Save(Configuration.ConfigurationFile);
 			}
 		}
@@ -100,20 +114,20 @@ namespace WorkspaceLauncher.Models
 		{
 			get
 			{
-				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, ProcessName).Element("WindowState").Value);
+				return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowState").Value);
 			}
 			set
 			{
 				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, ProcessName).Element("WindowState").Value = value.ToString();
+				Configuration.Program(xConfig, ParentProfileName, Id).Element("WindowState").Value = value.ToString();
 				xConfig.Save(Configuration.ConfigurationFile);
 			}
 		}
 
-		public WindowsProgram(string ParentProfileName, string ProcessName)
+		public WindowsProgram(string ParentProfileName, int Id)
 		{
 			this.ParentProfileName = ParentProfileName;
-			this.ProcessName = ProcessName;
+			this.Id = Id;
 		}
 	}
 }

@@ -80,7 +80,7 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			foreach(WindowsProgram Prog in Configuration.Programs(SelectedProfile))
 			{
-				Configuration.RemoveProgram(SelectedProfile, Prog.ProcessName);
+				Configuration.RemoveProgram(SelectedProfile, Prog.Id);
 			}
 			OnPropertyChanged("ProfilePrograms");
 		}
