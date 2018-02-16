@@ -100,6 +100,11 @@ namespace WorkspaceLauncher.ViewModels
 			set
 			{
 				_selectedProfile = value;
+				Programs = Configuration.Programs(SelectedProfile);
+				if (Programs.Count > 0)
+				{
+					SelectedProgram = Programs[0];
+				}
 				OnPropertyChanged("SelectedProfile");
 				OnPropertyChanged("Programs");
 			}
@@ -138,9 +143,11 @@ namespace WorkspaceLauncher.ViewModels
 		public SettingsViewModel()
 		{
 			Profiles = Configuration.Profiles;
-			SelectedProfile = Profiles[0];
-			Programs = Configuration.Programs(SelectedProfile);
-			SelectedProgram = Programs[0];
+			if(Profiles.Count > 0)
+			{
+				SelectedProfile = Profiles[0];
+			}
+
 			SettingsView SettingsDialog = new SettingsView();
 			SettingsDialog.Topmost = Configuration.AlwaysOnTop;
 			SettingsDialog.DataContext = this;

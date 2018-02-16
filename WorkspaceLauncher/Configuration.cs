@@ -36,16 +36,16 @@ namespace WorkspaceLauncher
 			}
 		}
 
-		public static string LastProfileOpen
+		public static string LastOpenProfile
 		{
 			get
 			{
-				return xConfiguration.Element("Configs").Element("LastProfileOpen").Value;
+				return xConfiguration.Element("Configs").Element("LastOpenProfile").Value;
 			}
 			set
 			{
 				XDocument xConfig = xConfiguration;
-				xConfig.Element("Configs").Element("LastProfileOpen").Value = value;
+				xConfig.Element("Configs").Element("LastOpenProfile").Value = value;
 				xConfig.Save(ConfigurationFile);
 			}
 		}

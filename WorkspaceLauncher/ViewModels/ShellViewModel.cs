@@ -26,7 +26,7 @@ namespace WorkspaceLauncher.ViewModels
 		public string SelectedProfile
 		{
 			get { return _selectedProfile; }
-			set { _selectedProfile = value; OnPropertyChanged("SelectedProfile"); }
+			set { _selectedProfile = value; Configuration.LastOpenProfile = value; OnPropertyChanged("SelectedProfile"); }
 		}
 
 		ShellView MainWindow;
@@ -35,7 +35,10 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			Configuration.CreateAndVerifyConfigurationFile();
 			Profiles = Configuration.Profiles;
-			SelectedProfile = Profiles[0];
+			if(Profiles.Count > 0)
+			{
+				SelectedProfile = Profiles[0];
+			}
 			MainWindow = new ShellView();
 			MainWindow.Topmost = Configuration.AlwaysOnTop;
 			MainWindow.DataContext = this;
