@@ -45,6 +45,48 @@ namespace WorkspaceLauncher
 			}
 		}
 
+		public bool VersionCompare(string VersionOriginal, string VersionToCheck)
+		{
+			int VO1, VO2, VO3, VO4, VC1, VC2, VC3, VC4;
+
+			VO1 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
+			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
+			VO2 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
+			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
+			VO3 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
+			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
+			VO4 = Convert.ToInt32(VersionOriginal);
+
+			VC1 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
+			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
+			VC2 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
+			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
+			VC3 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
+			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
+			VC4 = Convert.ToInt32(VersionToCheck);
+
+			if (VC1 > VO1)
+				return true;
+			else if (VC1 == VO1)
+			{
+				if (VC2 > VO2)
+					return true;
+				else if (VC2 == VO2)
+				{
+					if (VC3 > VO3)
+						return true;
+					else if (VC3 == VO3)
+					{
+						if (VC4 > VO4)
+							return true;
+					}
+				}
+			}
+
+			return false;
+
+		}
+
 		public void LaunchUpdaterAsync()
 		{
 			BackgroundWorker UpdateChecker = new BackgroundWorker();
@@ -52,11 +94,9 @@ namespace WorkspaceLauncher
 			UpdateChecker.RunWorkerAsync();
 		}
 
-		//TODO better version checking
-
 		public void CheckForUpdate(object sender, DoWorkEventArgs e)
 		{
-			if (Configuration.Version != "" && LatestVersion != Configuration.Version)
+			if (Configuration.Version != "" && VersionCompare(Configuration.Version, LatestVersion))
 			{
 			 MessageBoxResult DR =	MessageBox.Show("Version " + LatestVersion + " is available, would you like to update ?\n \n" + "Changes: ", "Update", MessageBoxButton.YesNo);
 				if (DR == MessageBoxResult.Yes)
