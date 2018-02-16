@@ -165,5 +165,8 @@
   <ItemGroup>
     <Resource Include="Version.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CurrentRelease\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
