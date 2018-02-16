@@ -299,6 +299,10 @@ namespace WorkspaceLauncher
 			XDocument xConfig = xConfiguration;
 			xConfig.Element("Configs").Element("Profiles").Elements("Profile").Where(x => x.Element("Name").Value == ProfileName).Remove();
 			xConfig.Save(ConfigurationFile);
+			if(LaunchProfile == ProfileName)
+			{
+				LaunchProfile = "None";
+			}
 		}
 
 		public static int RenameProfile(string OldName, string NewName)
@@ -309,6 +313,10 @@ namespace WorkspaceLauncher
 			{
 				SelectedProfile.Element("Name").Value = NewName;
 				xConfig.Save(ConfigurationFile);
+				if(LaunchProfile == OldName)
+				{
+					LaunchProfile = NewName;
+				}
 				return 1;
 			}
 			else

@@ -40,6 +40,11 @@ namespace WorkspaceLauncher.ViewModels
 			MainWindow.Topmost = Configuration.AlwaysOnTop;
 			MainWindow.DataContext = this;
 			MainWindow.Show();
+			if(Configuration.LaunchProfile != "None")
+			{
+				SelectedProfile = Configuration.LaunchProfile;
+				LaunchAndMove(null);
+			}
 		}
 
 		public ICommand SetProgramsCommand { get { return new Command(SetPrograms); } }
