@@ -14,7 +14,8 @@ namespace WorkspaceLauncher
 {
     public class GithubUpdater
     {
-		public static string ReleaseURL = "https://raw.githubusercontent.com/Villhellm/QuickStream/master/StreamStarter/Version.txt";
+		public static string ReleaseVersionURL = "https://raw.githubusercontent.com/Villhellm/WorkspaceLauncher/master/StreamStarter/Version.txt";
+		public static string ReleaseDownloadURL = "";
 		static string MemeCacheBlockerUR = "?t=" + DateTime.Now.ToString().Replace(" ", "");
 		string ApplicationLocation { get { return ""; } }
 
@@ -39,7 +40,7 @@ namespace WorkspaceLauncher
 		{
 			get
 			{
-				return GetWebString(ReleaseURL);
+				return GetWebString(ReleaseVersionURL);
 			}
 		}
 
@@ -76,7 +77,7 @@ namespace WorkspaceLauncher
 				File.Delete(destinationPath);
 			}
 
-			saveFileStream = new FileStream(destinationPath, System.IO.FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+			saveFileStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
 
 			HttpWebRequest httpReq;
 			HttpWebResponse httpRes;
@@ -99,7 +100,7 @@ namespace WorkspaceLauncher
 
 		private void UpdateProgram()
 		{
-			//DownloadInternetFile(ExecutableDownloadURL + MemeCacheBlockerUR, ApplicationLocation + "t");
+			DownloadInternetFile(ReleaseDownloadURL + MemeCacheBlockerUR, ApplicationLocation + "t");
 			SelfDestruct();
 		}
 
