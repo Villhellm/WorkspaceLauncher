@@ -207,6 +207,7 @@ namespace WorkspaceLauncher
 
 		public static void VerifyPrograms(XElement Profile)
 		{
+			List<string> ElementNames = new List<string>() { "ProcessName", "StartPath", "Argument", "WindowHeight", "WindowWidth", "XPos", "YPos", "WindowState" };
 			IEnumerable<XElement> ElementsToVerify = Profile.Element("Programs").Elements("Program");
 			foreach (XElement Program in ElementsToVerify)
 			{
@@ -214,37 +215,12 @@ namespace WorkspaceLauncher
 				{
 					Program.Add(new XElement("Id", NextId(Profile.Element("Name").Value)));
 				}
-				if (Program.Element("ProcessName") == null)
+				foreach(string Element in ElementNames)
 				{
-					Program.Add(new XElement("ProcessName", 1));
-				}
-				if (Program.Element("StartPath") == null)
-				{
-					Program.Add(new XElement("StartPath", 1));
-				}
-				if (Program.Element("Argument") == null)
-				{
-					Program.Add(new XElement("Argument", 1));
-				}
-				if (Program.Element("WindowHeight") == null)
-				{
-					Program.Add(new XElement("WindowHeight", 1));
-				}
-				if (Program.Element("WindowWidth") == null)
-				{
-					Program.Add(new XElement("WindowWidth", 1));
-				}
-				if (Program.Element("WindowXPos") == null)
-				{
-					Program.Add(new XElement("WindowXPos", 1));
-				}
-				if (Program.Element("WindowYPos") == null)
-				{
-					Program.Add(new XElement("WindowYPos", 1));
-				}
-				if (Program.Element("WindowState") == null)
-				{
-					Program.Add(new XElement("WindowState", 1));
+					if(Program.Element(Element) == null)
+					{
+						Program.Add(new XElement(Element, 1));
+					}
 				}
 			}
 
