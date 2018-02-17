@@ -88,7 +88,7 @@ namespace WorkspaceLauncher.ViewModels
 		public ICommand RenameProfileCommand { get { return new Command(_renameProfile); } }
 		private void _renameProfile(object parameter)
 		{
-			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Rename profile", "Please chooose a new name profile " + SelectedProfile);
+			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Rename profile", "Please chooose a new name for profile: " + SelectedProfile);
 			if (ProfileNamer.DialogResult == 1)
 			{
 				Configuration.RenameProfile(SelectedProfile, ProfileNamer.Value);

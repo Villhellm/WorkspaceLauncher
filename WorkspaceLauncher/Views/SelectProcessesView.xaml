@@ -5,22 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="SelectProcessesView" Height="400" Width="500" ResizeMode="NoResize">
+        Title="Select Processes" Height="400" Width="500" ResizeMode="NoResize">
     <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
-		<StackPanel>
-			<Button Content="Refresh" Command="{Binding RefreshOpenWindowsCommand}"/>
-			<TextBlock Text="Open Windows"/>
-			<ListBox x:Name="OpenProcesses" ItemsSource="{Binding OpenWindows}" DisplayMemberPath="ProcessName" Height="300" SelectionMode="Multiple" SelectionChanged="OpenProcesses_SelectionChanged"/>
-			<Button Content="Save state of selected process" Command="{Binding SaveProcessesCommand}"/>
+		<StackPanel Margin="0,10,0,0">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Open Windows" Margin="10,10,0,0"/>
+				<Button Content="Refresh" Command="{Binding RefreshOpenWindowsCommand}" Width="125" Margin="10,5" HorizontalAlignment="Left"/>
+
+			</StackPanel>
+			<ListBox x:Name="OpenProcesses" ItemsSource="{Binding OpenWindows}" DisplayMemberPath="ProcessName" Height="250" SelectionMode="Multiple" SelectionChanged="OpenProcesses_SelectionChanged" Margin="10,0,10,10"/>
+			<Button Content="Save state of selected process" Command="{Binding SaveProcessesCommand}" Width="175"/>
 		</StackPanel>
-		<StackPanel Grid.Column="1">
-			<Button Content="Clear saved"  Command="{Binding ClearProcessesCommand}"/>
-			<TextBlock Text="Currently Saved"/>
-			<ListBox ItemsSource="{Binding ProfilePrograms}" DisplayMemberPath="ProcessName" Height="300"/>
+		<StackPanel Grid.Column="1" Margin="0,10,0,0">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Currently Saved" Margin="10,10,0,0"/>
+				<Button Content="Clear saved"  Command="{Binding ClearProcessesCommand}" Width="125" Margin="10,5"/>
+			</StackPanel>
+			<ListBox ItemsSource="{Binding ProfilePrograms}" DisplayMemberPath="ProcessName" Height="250" Margin="10,0,10,10"/>
 		</StackPanel>
     </Grid>
 </Window>
