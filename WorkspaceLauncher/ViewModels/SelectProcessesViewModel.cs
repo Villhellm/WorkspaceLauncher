@@ -19,7 +19,7 @@ namespace WorkspaceLauncher.ViewModels
 		public SelectProcessesViewModel(string SelectedProfile)
 		{
 			this.SelectedProfile = SelectedProfile;
-			RefreshOpenWindows();
+			_refreshOpenWindows(null);
 			SelectProcessesView NewDialog = new SelectProcessesView();
 			NewDialog.Topmost = Configuration.AlwaysOnTop;
 			NewDialog.DataContext = this;
@@ -50,7 +50,8 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public void RefreshOpenWindows()
+		public ICommand RefreshOpenWindowsCommand { get { return new Command(_refreshOpenWindows); } }
+		private void _refreshOpenWindows(object parameter)
 		{
 			OpenWindows = new List<Process>();
 			foreach (Process Proc in Process.GetProcesses())
@@ -62,26 +63,30 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public void SaveProcesses()
+		public ICommand SaveProcessesCommand { get { return new Command(_saveProcesses); } }
+		private void _saveProcesses(object parameter)
 		{
-
-			foreach (Process AProc in SelectedProcesses)
+			if(SelectedProcesses.Count > 0)
 			{
-				WindowsProgram AddProgram = Configuration.AddProgram(SelectedProfile, AProc.ProcessName);
-				if (AddProgram != null)
+				foreach (Process AProc in SelectedProcesses)
 				{
-					AddProgram.StartPath = AProc.MainModule.FileName;
-					AddProgram.WindowWidth = WindowController.GetWindowWidth(AProc);
-					AddProgram.WindowHeight = WindowController.GetWindowHeight(AProc);
-					AddProgram.XPos = WindowController.WindowXPosition(AProc);
-					AddProgram.YPos = WindowController.WindowYPosition(AProc);
-					AddProgram.WindowState = WindowController.GetWindowStatus(AProc);
+					WindowsProgram AddProgram = Configuration.AddProgram(SelectedProfile, AProc.ProcessName);
+					if (AddProgram != null)
+					{
+						AddProgram.StartPath = AProc.MainModule.FileName;
+						AddProgram.WindowWidth = WindowController.GetWindowWidth(AProc);
+						AddProgram.WindowHeight = WindowController.GetWindowHeight(AProc);
+						AddProgram.XPos = WindowController.WindowXPosition(AProc);
+						AddProgram.YPos = WindowController.WindowYPosition(AProc);
+						AddProgram.WindowState = WindowController.GetWindowStatus(AProc);
+					}
 				}
+				OnPropertyChanged("ProfilePrograms");
 			}
-			OnPropertyChanged("ProfilePrograms");
 		}
 
-		public void ClearProcesses()
+		public ICommand ClearProcessesCommand { get { return new Command(_clearProcesses); } }
+		private void _clearProcesses(object parameter)
 		{
 			foreach (WindowsProgram Prog in Configuration.Programs(SelectedProfile))
 			{

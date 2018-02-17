@@ -25,18 +25,6 @@ namespace WorkspaceLauncher.Views
             InitializeComponent();
         }
 
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			ConfirmationDialogViewModel Current = (ConfirmationDialogViewModel)DataContext;
-			Current.Close(1);
-		}
-
-		private void Button_Click_1(object sender, RoutedEventArgs e)
-		{
-			ConfirmationDialogViewModel Current = (ConfirmationDialogViewModel)DataContext;
-			Current.Close(0);
-		}
-
 		protected override void OnRender(DrawingContext drawingContext)
 		{
 			base.OnRender(drawingContext);

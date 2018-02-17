@@ -20,7 +20,6 @@ namespace WorkspaceLauncher
 		static string MemeCacheBlockerUR = "?t=" + DateTime.Now.ToString().Replace(" ", "");
 		string ApplicationLocation { get { return System.Reflection.Assembly.GetExecutingAssembly().Location; } }
 
-
 		public static string GetWebString(string URL)
 		{
 			try
@@ -33,17 +32,10 @@ namespace WorkspaceLauncher
 			{
 				string message = ex.Message;
 				return "";
-			}
-			
+			}		
 		}
 
-		public static string LatestVersion
-		{
-			get
-			{
-				return GetWebString(ReleaseVersionURL);
-			}
-		}
+		public static string LatestVersion { get { return GetWebString(ReleaseVersionURL); } }
 
 		public bool VersionCompare(string VersionOriginal, string VersionToCheck)
 		{
@@ -82,7 +74,6 @@ namespace WorkspaceLauncher
 			}
 
 			return false;
-
 		}
 
 		public void LaunchUpdaterAsync()

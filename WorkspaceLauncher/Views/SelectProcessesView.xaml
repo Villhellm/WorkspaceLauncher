@@ -12,13 +12,13 @@
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
 		<StackPanel>
-			<Button Content="Refresh" Click="Button_Click_2"/>
+			<Button Content="Refresh" Command="{Binding RefreshOpenWindowsCommand}"/>
 			<TextBlock Text="Open Windows"/>
-			<ListBox x:Name="OpenProcesses" ItemsSource="{Binding OpenWindows}" DisplayMemberPath="ProcessName" Height="300" SelectionMode="Multiple"/>
-			<Button Content="Save state of selected process" Click="Button_Click"/>
+			<ListBox x:Name="OpenProcesses" ItemsSource="{Binding OpenWindows}" DisplayMemberPath="ProcessName" Height="300" SelectionMode="Multiple" SelectionChanged="OpenProcesses_SelectionChanged"/>
+			<Button Content="Save state of selected process" Command="{Binding SaveProcessesCommand}"/>
 		</StackPanel>
 		<StackPanel Grid.Column="1">
-			<Button Content="Clear saved" Click="Button_Click_1"/>
+			<Button Content="Clear saved"  Command="{Binding ClearProcessesCommand}"/>
 			<TextBlock Text="Currently Saved"/>
 			<ListBox ItemsSource="{Binding ProfilePrograms}" DisplayMemberPath="ProcessName" Height="300"/>
 		</StackPanel>

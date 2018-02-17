@@ -26,7 +26,7 @@ namespace WorkspaceLauncher.Views
 			InitializeComponent();
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void OpenProcesses_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			SelectProcessesViewModel Current = (SelectProcessesViewModel)DataContext;
 			Current.SelectedProcesses = new List<Process>();
@@ -34,19 +34,6 @@ namespace WorkspaceLauncher.Views
 			{
 				Current.SelectedProcesses.Add((Process)item);
 			}
-			Current.SaveProcesses();
-		}
-
-		private void Button_Click_1(object sender, RoutedEventArgs e)
-		{
-			SelectProcessesViewModel Current = (SelectProcessesViewModel)DataContext;
-			Current.ClearProcesses();
-		}
-
-		private void Button_Click_2(object sender, RoutedEventArgs e)
-		{
-			SelectProcessesViewModel Current = (SelectProcessesViewModel)DataContext;
-			Current.RefreshOpenWindows();
 		}
 
 		protected override void OnRender(DrawingContext drawingContext)

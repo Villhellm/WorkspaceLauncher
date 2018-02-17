@@ -34,7 +34,7 @@ namespace WorkspaceLauncher.ViewModels
 			if (Configuration.LaunchProfile != "None")
 			{
 				SelectedProfile = Configuration.LaunchProfile;
-				LaunchAndMove(null);
+				_launchAndMove(null);
 			}
 			GithubUpdater updater = new GithubUpdater();
 			updater.LaunchUpdaterAsync();
@@ -61,8 +61,8 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand SetProgramsCommand { get { return new Command(SetPrograms); } }
-		public void SetPrograms(object parameter)
+		public ICommand SetProgramsCommand { get { return new Command(_setPrograms); } }
+		private void _setPrograms(object parameter)
 		{
 			if (SelectedProfile != null)
 			{
@@ -73,31 +73,32 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand AddProfileCommand { get { return new Command(AddProfile); } }
-		public void AddProfile(object parameter)
+		public ICommand AddProfileCommand { get { return new Command(_addProfile); } }
+		private void _addProfile(object parameter)
 		{
 			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Add new profile","Please chooose a unique name for your new profile");
 			if(ProfileNamer.DialogResult == 1)
 			{
 				Configuration.AddProfile(ProfileNamer.Value);
 				Profiles = Configuration.Profiles;
+				SelectedProfile = ProfileNamer.Value;
 			}
 		}
 
-		public ICommand RenameProfileCommand { get { return new Command(RenameProfile); } }
-		public void RenameProfile(object parameter)
+		public ICommand RenameProfileCommand { get { return new Command(_renameProfile); } }
+		private void _renameProfile(object parameter)
 		{
 			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Rename profile", "Please chooose a new name profile " + SelectedProfile);
 			if (ProfileNamer.DialogResult == 1)
 			{
 				Configuration.RenameProfile(SelectedProfile, ProfileNamer.Value);
 				Profiles = Configuration.Profiles;
+				SelectedProfile = Profiles[0];
 			}
 		}
 
-
-		public ICommand DeleteProfileCommand { get { return new Command(DeleteProfile); } }
-		public void DeleteProfile(object parameter)
+		public ICommand DeleteProfileCommand { get { return new Command(_deleteProfile); } }
+		private void _deleteProfile(object parameter)
 		{
 			if (SelectedProfile != null)
 			{
@@ -111,7 +112,7 @@ namespace WorkspaceLauncher.ViewModels
 		}
 
 		public ICommand LaunchCommand { get { return new Command(Launch); } }
-		public void Launch(object parameter)
+		private void Launch(object parameter)
 		{
 			if (SelectedProfile != null)
 			{
@@ -119,15 +120,15 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand SettingsCommand { get { return new Command(Settings); } }
-		public void Settings(object parameter)
+		public ICommand SettingsCommand { get { return new Command(_settings); } }
+		private void _settings(object parameter)
 		{
 			SettingsViewModel SettingsVM = new SettingsViewModel();
 			_mainWindow.Topmost = Configuration.AlwaysOnTop;
 		}
 
-		public ICommand LaunchMoveCommand { get { return new Command(LaunchAndMove); } }
-		public void LaunchAndMove(object parameter)
+		public ICommand LaunchMoveCommand { get { return new Command(_launchAndMove); } }
+		private void _launchAndMove(object parameter)
 		{
 			if (SelectedProfile != null)
 			{
@@ -135,8 +136,8 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand MoveCommand { get { return new Command(Move); } }
-		public void Move(object parameter)
+		public ICommand MoveCommand { get { return new Command(_move); } }
+		private void _move(object parameter)
 		{
 			if (SelectedProfile != null)
 			{

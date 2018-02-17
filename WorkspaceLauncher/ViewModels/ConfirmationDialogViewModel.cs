@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WorkspaceLauncher.Views;
 
 namespace WorkspaceLauncher.ViewModels
@@ -15,10 +16,10 @@ namespace WorkspaceLauncher.ViewModels
 		private int _dialogResult;
 
 
-		public ConfirmationDialogViewModel(string Title, string Message)
+		public ConfirmationDialogViewModel(string title, string message)
 		{
-			_title = Title;
-			_message = Message;
+			_title = title;
+			_message = message;
 			Dialog = new ConfirmationDialogView();
 			Dialog.Topmost = Configuration.AlwaysOnTop;
 			Dialog.DataContext = this;
@@ -31,9 +32,10 @@ namespace WorkspaceLauncher.ViewModels
 
 		public string Title { get { return _title; } }
 
-		public void Close(int DialogResult)
+		public ICommand CloseCommand { get { return new Command(_close); } }
+		private void _close(object parameter)
 		{
-			_dialogResult = DialogResult;
+			_dialogResult = Convert.ToInt32(parameter);
 			Dialog.Close();
 		}
 	}

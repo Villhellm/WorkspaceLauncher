@@ -48,7 +48,14 @@ namespace WorkspaceLauncher
 			set
 			{
 				XDocument xConfig = xConfiguration;
-				xConfig.Element("Configs").Element("LastOpenProfile").Value = value;
+				if(value == null)
+				{
+					xConfig.Element("Configs").Element("LastOpenProfile").Value = "None";
+				}
+				else
+				{
+					xConfig.Element("Configs").Element("LastOpenProfile").Value = value;
+				}
 				xConfig.Save(ConfigurationFile);
 			}
 		}

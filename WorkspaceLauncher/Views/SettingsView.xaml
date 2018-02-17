@@ -5,72 +5,75 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="SettingsView" Height="450" Width="725" ResizeMode="NoResize">
-    <Grid>
+        Title="SettingsView" Height="375" Width="750" ResizeMode="NoResize" Background="#d4d4d4">
+	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
 			<ColumnDefinition/>
+			<ColumnDefinition Width="2*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="100"/>
 			<RowDefinition/>
-			<RowDefinition Height="75"/>
 		</Grid.RowDefinitions>
-		<StackPanel>
+		<StackPanel Grid.ColumnSpan="2">
 			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Version"/>
-				<TextBlock Text="{Binding Version}"/>
-				<Button Content="Check for updates"/>
+				<TextBlock Text="Version" Margin="10,5"/>
+				<TextBlock Text="{Binding Version}" Width="100"/>
+				<Button Content="Check for updates" Command="{Binding CheckForUpdatesCommand}"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
-				<CheckBox Content="Check for updates" IsChecked="{Binding CheckForUpdates}"/>
-				<CheckBox Content="Always on top" IsChecked="{Binding AlwaysOnTop}"/>
+				<CheckBox Content="Check for updates" IsChecked="{Binding CheckForUpdates}" Margin="10,5"/>
+				<CheckBox Content="Always on top" IsChecked="{Binding AlwaysOnTop}" Margin="10,5"/>
 			</StackPanel>
 			<StackPanel>
-				<TextBlock Text="Profile to load on start"/>
-				<ComboBox SelectedItem="{Binding LaunchProfile}" ItemsSource="{Binding ProfilesList}"/>
+				<TextBlock Text="Profile to load on start" Margin="10,10,0,0"/>
+				<ComboBox SelectedItem="{Binding LaunchProfile}" ItemsSource="{Binding ProfilesList}" Width="200" HorizontalAlignment="Left" Margin="10,0,0,0"/>
 			</StackPanel>
 		</StackPanel>
 		<StackPanel Grid.Row="1">
-			<TextBlock Text="Profiles"/>
-			<ListBox Height="200" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}"/>
+			<TextBlock Text="Profiles" Margin="10,10,0,0"/>
+			<ListBox Height="200" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}" Margin="10,0"/>
 		</StackPanel>
 		<StackPanel Grid.Row="1" Grid.Column="1">
-			<TextBlock Text="Programs"/>
-			<ListBox Height="200" ItemsSource="{Binding Programs}" DisplayMemberPath="ProcessName" SelectedItem="{Binding SelectedProgram}"/>
+			<TextBlock Text="Programs" Margin="10,10,0,0"/>
+			<ListBox Height="200" ItemsSource="{Binding Programs}" DisplayMemberPath="ProcessName" SelectedItem="{Binding SelectedProgram}" Margin="10,0">
+				<ListBox.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="Remove program" Command="{Binding RemoveProgramCommand}"/>
+					</ContextMenu>
+				</ListBox.ContextMenu>
+			</ListBox>
 		</StackPanel>
-		<StackPanel Grid.Row = "2" Grid.ColumnSpan="2" Orientation="Horizontal">
+		<StackPanel Grid.Row = "1" Grid.Column="2" HorizontalAlignment="Right" Margin="0,10">
 			<StackPanel>
 				<TextBlock Text="Window State"/>
-				<ComboBox ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding SelectedProgram.WindowState}"/>
+				<ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding SelectedProgram.WindowState}"/>
 			</StackPanel>
-			<StackPanel>
-				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="Window Width"/>
+			<StackPanel Orientation="Horizontal">
+				<StackPanel>
+					<TextBlock Text="Window Width" Width="85"/>
 					<TextBox Width="75" Text="{Binding SelectedProgram.WindowWidth}"/>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="Window Height"/>
-					<TextBox Width="75" Text="{Binding SelectedProgram.WindowHeight}"/>
-				</StackPanel>
-			</StackPanel>
-			<StackPanel>
-				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="X Position"/>
+					<TextBlock Text="X Position" Width="55"/>
 					<TextBox Width="75" Text="{Binding SelectedProgram.XPos}"/>
 				</StackPanel>
-				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="Y Position"/>
+				<StackPanel Margin="5,0">
+					<TextBlock Text="Window Height" Width="85"/>
+					<TextBox Width="75" Text="{Binding SelectedProgram.WindowHeight}"/>
+					<TextBlock Text="Y Position" Width="55"/>
 					<TextBox Width="75" Text="{Binding SelectedProgram.YPos}"/>
 				</StackPanel>
 			</StackPanel>
-			<StackPanel Width="300">
+			
+			<StackPanel Margin="5,0">
 				<TextBlock Text="Launch Path"/>
-				<TextBox Text="{Binding SelectedProgram.StartPath}"/>
+				<StackPanel Orientation="Horizontal">
+					<TextBox Width="300" Text="{Binding SelectedProgram.StartPath}"/>
+					<Button Content="Find File" VerticalAlignment="Top" Margin="10,0" Command="{Binding FindFileCommand}"/>
+				</StackPanel>
 				<TextBlock Text="Start Arguments"/>
-				<TextBox Text="{Binding SelectedProgram.Argument}"/>
+				<TextBox Width="300" Text="{Binding SelectedProgram.Argument}" HorizontalAlignment="Left"/>
 			</StackPanel>
-			<Button Content="Find File"/>
 		</StackPanel>
 	</Grid>
 </Window>

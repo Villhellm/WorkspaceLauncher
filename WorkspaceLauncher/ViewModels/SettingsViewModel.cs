@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WorkspaceLauncher.Models;
 using WorkspaceLauncher.Views;
 
@@ -111,23 +112,64 @@ namespace WorkspaceLauncher.ViewModels
 					SelectedProgram = Programs[0];
 				}
 				OnPropertyChanged("SelectedProfile");
-				OnPropertyChanged("Programs");
 			}
 		}
 
 		public List<WindowsProgram> Programs
 		{
 			get { return _programs; }
-			set { _programs = value; }
+			set
+			{
+				_programs = value;
+				OnPropertyChanged("Programs");
+			}
 		}
 
 		public WindowsProgram SelectedProgram
 		{
-			get{return _selectedProgram;}
+			get { return _selectedProgram; }
 			set
 			{
 				_selectedProgram = value;
 				OnPropertyChanged("SelectedProgram");
+			}
+		}
+
+		public ICommand RemoveProgramCommand { get { return new Command(_removeProgram); } }
+		private void _removeProgram(object parameter)
+		{
+			if ((SelectedProgram != null) && (SelectedProfile != null))
+			{
+				ConfirmationDialogViewModel ConfirmationBox = new ConfirmationDialogViewModel("Remove Program", "Are you sure you want to remove " + SelectedProgram.ProcessName + "?");
+				if (ConfirmationBox.DialogResult == 1)
+				{
+					Configuration.RemoveProgram(SelectedProfile, SelectedProgram.Id);
+					Programs = Configuration.Programs(SelectedProfile);
+					if (Programs.Count > 0)
+					{
+						SelectedProgram = Programs[0];
+					}
+				}
+			}
+		}
+
+		public ICommand CheckForUpdatesCommand { get { return new Command(_checkForUpdates); } }
+		private void _checkForUpdates(object parameter)
+		{
+			GithubUpdater Updater = new GithubUpdater();
+			Updater.CheckForUpdate(this, new DoWorkEventArgs(null));
+		}
+
+		public ICommand FindFileCommand { get { return new Command(_findFile); } }
+		private void _findFile(object parameter)
+		{
+			if(SelectedProgram != null)
+			{
+				Microsoft.Win32.OpenFileDialog fileSelector = new Microsoft.Win32.OpenFileDialog();
+				if(fileSelector.ShowDialog() == true && fileSelector.CheckFileExists)
+				{
+					SelectedProgram.StartPath = fileSelector.FileName;
+				}
 			}
 		}
 
