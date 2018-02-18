@@ -6,14 +6,20 @@
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="200" Width="450" WindowStartupLocation="Manual" WindowStyle="None">
+	<Window.Resources>
+		<BooleanToVisibilityConverter x:Key="BoolVis"/>
+	</Window.Resources>
 	<Grid FocusManager.FocusedElement="{Binding ElementName=MessageTextBox}">
 		<Grid.RowDefinitions>
 			<RowDefinition/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom">
-			<TextBlock Text="{Binding Message}" Margin="0,10" FontSize="20"/>
-			<TextBox x:Name="MessageTextBox" Width="400" Text="{Binding Value}" TabIndex="0"/>
+			<TextBlock Text="{Binding Message}" Margin="0,10" TextWrapping="Wrap" MaxWidth="400"/>
+			<StackPanel Orientation="Horizontal">
+				<TextBox x:Name="MessageTextBox" Width="300" Text="{Binding Value}" TabIndex="0"/>
+				<Button Content="{Binding ButtonText}" Visibility="{Binding Path=HasButton, Converter={StaticResource BoolVis}}" Command="{Binding ButtonCommand}"/>
+			</StackPanel>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
 			<Button Content="Save" Width="100" Height="25" Margin="50,10" Command="{Binding CloseCommand}" CommandParameter="1"/>

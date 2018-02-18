@@ -169,6 +169,7 @@ namespace WorkspaceLauncher.ViewModels
 				if(fileSelector.ShowDialog() == true && fileSelector.CheckFileExists)
 				{
 					SelectedProgram.StartPath = fileSelector.FileName;
+					OnPropertyChanged("SelectedProgram");
 				}
 			}
 		}

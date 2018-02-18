@@ -15,6 +15,7 @@ namespace WorkspaceLauncher.ViewModels
 	{
 		private string _selectedProfile;
 		private List<Process> _openWindows;
+		private WindowsProgram _selectedProgram;
 
 		public SelectProcessesViewModel(string SelectedProfile)
 		{
@@ -29,6 +30,16 @@ namespace WorkspaceLauncher.ViewModels
 		public List<WindowsProgram> ProfilePrograms { get { return Configuration.Programs(SelectedProfile); } }
 
 		public List<Process> SelectedProcesses { get; set; }
+
+		public WindowsProgram SelectedProgram
+		{
+			get { return _selectedProgram; }
+			set
+			{
+				_selectedProgram = value;
+				OnPropertyChanged("SelectedProgram");
+			}
+		}
 
 		public string SelectedProfile
 		{
@@ -73,12 +84,28 @@ namespace WorkspaceLauncher.ViewModels
 					WindowsProgram AddProgram = Configuration.AddProgram(SelectedProfile, AProc.ProcessName);
 					if (AddProgram != null)
 					{
-						AddProgram.StartPath = AProc.MainModule.FileName;
+						ReturnStringDialogViewModel StartPathPicker = new ReturnStringDialogViewModel("Pick start path", "Select a start path for this program", AProc.MainModule.FileName, true, "Find File");
+						if(StartPathPicker.DialogResult == 1)
+						{
+							AddProgram.StartPath = StartPathPicker.Value;
+						}
+						else
+						{
+							AddProgram.StartPath = AProc.MainModule.FileName;
+						}
 						AddProgram.WindowWidth = WindowController.GetWindowWidth(AProc);
 						AddProgram.WindowHeight = WindowController.GetWindowHeight(AProc);
 						AddProgram.XPos = WindowController.WindowXPosition(AProc);
 						AddProgram.YPos = WindowController.WindowYPosition(AProc);
 						AddProgram.WindowState = WindowController.GetWindowStatus(AProc);
+					}
+					if(AProc.ProcessName == "chrome")
+					{
+						ReturnStringDialogViewModel ArgumentSetter = new ReturnStringDialogViewModel("Chrome website", "Which website should be opened when chrome is launched?");
+						if(ArgumentSetter.DialogResult == 1)
+						{
+							AddProgram.Argument = ArgumentSetter.Value;
+						}
 					}
 				}
 				OnPropertyChanged("ProfilePrograms");
@@ -91,6 +118,16 @@ namespace WorkspaceLauncher.ViewModels
 			foreach (WindowsProgram Prog in Configuration.Programs(SelectedProfile))
 			{
 				Configuration.RemoveProgram(SelectedProfile, Prog.Id);
+			}
+			OnPropertyChanged("ProfilePrograms");
+		}
+
+		public ICommand RemoveSelectedProgramCommand { get { return new Command(_removeSelectedProgram); } }
+		private void _removeSelectedProgram(object parameter)
+		{
+			if(SelectedProgram != null)
+			{
+				Configuration.RemoveProgram(SelectedProfile, SelectedProgram.Id);
 			}
 			OnPropertyChanged("ProfilePrograms");
 		}

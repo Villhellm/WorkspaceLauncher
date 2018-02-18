@@ -35,8 +35,6 @@
 		<Menu Grid.Row="0" Grid.ColumnSpan="2">
 			<MenuItem Header="File">
 				<MenuItem Header="Add Profile" x:Name="AddProfile" Command="{Binding AddProfileCommand}"/>
-				<MenuItem Header="Rename Profile" x:Name="RenameProfile" Command="{Binding RenameProfileCommand}"/>
-				<MenuItem Header="Delete Profile" x:Name="DeleteProfile" Command="{Binding DeleteProfileCommand}"/>
 				<MenuItem Header="Settings" x:Name="Settings" Command="{Binding SettingsCommand}"/>
 			</MenuItem>
 		</Menu>

@@ -25,7 +25,13 @@
 				<TextBlock Text="Currently Saved" Margin="10,10,0,0"/>
 				<Button Content="Clear saved"  Command="{Binding ClearProcessesCommand}" Width="125" Margin="10,5"/>
 			</StackPanel>
-			<ListBox ItemsSource="{Binding ProfilePrograms}" DisplayMemberPath="ProcessName" Height="250" Margin="10,0,10,10"/>
+			<ListBox ItemsSource="{Binding ProfilePrograms}" DisplayMemberPath="ProcessName" SelectedItem="{Binding SelectedProgram}" Height="250" Margin="10,0,10,10">
+				<ListBox.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="Remove program" Command="{Binding RemoveSelectedProgramCommand}"/>
+					</ContextMenu>
+				</ListBox.ContextMenu>
+			</ListBox>
 		</StackPanel>
     </Grid>
 </Window>
