@@ -43,13 +43,13 @@ namespace WorkspaceLauncher
 			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
 			int VO2 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
 			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
-			int VO3 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
+			int VO3 = Convert.ToInt32(VersionOriginal.Substring(0));
 
 			int VC1 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
 			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
 			int VC2 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
 			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
-			int VC3 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
+			int VC3 = Convert.ToInt32(VersionToCheck.Substring(0));
 
 
 			if (VC1 > VO1)
