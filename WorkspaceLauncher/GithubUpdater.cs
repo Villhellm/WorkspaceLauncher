@@ -44,16 +44,13 @@ namespace WorkspaceLauncher
 			int VO2 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
 			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
 			int VO3 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
-			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
-			int VO4 = Convert.ToInt32(VersionOriginal);
 
 			int VC1 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
 			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
 			int VC2 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
 			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
 			int VC3 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
-			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
-			int VC4 = Convert.ToInt32(VersionToCheck);
+
 
 			if (VC1 > VO1)
 				return true;
@@ -65,11 +62,6 @@ namespace WorkspaceLauncher
 				{
 					if (VC3 > VO3)
 						return true;
-					else if (VC3 == VO3)
-					{
-						if (VC4 > VO4)
-							return true;
-					}
 				}
 			}
 
