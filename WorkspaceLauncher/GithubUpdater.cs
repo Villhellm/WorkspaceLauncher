@@ -87,12 +87,26 @@ namespace WorkspaceLauncher
 		{
 			if (Configuration.Version != "" && VersionCompare(Configuration.Version, LatestVersion))
 			{
-			 MessageBoxResult DR =	MessageBox.Show("Version " + LatestVersion + " is available, would you like to update ?\n \n" + "Changes: ", "Update", MessageBoxButton.YesNo);
+				MessageBoxResult DR = MessageBox.Show("Version " + LatestVersion + " is available, would you like to update ?\n \n" + "Changes: ", "Update", MessageBoxButton.YesNo);
 				if (DR == MessageBoxResult.Yes)
 				{
 					UpdateProgram();
 				}
 			}
+		}
+
+		public int LaunchUpdater()
+		{
+			if (Configuration.Version != "" && VersionCompare(Configuration.Version, LatestVersion))
+			{
+				MessageBoxResult DR = MessageBox.Show("Version " + LatestVersion + " is available, would you like to update ?\n \n" + "Changes: ", "Update", MessageBoxButton.YesNo);
+				if (DR == MessageBoxResult.Yes)
+				{
+					UpdateProgram();
+				}
+				return 1;
+			}
+			return 0;
 		}
 
 		public void DownloadInternetFile(string sourceURL, string destinationPath)

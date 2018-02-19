@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using WorkspaceLauncher.Models;
 using WorkspaceLauncher.Views;
@@ -39,6 +39,8 @@ namespace WorkspaceLauncher.ViewModels
 			GithubUpdater updater = new GithubUpdater();
 			updater.LaunchUpdaterAsync();
 		}
+
+		public Point ChildStartPosition { get { return new Point(_mainWindow.Left, _mainWindow.Top); } }
 
 		public List<string> Profiles
 		{
@@ -123,7 +125,7 @@ namespace WorkspaceLauncher.ViewModels
 		public ICommand SettingsCommand { get { return new Command(_settings); } }
 		private void _settings(object parameter)
 		{
-			SettingsViewModel SettingsVM = new SettingsViewModel();
+			SettingsViewModel SettingsVM = new SettingsViewModel(ChildStartPosition);
 			_mainWindow.Topmost = Configuration.AlwaysOnTop;
 		}
 

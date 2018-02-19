@@ -5,20 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="Settings" Height="400" Width="750" ResizeMode="NoResize" Background="#d4d4d4">
+        Title="Settings" Height="600" Width="400" ResizeMode="NoResize" Background="#d4d4d4">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
 			<ColumnDefinition/>
-			<ColumnDefinition Width="2*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="125"/>
+			<RowDefinition Height="225"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<StackPanel Grid.ColumnSpan="2">
 			<StackPanel Orientation="Horizontal" Margin="10">
-				<TextBlock Text="Version"/>
+				<TextBlock Text="Version: "/>
 				<TextBlock Text="{Binding Version}" Width="100"/>
 				<Button Content="Check for updates" Command="{Binding CheckForUpdatesCommand}"/>
 			</StackPanel>
@@ -45,7 +45,7 @@
 				</ListBox.ContextMenu>
 			</ListBox>
 		</StackPanel>
-		<StackPanel Grid.Row = "1" Grid.Column="2" HorizontalAlignment="Right" Margin="0,10">
+		<StackPanel Grid.Row = "3" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,10">
 			<StackPanel>
 				<TextBlock Text="Window State"/>
 				<ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding SelectedProgram.WindowState}"/>

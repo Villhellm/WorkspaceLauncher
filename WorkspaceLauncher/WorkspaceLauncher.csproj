@@ -85,6 +85,7 @@
     <Compile Include="ViewModels\ReturnStringDialogViewModel.cs" />
     <Compile Include="ViewModels\SelectProcessesViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\ToastViewModel.cs" />
     <Compile Include="Views\ConfirmationDialogView.xaml.cs">
       <DependentUpon>ConfirmationDialogView.xaml</DependentUpon>
     </Compile>
@@ -96,6 +97,9 @@
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ToastView.xaml.cs">
+      <DependentUpon>ToastView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowController.cs" />
     <Page Include="Views\ConfirmationDialogView.xaml">
@@ -128,6 +132,10 @@
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ToastView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -157,9 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Main.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace WorkspaceLauncher.ViewModels
 		private WindowsProgram _selectedProgram;
 		private List<WindowsProgram> _programs;
 
-		public SettingsViewModel()
+		public SettingsViewModel(Point StartPosition = new Point())
 		{
 			Profiles = Configuration.Profiles;
 			if (Profiles.Count > 0)
@@ -26,6 +27,11 @@ namespace WorkspaceLauncher.ViewModels
 			}
 
 			SettingsView SettingsDialog = new SettingsView();
+			if (StartPosition != new Point())
+			{
+				SettingsDialog.Top = StartPosition.Y-SettingsDialog.Height/3;
+				SettingsDialog.Left = StartPosition.X;
+			}
 			SettingsDialog.Topmost = Configuration.AlwaysOnTop;
 			SettingsDialog.DataContext = this;
 			SettingsDialog.ShowDialog();
@@ -140,16 +146,14 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if ((SelectedProgram != null) && (SelectedProfile != null))
 			{
-				ConfirmationDialogViewModel ConfirmationBox = new ConfirmationDialogViewModel("Remove Program", "Are you sure you want to remove " + SelectedProgram.ProcessName + "?");
-				if (ConfirmationBox.DialogResult == 1)
+
+				Configuration.RemoveProgram(SelectedProfile, SelectedProgram.Id);
+				Programs = Configuration.Programs(SelectedProfile);
+				if (Programs.Count > 0)
 				{
-					Configuration.RemoveProgram(SelectedProfile, SelectedProgram.Id);
-					Programs = Configuration.Programs(SelectedProfile);
-					if (Programs.Count > 0)
-					{
-						SelectedProgram = Programs[0];
-					}
+					SelectedProgram = Programs[0];
 				}
+
 			}
 		}
 
@@ -157,7 +161,10 @@ namespace WorkspaceLauncher.ViewModels
 		private void _checkForUpdates(object parameter)
 		{
 			GithubUpdater Updater = new GithubUpdater();
-			Updater.CheckForUpdate(this, new DoWorkEventArgs(null));
+			if(Updater.LaunchUpdater() == 0)
+			{
+				ToastViewModel.Show("No update available");
+			}
 		}
 
 		public ICommand FindFileCommand { get { return new Command(_findFile); } }
