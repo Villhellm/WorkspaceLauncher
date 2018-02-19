@@ -84,22 +84,14 @@ namespace WorkspaceLauncher.ViewModels
 					WindowsProgram AddProgram = Configuration.AddProgram(SelectedProfile, AProc.ProcessName);
 					if (AddProgram != null)
 					{
-						ReturnStringDialogViewModel StartPathPicker = new ReturnStringDialogViewModel("Pick start path", "Select a start path for this program", AProc.MainModule.FileName, true, "Find File");
-						if(StartPathPicker.DialogResult == 1)
-						{
-							AddProgram.StartPath = StartPathPicker.Value;
-						}
-						else
-						{
-							AddProgram.StartPath = AProc.MainModule.FileName;
-						}
+						AddProgram.StartPath = AProc.MainModule.FileName;
 						AddProgram.WindowWidth = WindowController.GetWindowWidth(AProc);
 						AddProgram.WindowHeight = WindowController.GetWindowHeight(AProc);
 						AddProgram.XPos = WindowController.WindowXPosition(AProc);
 						AddProgram.YPos = WindowController.WindowYPosition(AProc);
 						AddProgram.WindowState = WindowController.GetWindowStatus(AProc);
 					}
-					if(AProc.ProcessName == "chrome")
+					if (AProc.ProcessName == "chrome")
 					{
 						ReturnStringDialogViewModel ArgumentSetter = new ReturnStringDialogViewModel("Chrome website", "Which website should be opened when chrome is launched?");
 						if(ArgumentSetter.DialogResult == 1)

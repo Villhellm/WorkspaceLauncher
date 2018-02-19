@@ -144,6 +144,54 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
+		public ICommand DeleteProfileCommand { get { return new Command(_deleteProfile); } }
+		private void _deleteProfile(object parameter)
+		{
+			if ((SelectedProfile != null))
+			{
+
+				Configuration.DeleteProfile(SelectedProfile);
+				Profiles = Configuration.Profiles;
+				if (Profiles.Count > 0)
+				{
+					SelectedProfile = Profiles[0];
+				}
+
+			}
+		}
+
+		public ICommand RenameProfileCommand { get { return new Command(_renameProfile); } }
+		private void _renameProfile(object parameter)
+		{
+			if ((SelectedProfile != null))
+			{
+				ReturnStringDialogViewModel renamer = new ReturnStringDialogViewModel("Rename Profile", "Please choose a new name for profile: " + SelectedProfile);
+				if(renamer.DialogResult == 1)
+				{
+					Configuration.RenameProfile(SelectedProfile, renamer.Value);
+					Profiles = Configuration.Profiles;
+					if (Profiles.Count > 0)
+					{
+						SelectedProfile = renamer.Value;
+					}
+				}
+			}
+		}
+
+		public ICommand AddProgramsCommand { get { return new Command(_addPrograms); } }
+		private void _addPrograms(object parameter)
+		{
+			if ((SelectedProfile != null))
+			{
+				SelectProcessesViewModel SelectNew = new SelectProcessesViewModel(SelectedProfile);
+				Programs = Configuration.Programs(SelectedProfile);
+				if (Programs.Count > 0)
+				{
+					SelectedProgram = Programs[0];
+				}
+			}
+		}
+
 		public ICommand RemoveProgramCommand { get { return new Command(_removeProgram); } }
 		private void _removeProgram(object parameter)
 		{

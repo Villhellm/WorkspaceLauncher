@@ -125,7 +125,35 @@ namespace WorkspaceLauncher.ViewModels
 		public ICommand SettingsCommand { get { return new Command(_settings); } }
 		private void _settings(object parameter)
 		{
+			string PreviousSelected = string.Empty;
+
+			if (SelectedProfile != null)
+			{
+				PreviousSelected = SelectedProfile;
+			}
 			SettingsViewModel SettingsVM = new SettingsViewModel(ChildStartPosition);
+			Profiles = Configuration.Profiles;
+			if (PreviousSelected != string.Empty)
+			{
+				if (Profiles.Contains(PreviousSelected))
+				{
+					SelectedProfile = PreviousSelected;
+				}
+				else
+				{
+					if (Profiles.Count > 0)
+					{
+						SelectedProfile = Profiles[0];
+					}
+				}
+			}
+			else
+			{
+				if(Profiles.Count > 0)
+				{
+					SelectedProfile = Profiles[0];
+				}
+			}
 			_mainWindow.Topmost = Configuration.AlwaysOnTop;
 		}
 
