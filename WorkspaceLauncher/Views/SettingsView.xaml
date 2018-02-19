@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="Settings" Height="600" Width="400" ResizeMode="NoResize" Background="#d4d4d4">
+        Title="Settings" Height="600" Width="400" ResizeMode="NoResize" Background="#d4d4d4" WindowStartupLocation="CenterScreen">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>

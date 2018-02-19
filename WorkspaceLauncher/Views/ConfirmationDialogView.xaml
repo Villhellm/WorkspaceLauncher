@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="150" Width="300" WindowStyle="None" WindowStartupLocation="CenterScreen">
+        Title="{Binding Title}" Height="150" Width="300" WindowStyle="None" WindowStartupLocation="CenterScreen"  Background="#d4d4d4">
 	<Grid FocusManager.FocusedElement="{Binding ElementName=Confirm}">
 		<Grid.RowDefinitions>
 			<RowDefinition/>

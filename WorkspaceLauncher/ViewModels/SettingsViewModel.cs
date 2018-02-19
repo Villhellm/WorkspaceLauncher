@@ -18,7 +18,7 @@ namespace WorkspaceLauncher.ViewModels
 		private WindowsProgram _selectedProgram;
 		private List<WindowsProgram> _programs;
 
-		public SettingsViewModel(Point StartPosition = new Point())
+		public SettingsViewModel()
 		{
 			Profiles = Configuration.Profiles;
 			if (Profiles.Count > 0)
@@ -27,11 +27,6 @@ namespace WorkspaceLauncher.ViewModels
 			}
 
 			SettingsView SettingsDialog = new SettingsView();
-			if (StartPosition != new Point())
-			{
-				SettingsDialog.Top = StartPosition.Y-SettingsDialog.Height/3;
-				SettingsDialog.Left = StartPosition.X;
-			}
 			SettingsDialog.Topmost = Configuration.AlwaysOnTop;
 			SettingsDialog.DataContext = this;
 			SettingsDialog.ShowDialog();

@@ -35,13 +35,5 @@ namespace WorkspaceLauncher.Views
 				Current.SelectedProcesses.Add((Process)item);
 			}
 		}
-
-		protected override void OnRender(DrawingContext drawingContext)
-		{
-			base.OnRender(drawingContext);
-			var point = System.Windows.Forms.Control.MousePosition;
-			Left = point.X - Width / 2;
-			Top = point.Y - Height / 2;
-		}
 	}
 }

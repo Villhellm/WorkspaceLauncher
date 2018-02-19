@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="200" Width="450" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        Title="{Binding Title}" Height="200" Width="450" WindowStartupLocation="CenterScreen" WindowStyle="None"  Background="#d4d4d4">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BoolVis"/>
 	</Window.Resources>

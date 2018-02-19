@@ -40,8 +40,6 @@ namespace WorkspaceLauncher.ViewModels
 			updater.LaunchUpdaterAsync();
 		}
 
-		public Point ChildStartPosition { get { return new Point(_mainWindow.Left, _mainWindow.Top); } }
-
 		public List<string> Profiles
 		{
 			get { return _profiles; }
@@ -131,7 +129,7 @@ namespace WorkspaceLauncher.ViewModels
 			{
 				PreviousSelected = SelectedProfile;
 			}
-			SettingsViewModel SettingsVM = new SettingsViewModel(ChildStartPosition);
+			SettingsViewModel SettingsVM = new SettingsViewModel();
 			Profiles = Configuration.Profiles;
 			if (PreviousSelected != string.Empty)
 			{
