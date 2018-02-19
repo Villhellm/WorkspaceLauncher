@@ -5,22 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="Workspace Launcher" Height="250" Width="400" WindowStartupLocation="CenterScreen"  Background="#FF8E8D9C">
+        Title="Workspace Launcher" Height="250" Width="400" WindowStartupLocation="CenterScreen">
 	<Window.Resources>
 		<ResourceDictionary>
-			<Style TargetType="Button">
-				<Setter Property="Margin" Value="5,0,5,10"/>
-			</Style>
-			<Style TargetType="ListBox">
-				<Setter Property="Margin" Value="10,0,0,10"/>
-			</Style>
-			<Style TargetType="TextBlock">
-				<Setter Property="Margin" Value="10,0,0,0"/>
-				<Setter Property="Height" Value="20"/>
-			</Style>
-			<Style TargetType="StackPanel">
-				<Setter Property="VerticalAlignment" Value="Center"/>
-			</Style>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="StyleMerger.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
 	<Grid>
@@ -53,7 +43,7 @@
 				</ListBox.ContextMenu>
 			</ListBox>
 		</Grid>
-		<StackPanel Grid.Row="1" Grid.Column="1">
+		<StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
 			<Button x:Name="SetPrograms" Content="Set Programs" Command="{Binding SetProgramsCommand}"/>
 			<Button x:Name="Launch" Content="Launch" Command="{Binding LaunchCommand}"/>
 			<Button x:Name="Move" Content="Move" Command="{Binding MoveCommand}"/>

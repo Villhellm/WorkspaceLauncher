@@ -5,7 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="Settings" Height="600" Width="400" ResizeMode="NoResize" Background="#FF8E8D9C" WindowStartupLocation="CenterScreen">
+        Title="Settings" Height="600" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="StyleMerger.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
@@ -18,8 +25,8 @@
 		</Grid.RowDefinitions>
 		<StackPanel Grid.ColumnSpan="2">
 			<StackPanel Orientation="Horizontal" Margin="10">
-				<TextBlock Text="Version: "/>
-				<TextBlock Text="{Binding Version}" Width="100"/>
+				<TextBlock Text="Version: " Margin="0"/>
+				<TextBlock Text="{Binding Version}" Width="100" Margin="0"/>
 				<Button Content="Check for updates" Command="{Binding CheckForUpdatesCommand}"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">

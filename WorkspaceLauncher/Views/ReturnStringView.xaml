@@ -5,9 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="200" Width="450" WindowStartupLocation="CenterScreen" WindowStyle="None"  Background="#FF8E8D9C">
+        Title="{Binding Title}" Height="200" Width="450" WindowStartupLocation="CenterScreen" WindowStyle="None">
+
 	<Window.Resources>
-		<BooleanToVisibilityConverter x:Key="BoolVis"/>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="StyleMerger.xaml"/>
+				<ResourceDictionary>
+					<BooleanToVisibilityConverter x:Key="BoolVis"/>
+				</ResourceDictionary>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
 	</Window.Resources>
 	<Grid FocusManager.FocusedElement="{Binding ElementName=MessageTextBox}">
 		<Grid.RowDefinitions>
