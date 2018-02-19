@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,14 +24,6 @@ namespace WorkspaceLauncher.Views
         public ReturnStringView()
         {
             InitializeComponent();
-		}
-
-		protected override void OnRender(DrawingContext drawingContext)
-		{
-			base.OnRender(drawingContext);
-			var point = System.Windows.Forms.Control.MousePosition;
-			Left = point.X - Width/2;
-			Top = point.Y - Height/2;
 		}
 	}
 }

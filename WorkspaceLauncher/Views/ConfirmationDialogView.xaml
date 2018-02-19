@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="150" Width="300" WindowStyle="None">
-    <Grid>
+        Title="{Binding Title}" Height="150" Width="300" WindowStyle="None" WindowStartupLocation="CenterScreen">
+	<Grid FocusManager.FocusedElement="{Binding ElementName=Confirm}">
 		<Grid.RowDefinitions>
 			<RowDefinition/>
 			<RowDefinition/>
@@ -15,8 +15,8 @@
 			<TextBlock Text="{Binding Message}"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
-			<Button Content="Yes" Width="75" Height="20" Margin="10" Command="{Binding CloseCommand}" CommandParameter="1"/>
-			<Button Content="No" Width="75" Height="20" Margin="10"  Command="{Binding CloseCommand}" CommandParameter="0"/>
+			<Button x:Name="Confirm" Content="Yes" Width="75" Height="20" Margin="10" Command="{Binding CloseCommand}" CommandParameter="1"/>
+			<Button x:Name="Cancel" Content="No" Width="75" Height="20" Margin="10"  Command="{Binding CloseCommand}" CommandParameter="0"/>
 		</StackPanel>
 	</Grid>
 </Window>
