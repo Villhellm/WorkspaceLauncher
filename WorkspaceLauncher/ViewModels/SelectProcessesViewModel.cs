@@ -19,6 +19,7 @@ namespace WorkspaceLauncher.ViewModels
 
 		public SelectProcessesViewModel(string SelectedProfile)
 		{
+			SelectedProcesses = new List<Process>();
 			this.SelectedProfile = SelectedProfile;
 			_refreshOpenWindows(null);
 			SelectProcessesView NewDialog = new SelectProcessesView();
