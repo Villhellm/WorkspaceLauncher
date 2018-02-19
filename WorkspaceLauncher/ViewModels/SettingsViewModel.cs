@@ -39,6 +39,8 @@ namespace WorkspaceLauncher.ViewModels
 
 		public string Version { get { return Configuration.Version; } }
 
+		public bool ProgramSelected { get { return SelectedProgram != null; } }
+
 		public Dictionary<int, string> WindowStateList
 		{
 			get
@@ -138,6 +140,7 @@ namespace WorkspaceLauncher.ViewModels
 			{
 				_selectedProgram = value;
 				OnPropertyChanged("SelectedProgram");
+				OnPropertyChanged("ProgramSelected");
 			}
 		}
 

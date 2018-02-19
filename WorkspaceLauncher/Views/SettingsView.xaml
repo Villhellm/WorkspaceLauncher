@@ -48,31 +48,31 @@
 		<StackPanel Grid.Row = "3" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,10">
 			<StackPanel>
 				<TextBlock Text="Window State"/>
-				<ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding SelectedProgram.WindowState}"/>
+				<ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding SelectedProgram.WindowState}" IsEnabled="{Binding ProgramSelected}"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<StackPanel>
 					<TextBlock Text="Window Width" Width="85"/>
-					<TextBox Width="75" Text="{Binding SelectedProgram.WindowWidth}"/>
+					<TextBox Width="75" Text="{Binding SelectedProgram.WindowWidth}" IsEnabled="{Binding ProgramSelected}"/>
 					<TextBlock Text="X Position" Width="55"/>
-					<TextBox Width="75" Text="{Binding SelectedProgram.XPos}"/>
+					<TextBox Width="75" Text="{Binding SelectedProgram.XPos}" IsEnabled="{Binding ProgramSelected}"/>
 				</StackPanel>
 				<StackPanel Margin="5,0">
 					<TextBlock Text="Window Height" Width="85"/>
-					<TextBox Width="75" Text="{Binding SelectedProgram.WindowHeight}"/>
+					<TextBox Width="75" Text="{Binding SelectedProgram.WindowHeight}" IsEnabled="{Binding ProgramSelected}"/>
 					<TextBlock Text="Y Position" Width="55"/>
-					<TextBox Width="75" Text="{Binding SelectedProgram.YPos}"/>
+					<TextBox Width="75" Text="{Binding SelectedProgram.YPos}" IsEnabled="{Binding ProgramSelected}"/>
 				</StackPanel>
 			</StackPanel>
 			
 			<StackPanel Margin="5,0">
 				<TextBlock Text="Launch Path"/>
 				<StackPanel Orientation="Horizontal">
-					<TextBox Width="300" Text="{Binding SelectedProgram.StartPath}"/>
-					<Button Content="Find File" VerticalAlignment="Top" Margin="10,0" Command="{Binding FindFileCommand}"/>
+					<TextBox Width="300" Text="{Binding SelectedProgram.StartPath}" IsEnabled="{Binding ProgramSelected}"/>
+					<Button Content="Find File" VerticalAlignment="Top" Margin="10,0" Command="{Binding FindFileCommand}" IsEnabled="{Binding ProgramSelected}"/>
 				</StackPanel>
 				<TextBlock Text="Start Arguments"/>
-				<TextBox Width="300" Text="{Binding SelectedProgram.Argument}" HorizontalAlignment="Left"/>
+				<TextBox Width="300" Text="{Binding SelectedProgram.Argument}" HorizontalAlignment="Left" IsEnabled="{Binding ProgramSelected}"/>
 			</StackPanel>
 		</StackPanel>
 	</Grid>
