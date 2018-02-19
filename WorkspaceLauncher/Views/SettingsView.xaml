@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkspaceLauncher.Views"
         mc:Ignorable="d"
-        Title="Settings" Height="600" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Settings" Height="625" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -26,8 +26,8 @@
 		<StackPanel Grid.ColumnSpan="2">
 			<StackPanel Orientation="Horizontal" Margin="10">
 				<TextBlock Text="Version: " Margin="0"/>
-				<TextBlock Text="{Binding Version}" Width="100" Margin="0"/>
-				<Button Content="Check for updates" Command="{Binding CheckForUpdatesCommand}"/>
+				<TextBlock Text="{Binding Version}" Width="75" Margin="0"/>
+				<Button Content="Check for updates" Command="{Binding CheckForUpdatesCommand}" Margin="0"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<CheckBox Content="Check for updates" IsChecked="{Binding CheckForUpdates}" Margin="10,5"/>
@@ -60,34 +60,40 @@
 				</ListBox.ContextMenu>
 			</ListBox>
 		</StackPanel>
-		<StackPanel Grid.Row = "3" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,10">
+		<StackPanel Grid.Row = "3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
 			<StackPanel>
 				<TextBlock Text="Window State"/>
-				<ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding SelectedProgram.WindowState}" IsEnabled="{Binding ProgramSelected}"/>
+				<ComboBox Width="100" Margin="10,0,0,0" HorizontalAlignment="Left" ItemsSource="{Binding WindowStateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding SelectedProgram.WindowState}" IsEnabled="{Binding ProgramSelected}"/>
 			</StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<StackPanel>
-					<TextBlock Text="Window Width" Width="85"/>
-					<TextBox Width="75" Text="{Binding SelectedProgram.WindowWidth}" IsEnabled="{Binding ProgramSelected}"/>
-					<TextBlock Text="X Position" Width="55"/>
-					<TextBox Width="75" Text="{Binding SelectedProgram.XPos}" IsEnabled="{Binding ProgramSelected}"/>
-				</StackPanel>
-				<StackPanel Margin="5,0">
-					<TextBlock Text="Window Height" Width="85"/>
-					<TextBox Width="75" Text="{Binding SelectedProgram.WindowHeight}" IsEnabled="{Binding ProgramSelected}"/>
-					<TextBlock Text="Y Position" Width="55"/>
-					<TextBox Width="75" Text="{Binding SelectedProgram.YPos}" IsEnabled="{Binding ProgramSelected}"/>
-				</StackPanel>
-			</StackPanel>
-			
-			<StackPanel Margin="5,0">
-				<TextBlock Text="Launch Path"/>
+			<Grid Width="200" HorizontalAlignment="Left" Margin="0,10">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Row="0" Text="Window Width" Width="85" Margin="0"/>
+				<TextBox Grid.Row="1" Width="75" Text="{Binding SelectedProgram.WindowWidth}" IsEnabled="{Binding ProgramSelected}"/>
+				<TextBlock Grid.Row="2" Text="X Position" Width="55" Margin="0"/>
+				<TextBox Grid.Row="3" Grid.Column="0" Width="75" Text="{Binding SelectedProgram.XPos}" IsEnabled="{Binding ProgramSelected}"/>
+				<TextBlock Grid.Row="0" Grid.Column="1" Text="Window Height" Width="85" Margin="0"/>
+				<TextBox Grid.Row="1" Grid.Column="1" Width="75" Text="{Binding SelectedProgram.WindowHeight}" IsEnabled="{Binding ProgramSelected}"/>
+				<TextBlock Grid.Row="2" Grid.Column="1" Text="Y Position" Width="55" Margin="0"/>
+				<TextBox Grid.Row="3" Grid.Column="1" Width="75" Text="{Binding SelectedProgram.YPos}" IsEnabled="{Binding ProgramSelected}"/>
+			</Grid>
+
+			<StackPanel>
 				<StackPanel Orientation="Horizontal">
-					<TextBox Width="300" Text="{Binding SelectedProgram.StartPath}" IsEnabled="{Binding ProgramSelected}"/>
-					<Button Content="Find File" VerticalAlignment="Top" Margin="10,0" Command="{Binding FindFileCommand}" IsEnabled="{Binding ProgramSelected}"/>
+					<TextBlock Text="Launch Path" VerticalAlignment="Bottom"/>
+					<Button Content="Find File" VerticalAlignment="Top" Command="{Binding FindFileCommand}" IsEnabled="{Binding ProgramSelected}" Margin="10,5"/>
 				</StackPanel>
+				<TextBox Width="350" Text="{Binding SelectedProgram.StartPath}" IsEnabled="{Binding ProgramSelected}" Margin="10,0,0,0"/>
 				<TextBlock Text="Start Arguments"/>
-				<TextBox Width="300" Text="{Binding SelectedProgram.Argument}" HorizontalAlignment="Left" IsEnabled="{Binding ProgramSelected}"/>
+				<TextBox Width="350" Text="{Binding SelectedProgram.Argument}" HorizontalAlignment="Left" IsEnabled="{Binding ProgramSelected}" Margin="10,0,0,0"/>
 			</StackPanel>
 		</StackPanel>
 	</Grid>

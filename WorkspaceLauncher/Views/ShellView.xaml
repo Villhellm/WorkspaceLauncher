@@ -28,7 +28,7 @@
 				<MenuItem Header="Settings" x:Name="Settings" Command="{Binding SettingsCommand}"/>
 			</MenuItem>
 		</Menu>
-		<Grid Grid.Row="1">
+		<Grid Grid.Row="1" Margin="5">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
 				<RowDefinition/>
