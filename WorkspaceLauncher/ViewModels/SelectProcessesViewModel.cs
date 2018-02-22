@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using WorkspaceLauncher.Models;
 using WorkspaceLauncher.Views;
 
@@ -62,7 +61,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand RefreshOpenWindowsCommand { get { return new Command(_refreshOpenWindows); } }
+		public Command RefreshOpenWindowsCommand { get { return new Command(_refreshOpenWindows); } }
 		private void _refreshOpenWindows(object parameter)
 		{
 			OpenWindows = new List<Process>();
@@ -75,7 +74,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand SaveProcessesCommand { get { return new Command(_saveProcesses); } }
+		public Command SaveProcessesCommand { get { return new Command(_saveProcesses); } }
 		private void _saveProcesses(object parameter)
 		{
 			if(SelectedProcesses.Count > 0)
@@ -105,7 +104,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand ClearProcessesCommand { get { return new Command(_clearProcesses); } }
+		public Command ClearProcessesCommand { get { return new Command(_clearProcesses); } }
 		private void _clearProcesses(object parameter)
 		{
 			foreach (WindowsProgram Prog in Configuration.Programs(SelectedProfile))
@@ -115,7 +114,7 @@ namespace WorkspaceLauncher.ViewModels
 			OnPropertyChanged("ProfilePrograms");
 		}
 
-		public ICommand RemoveSelectedProgramCommand { get { return new Command(_removeSelectedProgram); } }
+		public Command RemoveSelectedProgramCommand { get { return new Command(_removeSelectedProgram); } }
 		private void _removeSelectedProgram(object parameter)
 		{
 			if(SelectedProgram != null)

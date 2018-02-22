@@ -5,7 +5,6 @@ using System.Windows;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using WorkspaceLauncher.Models;
 using WorkspaceLauncher.Views;
 
@@ -139,7 +138,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand DeleteProfileCommand { get { return new Command(_deleteProfile); } }
+		public Command DeleteProfileCommand { get { return new Command(_deleteProfile); } }
 		private void _deleteProfile(object parameter)
 		{
 			if ((SelectedProfile != null))
@@ -155,7 +154,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand RenameProfileCommand { get { return new Command(_renameProfile); } }
+		public Command RenameProfileCommand { get { return new Command(_renameProfile); } }
 		private void _renameProfile(object parameter)
 		{
 			if ((SelectedProfile != null))
@@ -173,7 +172,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand AddProgramsCommand { get { return new Command(_addPrograms); } }
+		public Command AddProgramsCommand { get { return new Command(_addPrograms); } }
 		private void _addPrograms(object parameter)
 		{
 			if ((SelectedProfile != null))
@@ -187,7 +186,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand RemoveProgramCommand { get { return new Command(_removeProgram); } }
+		public Command RemoveProgramCommand { get { return new Command(_removeProgram); } }
 		private void _removeProgram(object parameter)
 		{
 			if ((SelectedProgram != null) && (SelectedProfile != null))
@@ -203,7 +202,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand CheckForUpdatesCommand { get { return new Command(_checkForUpdates); } }
+		public Command CheckForUpdatesCommand { get { return new Command(_checkForUpdates); } }
 		private void _checkForUpdates(object parameter)
 		{
 			GithubUpdater Updater = new GithubUpdater();
@@ -213,7 +212,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand FindFileCommand { get { return new Command(_findFile); } }
+		public Command FindFileCommand { get { return new Command(_findFile); } }
 		private void _findFile(object parameter)
 		{
 			if(SelectedProgram != null)

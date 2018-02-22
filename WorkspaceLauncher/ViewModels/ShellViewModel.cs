@@ -61,7 +61,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand SetProgramsCommand { get { return new Command(_setPrograms); } }
+		public Command SetProgramsCommand { get { return new Command(_setPrograms); } }
 		private void _setPrograms(object parameter)
 		{
 			if (SelectedProfile != null)
@@ -73,7 +73,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand AddProfileCommand { get { return new Command(_addProfile); } }
+		public Command AddProfileCommand { get { return new Command(_addProfile); } }
 		private void _addProfile(object parameter)
 		{
 			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Add new profile","Please chooose a unique name for your new profile");
@@ -85,7 +85,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand RenameProfileCommand { get { return new Command(_renameProfile); } }
+		public Command RenameProfileCommand { get { return new Command(_renameProfile); } }
 		private void _renameProfile(object parameter)
 		{
 			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Rename profile", "Please chooose a new name for profile: " + SelectedProfile);
@@ -97,7 +97,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand DeleteProfileCommand { get { return new Command(_deleteProfile); } }
+		public Command DeleteProfileCommand { get { return new Command(_deleteProfile); } }
 		private void _deleteProfile(object parameter)
 		{
 			if (SelectedProfile != null)
@@ -111,7 +111,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand LaunchCommand { get { return new Command(Launch); } }
+		public Command LaunchCommand { get { return new Command(Launch); } }
 		private void Launch(object parameter)
 		{
 			if (SelectedProfile != null)
@@ -120,7 +120,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand SettingsCommand { get { return new Command(_settings); } }
+		public Command SettingsCommand { get { return new Command(_settings); } }
 		private void _settings(object parameter)
 		{
 			string PreviousSelected = string.Empty;
@@ -155,7 +155,7 @@ namespace WorkspaceLauncher.ViewModels
 			_mainWindow.Topmost = Configuration.AlwaysOnTop;
 		}
 
-		public ICommand LaunchMoveCommand { get { return new Command(_launchAndMove); } }
+		public Command LaunchMoveCommand { get { return new Command(_launchAndMove); } }
 		private void _launchAndMove(object parameter)
 		{
 			if (SelectedProfile != null)
@@ -164,7 +164,7 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public ICommand MoveCommand { get { return new Command(_move); } }
+		public Command MoveCommand { get { return new Command(_move); } }
 		private void _move(object parameter)
 		{
 			if (SelectedProfile != null)

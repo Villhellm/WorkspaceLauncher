@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using WorkspaceLauncher.Views;
 
 namespace WorkspaceLauncher.ViewModels
@@ -32,7 +31,7 @@ namespace WorkspaceLauncher.ViewModels
 
 		public string Title { get { return _title; } }
 
-		public ICommand CloseCommand { get { return new Command(_close); } }
+		public Command CloseCommand { get { return new Command(_close); } }
 		private void _close(object parameter)
 		{
 			_dialogResult = Convert.ToInt32(parameter);

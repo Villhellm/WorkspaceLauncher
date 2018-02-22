@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using WorkspaceLauncher.Views;
 
 namespace WorkspaceLauncher.ViewModels
@@ -51,7 +50,7 @@ namespace WorkspaceLauncher.ViewModels
 
 		public bool HasButton { get { return _hasButton; } }
 
-		public ICommand ButtonCommand { get { return new Command(_button); } }
+		public Command ButtonCommand { get { return new Command(_button); } }
 		private void _button(object parameter)
 		{
 			Microsoft.Win32.OpenFileDialog fileSelector = new Microsoft.Win32.OpenFileDialog();
@@ -62,7 +61,7 @@ namespace WorkspaceLauncher.ViewModels
 
 		}
 
-		public ICommand CloseCommand { get { return new Command(_close); } }
+		public Command CloseCommand { get { return new Command(_close); } }
 		private void _close(object parameter)
 		{
 			_dialogResult = Convert.ToInt32(parameter);
