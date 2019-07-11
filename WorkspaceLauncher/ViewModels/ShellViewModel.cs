@@ -9,79 +9,80 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using WorkspaceLauncher.Models;
 using WorkspaceLauncher.Views;
-
+using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 
 namespace WorkspaceLauncher.ViewModels
 {
 	public class ShellViewModel : INotifyPropertyChanged
 	{
-		private List<string> _profiles;
-		private string _selectedProfile;
+		public ObservableCollection<Profile> Profiles
+		{
+			get
+			{
+				return new ObservableCollection<Profile>(Configuration.Instance.Profiles);
+			}
+		}
+
+		private Profile _selectedProfile;
 		private ShellView _mainWindow;
 
 		public ShellViewModel()
 		{
-			Configuration.CreateAndVerifyConfigurationFile();
-			Profiles = Configuration.Profiles;
-			if (Profiles.Count > 0)
-			{
-				SelectedProfile = Profiles[0];
-			}
+			SelectedProfile = null;
 			_mainWindow = new ShellView();
-			_mainWindow.Topmost = Configuration.AlwaysOnTop;
+			_mainWindow.Topmost = Configuration.Instance.AlwaysOnTop;
 			_mainWindow.DataContext = this;
 			_mainWindow.Show();
-			if (Configuration.LaunchProfile != "None")
+			if (Configuration.Instance.LaunchProfileId != 0)
 			{
-				SelectedProfile = Configuration.LaunchProfile;
+				SelectedProfile = Configuration.Instance.ProfileById(Configuration.Instance.LaunchProfileId);
 				_launchAndMove(null);
 			}
 			GithubUpdater updater = new GithubUpdater();
 			updater.LaunchUpdaterAsync();
 		}
 
-		public List<string> Profiles
-		{
-			get { return _profiles; }
-			set
-			{
-				_profiles = value;
-				OnPropertyChanged("Profiles");
-			}
-		}
-
-		public string SelectedProfile
+		public Profile SelectedProfile
 		{
 			get { return _selectedProfile; }
 			set
 			{
 				_selectedProfile = value;
-				Configuration.LastOpenProfile = value;
+				if (value != null)
+				{
+					Configuration.Instance.LastOpenProfileId = value.Id;
+
+				}
 				OnPropertyChanged("SelectedProfile");
 			}
 		}
 
 		public Command SetProgramsCommand { get { return new Command(_setPrograms); } }
+
 		private void _setPrograms(object parameter)
 		{
 			if (SelectedProfile != null)
 			{
-				int OldSelected = Profiles.IndexOf(SelectedProfile);
-				SelectProcessesViewModel SelectProcessesDialog = new SelectProcessesViewModel(SelectedProfile);
-				Profiles = Configuration.Profiles;
-				SelectedProfile = Profiles[OldSelected];
+				SelectProcessesViewModel SelectProcessesDialog = new SelectProcessesViewModel(SelectedProfile.Id);
 			}
 		}
 
 		public Command AddProfileCommand { get { return new Command(_addProfile); } }
 		private void _addProfile(object parameter)
 		{
-			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Add new profile","Please chooose a unique name for your new profile");
-			if(ProfileNamer.DialogResult == 1)
+			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Add new profile", "Please chooose a unique name for your new profile");
+			if (ProfileNamer.DialogResult == 1)
 			{
-				Configuration.AddProfile(ProfileNamer.Value);
-				Profiles = Configuration.Profiles;
-				SelectedProfile = ProfileNamer.Value;
+				int id = Profile.NextId();
+				if(Configuration.Instance.Profiles == null)
+				{
+					Configuration.Instance.Profiles = new List<Profile>();
+				}
+				Configuration.Instance.Profiles.Add(new Profile() { Id = id, Name = ProfileNamer.Value, Programs = new List<WindowsProgram>() });
+				Configuration.Save();
+				OnPropertyChanged("Profiles");
+				SelectedProfile = Configuration.Instance.ProfileById(id);
 			}
 		}
 
@@ -91,9 +92,7 @@ namespace WorkspaceLauncher.ViewModels
 			ReturnStringDialogViewModel ProfileNamer = new ReturnStringDialogViewModel("Rename profile", "Please chooose a new name for profile: " + SelectedProfile);
 			if (ProfileNamer.DialogResult == 1)
 			{
-				Configuration.RenameProfile(SelectedProfile, ProfileNamer.Value);
-				Profiles = Configuration.Profiles;
-				SelectedProfile = Profiles[0];
+				SelectedProfile.Name = ProfileNamer.Value;
 			}
 		}
 
@@ -103,10 +102,11 @@ namespace WorkspaceLauncher.ViewModels
 			if (SelectedProfile != null)
 			{
 				ConfirmationDialogViewModel ConfirmationBox = new ConfirmationDialogViewModel("Delete Profile", "Are you sure you want to delete " + SelectedProfile + "?");
-				if(ConfirmationBox.DialogResult == 1)
+				if (ConfirmationBox.DialogResult == 1)
 				{
-					Configuration.DeleteProfile(SelectedProfile);
-					Profiles = Configuration.Profiles;
+					Configuration.Instance.Profiles.Remove(SelectedProfile);
+					OnPropertyChanged("Profiles");
+					Configuration.Save();
 				}
 			}
 		}
@@ -116,43 +116,16 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if (SelectedProfile != null)
 			{
-				WindowController.LaunchAll(Configuration.Programs(SelectedProfile));
+				WindowController.LaunchAll(SelectedProfile.Programs);
 			}
 		}
 
 		public Command SettingsCommand { get { return new Command(_settings); } }
 		private void _settings(object parameter)
 		{
-			string PreviousSelected = string.Empty;
-
-			if (SelectedProfile != null)
-			{
-				PreviousSelected = SelectedProfile;
-			}
 			SettingsViewModel SettingsVM = new SettingsViewModel();
-			Profiles = Configuration.Profiles;
-			if (PreviousSelected != string.Empty)
-			{
-				if (Profiles.Contains(PreviousSelected))
-				{
-					SelectedProfile = PreviousSelected;
-				}
-				else
-				{
-					if (Profiles.Count > 0)
-					{
-						SelectedProfile = Profiles[0];
-					}
-				}
-			}
-			else
-			{
-				if(Profiles.Count > 0)
-				{
-					SelectedProfile = Profiles[0];
-				}
-			}
-			_mainWindow.Topmost = Configuration.AlwaysOnTop;
+			SelectedProfile = null;
+			_mainWindow.Topmost = Configuration.Instance.AlwaysOnTop;
 		}
 
 		public Command LaunchMoveCommand { get { return new Command(_launchAndMove); } }
@@ -160,7 +133,7 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if (SelectedProfile != null)
 			{
-				WindowController.LaunchAndPositionAll(Configuration.Programs(SelectedProfile));
+				WindowController.LaunchAndPositionAll(SelectedProfile.Programs);
 			}
 		}
 
@@ -169,17 +142,17 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if (SelectedProfile != null)
 			{
-				WindowController.PositionAll(Configuration.Programs(SelectedProfile));
+				WindowController.PositionAll(SelectedProfile.Programs);
 			}
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private void OnPropertyChanged(string Property)
+		private void OnPropertyChanged([CallerMemberName] String propertyName = "")
 		{
 			if (PropertyChanged != null)
 			{
-				PropertyChanged.Invoke(this, new PropertyChangedEventArgs(Property));
+				PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}

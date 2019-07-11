@@ -23,10 +23,7 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<Menu Grid.Row="0" Grid.ColumnSpan="2">
-			<MenuItem Header="File">
-				<MenuItem Header="Add Profile" x:Name="AddProfile" Command="{Binding AddProfileCommand}"/>
-				<MenuItem Header="Settings" x:Name="Settings" Command="{Binding SettingsCommand}"/>
-			</MenuItem>
+			<MenuItem Header="Settings" Command="{Binding SettingsCommand}"></MenuItem>
 		</Menu>
 		<Grid Grid.Row="1" Margin="5">
 			<Grid.RowDefinitions>
@@ -34,11 +31,12 @@
 				<RowDefinition/>
 			</Grid.RowDefinitions>
 			<TextBlock Text="Profiles"/>
-			<ListBox Grid.Row="1" x:Name="ProfileList" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}">
+			<ListBox Grid.Row="1" x:Name="ProfileList" ItemsSource="{Binding Profiles}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedProfile}">
 				<ListBox.ContextMenu>
 					<ContextMenu>
-						<MenuItem Header="Delete profile" Command="{Binding DeleteProfileCommand}"/>
+						<MenuItem Header="Add profile" Command="{Binding AddProfileCommand}"/>
 						<MenuItem Header="Rename profile" Command="{Binding RenameProfileCommand}"/>
+						<MenuItem Header="Delete profile" Command="{Binding DeleteProfileCommand}"/>
 					</ContextMenu>
 				</ListBox.ContextMenu>
 			</ListBox>

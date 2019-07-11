@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using WorkspaceLauncher.ViewModels;
 using System.Web;
 using System.Windows;
+using WorkspaceLauncher.Models;
 
 namespace WorkspaceLauncher
 {
@@ -20,52 +21,23 @@ namespace WorkspaceLauncher
 		static string MemeCacheBlockerUR = "?t=" + DateTime.Now.ToString().Replace(" ", "");
 		string ApplicationLocation { get { return System.Reflection.Assembly.GetExecutingAssembly().Location; } }
 
-		public static string GetWebString(string URL)
+		public static int LatestVersion
 		{
-			try
+			get
 			{
-				WebClient Checker = new WebClient();
-				Checker.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
-				return Checker.DownloadString(URL + MemeCacheBlockerUR);
-			}
-			catch(WebException ex)
-			{
-				string message = ex.Message;
-				return "";
-			}		
-		}
-
-		public static string LatestVersion { get { return GetWebString(ReleaseVersionURL); } }
-
-		public bool VersionCompare(string VersionOriginal, string VersionToCheck)
-		{
-			int VO1 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
-			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
-			int VO2 = Convert.ToInt32(VersionOriginal.Substring(0, VersionOriginal.IndexOf('.')));
-			VersionOriginal = VersionOriginal.Substring(VersionOriginal.IndexOf('.') + 1);
-			int VO3 = Convert.ToInt32(VersionOriginal.Substring(0));
-
-			int VC1 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
-			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
-			int VC2 = Convert.ToInt32(VersionToCheck.Substring(0, VersionToCheck.IndexOf('.')));
-			VersionToCheck = VersionToCheck.Substring(VersionToCheck.IndexOf('.') + 1);
-			int VC3 = Convert.ToInt32(VersionToCheck.Substring(0));
-
-
-			if (VC1 > VO1)
-				return true;
-			else if (VC1 == VO1)
-			{
-				if (VC2 > VO2)
-					return true;
-				else if (VC2 == VO2)
+				try
 				{
-					if (VC3 > VO3)
-						return true;
+					WebClient checker = new WebClient();
+					checker.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+					string download = checker.DownloadString(ReleaseVersionURL);
+					return 0;
+				}
+				catch (WebException ex)
+				{
+					string message = ex.Message;
+					return -1;
 				}
 			}
-
-			return false;
 		}
 
 		public void LaunchUpdaterAsync()
@@ -77,7 +49,7 @@ namespace WorkspaceLauncher
 
 		public void CheckForUpdate(object sender, DoWorkEventArgs e)
 		{
-			if (Configuration.Version != "" && VersionCompare(Configuration.Version, LatestVersion))
+			if (Configuration.Instance.Version != -1 && (LatestVersion > Configuration.Instance.Version))
 			{
 				MessageBoxResult DR = MessageBox.Show("Version " + LatestVersion + " is available, would you like to update ?\n \n" + "Changes: ", "Update", MessageBoxButton.YesNo);
 				if (DR == MessageBoxResult.Yes)
@@ -89,7 +61,7 @@ namespace WorkspaceLauncher
 
 		public int LaunchUpdater()
 		{
-			if (Configuration.Version != "" && VersionCompare(Configuration.Version, LatestVersion))
+			if (Configuration.Instance.Version != -1 && (LatestVersion > Configuration.Instance.Version))
 			{
 				MessageBoxResult DR = MessageBox.Show("Version " + LatestVersion + " is available, would you like to update ?\n \n" + "Changes: ", "Update", MessageBoxButton.YesNo);
 				if (DR == MessageBoxResult.Yes)
@@ -157,7 +129,7 @@ namespace WorkspaceLauncher
 
 		public void UpdateVersion()
 		{
-			Configuration.Version = LatestVersion;
+			Configuration.Instance.Version = LatestVersion;
 		}
 
 	}

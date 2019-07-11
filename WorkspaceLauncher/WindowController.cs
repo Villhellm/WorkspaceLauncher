@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using WorkspaceLauncher.Models;
 
 namespace WorkspaceLauncher
@@ -50,125 +47,125 @@ namespace WorkspaceLauncher
 		//Normal = 1,
 		//Minimized = 2,
 		//Maximized = 3,
-		public static void PositionWindow(string ProcessName, int xPos, int yPos, int wWidth, int wHeight, int Status)
+		public static void PositionWindow(string processName, int xPos, int yPos, int wWidth, int wHeight, int status)
 		{
-			IntPtr Prog;
-			ProcessName = ProcessName.ToLower();
+			IntPtr prog;
+			processName = processName.ToLower();
 			Process[] ProcessList = Process.GetProcesses();
 			foreach (Process Prcs in ProcessList)
 			{
 				if (!String.IsNullOrEmpty(Prcs.MainWindowTitle))
 				{
-					if (Prcs.ProcessName.ToLower().Contains(ProcessName))
+					if (Prcs.ProcessName.ToLower().Contains(processName))
 					{
-						Prog = Prcs.MainWindowHandle;
-						if(Status == 2)
+						prog = Prcs.MainWindowHandle;
+						if(status == 2)
 						{
-							MoveWindow(Prog, xPos, yPos, wWidth, wHeight, true);
-							ShowWindow(Prog, Status);
+							MoveWindow(prog, xPos, yPos, wWidth, wHeight, true);
+							ShowWindow(prog, status);
 						}
 						else
 						{
-							ShowWindow(Prog, Status);
-							MoveWindow(Prog, xPos, yPos, wWidth, wHeight, true);
+							ShowWindow(prog, status);
+							MoveWindow(prog, xPos, yPos, wWidth, wHeight, true);
 						}
 						WINDOWPLACEMENT Checker = new WINDOWPLACEMENT();
-						GetWindowPlacement(Prog, ref Checker);
+						GetWindowPlacement(prog, ref Checker);
 					}
 				}
 			}
 		}
 
-		public static int WindowXPosition(Process Proc)
+		public static int WindowXPosition(Process proc)
 		{
-			IntPtr ProcHndl = GetWindowHandleByProcess(Proc.ProcessName);
-			RECT Wnd;
-			GetWindowRect(ProcHndl, out Wnd);
-			return Wnd.Left;
+			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
+			RECT wnd;
+			GetWindowRect(procHndl, out wnd);
+			return wnd.Left;
 		}
 
-		public static int WindowYPosition(Process Proc)
+		public static int WindowYPosition(Process proc)
 		{
-			IntPtr ProcHndl = GetWindowHandleByProcess(Proc.ProcessName);
-			RECT Wnd;
-			GetWindowRect(ProcHndl, out Wnd);
-			return Wnd.Top;
+			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
+			RECT wnd;
+			GetWindowRect(procHndl, out wnd);
+			return wnd.Top;
 		}
 
-		public static int GetWindowHeight(Process Proc)
+		public static int GetWindowHeight(Process proc)
 		{
-			IntPtr ProcHndl = GetWindowHandleByProcess(Proc.ProcessName);
-			RECT Wnd;
-			GetWindowRect(ProcHndl, out Wnd);
-			return Wnd.Bottom - Wnd.Top;
+			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
+			RECT wnd;
+			GetWindowRect(procHndl, out wnd);
+			return wnd.Bottom - wnd.Top;
 		}
 
-		public static int GetWindowWidth(Process Proc)
+		public static int GetWindowWidth(Process proc)
 		{
-			IntPtr ProcHndl = GetWindowHandleByProcess(Proc.ProcessName);
-			RECT Wnd;
-			GetWindowRect(ProcHndl, out Wnd);
-			return Wnd.Right - Wnd.Left;
+			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
+			RECT wnd;
+			GetWindowRect(procHndl, out wnd);
+			return wnd.Right - wnd.Left;
 		}
 
-		public static int GetWindowStatus(Process Proc)
+		public static int GetWindowStatus(Process proc)
 		{
-			IntPtr ProcHndl = GetWindowHandleByProcess(Proc.ProcessName);
-			WINDOWPLACEMENT Current = new WINDOWPLACEMENT();
-			GetWindowPlacement(ProcHndl, ref Current);
-			return Current.showCmd;
+			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
+			WINDOWPLACEMENT current = new WINDOWPLACEMENT();
+			GetWindowPlacement(procHndl, ref current);
+			return current.showCmd;
 		}
 
-		public static IntPtr GetWindowHandleByCaption(string CaptionText)
+		public static IntPtr GetWindowHandleByCaption(string captionText)
 		{
-			IntPtr Prog = new IntPtr();
-			Process[] ProcessList = Process.GetProcesses();
-			foreach (Process Prcs in ProcessList)
+			IntPtr prog = new IntPtr();
+			Process[] processList = Process.GetProcesses();
+			foreach (Process prcs in processList)
 			{
-				if (!String.IsNullOrEmpty(Prcs.MainWindowTitle))
+				if (!String.IsNullOrEmpty(prcs.MainWindowTitle))
 				{
-					if (Prcs.MainWindowTitle.ToLower().Contains(CaptionText))
+					if (prcs.MainWindowTitle.ToLower().Contains(captionText))
 					{
-						return Prcs.MainWindowHandle;
+						return prcs.MainWindowHandle;
 					}
 				}
 			}
-			return Prog;
+			return prog;
 		}
 
-		public static IntPtr GetWindowHandleByProcess(string ProcessName)
+		public static IntPtr GetWindowHandleByProcess(string processName)
 		{
-			IntPtr Prog = new IntPtr();
-			ProcessName = ProcessName.ToLower();
-			Process[] ProcessList = Process.GetProcesses();
-			foreach (Process Prcs in ProcessList)
+			IntPtr prog = new IntPtr();
+			processName = processName.ToLower();
+			Process[] processList = Process.GetProcesses();
+			foreach (Process prcs in processList)
 			{
-				if (!String.IsNullOrEmpty(Prcs.MainWindowTitle))
+				if (!String.IsNullOrEmpty(prcs.MainWindowTitle))
 				{
-					if (Prcs.ProcessName.ToLower().Contains(ProcessName))
+					if (prcs.ProcessName.ToLower().Contains(processName))
 					{
-						return Prcs.MainWindowHandle;
+						return prcs.MainWindowHandle;
 					}
 				}
 			}
-			return Prog;
+			return prog;
 		}
 
-		public static void LaunchAll(List<WindowsProgram> Programs)
+		public static void LaunchAll(List<WindowsProgram> programs)
 		{
-			foreach (WindowsProgram Prog in Programs)
+			foreach (WindowsProgram prog in programs)
 			{
 				try
 				{
-					if (!IsProcessOpen(Prog.ProcessName))
+					if (!IsProcessOpen(prog.ProcessName))
 					{
-						string ProgPath = Path.GetDirectoryName(Prog.StartPath);
-						string ProgName = Path.GetFileName(Prog.StartPath);
-						string Arguments = Prog.Argument;
+						string progPath = Path.GetDirectoryName(prog.StartPath);
+						string progName = Path.GetFileName(prog.StartPath);
+						string arguments = prog.Argument;
 						ProcessStartInfo LaunchInfo = new ProcessStartInfo();
-						LaunchInfo.WorkingDirectory = ProgPath;
-						LaunchInfo.FileName = ProgName;
-						LaunchInfo.Arguments = Arguments;
+						LaunchInfo.WorkingDirectory = progPath;
+						LaunchInfo.FileName = progName;
+						LaunchInfo.Arguments = arguments;
 						Process.Start(LaunchInfo);
 					}
 				}
@@ -179,13 +176,13 @@ namespace WorkspaceLauncher
 			}
 		}
 
-		public static void PositionAll(List<WindowsProgram> Programs)
+		public static void PositionAll(List<WindowsProgram> programs)
 		{
-			foreach (WindowsProgram Prog in Programs)
+			foreach (WindowsProgram prog in programs)
 			{
 				try
 				{
-					PositionWindow(Prog.ProcessName, Prog.XPos, Prog.YPos, Prog.WindowWidth, Prog.WindowHeight, Prog.WindowState);
+					PositionWindow(prog.ProcessName, prog.XPos, prog.YPos, prog.WindowWidth, prog.WindowHeight, prog.WindowState);
 				}
 				catch (InvalidOperationException)
 				{
@@ -194,47 +191,46 @@ namespace WorkspaceLauncher
 			}
 		}
 
-		private static void WaitForLaunch(List<WindowsProgram> Programs)
+		private static void WaitForLaunch(List<WindowsProgram> programs)
 		{
-			bool IsOpen = false;
-			foreach (WindowsProgram Elmnt in Programs)
+			bool isOpen = false;
+			foreach (WindowsProgram elmnt in programs)
 			{
-				while (!IsOpen)
+				while (!isOpen)
 				{
-					Process[] ProcessList = Process.GetProcesses();
-					foreach (Process Proc in ProcessList)
+					Process[] processList = Process.GetProcesses();
+					foreach (Process proc in processList)
 					{
-						if (!String.IsNullOrEmpty(Proc.MainWindowTitle))
+						if (!String.IsNullOrEmpty(proc.MainWindowTitle))
 						{
-							if (Proc.ProcessName == Elmnt.ProcessName)
+							if (proc.ProcessName == elmnt.ProcessName)
 							{
-								IsOpen = true;
+								isOpen = true;
 							}
 						}
 					}
 				}
-				IsOpen = false;
+				isOpen = false;
 				Thread.Sleep(100);
 			}
 
 		}
 
-		public static void LaunchAndPositionAll(List<WindowsProgram> Programs)
+		public static void LaunchAndPositionAll(List<WindowsProgram> programs)
 		{
-			LaunchAll(Programs);
-			WaitForLaunch(Programs);
-			PositionAll(Programs);
+			LaunchAll(programs);
+			WaitForLaunch(programs);
+			PositionAll(programs);
 		}
 
-		private static bool IsProcessOpen(string ProcessName)
+		private static bool IsProcessOpen(string processName)
 		{
-			Process[] OpenProcesses = Process.GetProcesses();
-			Process[] ProcessList = Process.GetProcesses();
-			foreach (Process Proc in ProcessList)
+			Process[] processList = Process.GetProcesses();
+			foreach (Process proc in processList)
 			{
-				if (!String.IsNullOrEmpty(Proc.MainWindowTitle))
+				if (!String.IsNullOrEmpty(proc.MainWindowTitle))
 				{
-					if (Proc.ProcessName == ProcessName)
+					if (proc.ProcessName == processName)
 					{
 						return true;
 					}

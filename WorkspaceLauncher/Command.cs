@@ -11,9 +11,9 @@ namespace WorkspaceLauncher
 	{
 		private Action<object> _executeMethod;
 
-		public Command(Action<object> _executeMethod)
+		public Command(Action<object> executeMethod)
 		{
-			this._executeMethod = _executeMethod;
+			this._executeMethod = executeMethod;
 		}
 
 		public event EventHandler CanExecuteChanged;

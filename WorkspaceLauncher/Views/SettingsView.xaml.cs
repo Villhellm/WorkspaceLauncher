@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WorkspaceLauncher.Models;
 
 namespace WorkspaceLauncher.Views
 {
@@ -22,6 +23,11 @@ namespace WorkspaceLauncher.Views
 		public SettingsView()
 		{
 			InitializeComponent();
+		}
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			Configuration.Save();
 		}
 	}
 }

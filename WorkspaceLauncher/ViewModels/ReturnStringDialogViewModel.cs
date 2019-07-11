@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkspaceLauncher.Views;
+using WorkspaceLauncher.Models;
 
 namespace WorkspaceLauncher.ViewModels
 {
@@ -26,7 +27,7 @@ namespace WorkspaceLauncher.ViewModels
 			_hasButton = HasButton;
 			this.Value = Value;
 			Dialog = new ReturnStringView();
-			Dialog.Topmost = Configuration.AlwaysOnTop;
+			Dialog.Topmost = Configuration.Instance.AlwaysOnTop;
 			Dialog.DataContext = this;
 			Dialog.ShowDialog();
 		}

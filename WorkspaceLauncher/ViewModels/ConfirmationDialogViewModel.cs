@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkspaceLauncher.Views;
+using WorkspaceLauncher.Models;
 
 namespace WorkspaceLauncher.ViewModels
 {
@@ -20,7 +21,7 @@ namespace WorkspaceLauncher.ViewModels
 			_title = title;
 			_message = message;
 			Dialog = new ConfirmationDialogView();
-			Dialog.Topmost = Configuration.AlwaysOnTop;
+			Dialog.Topmost = Configuration.Instance.AlwaysOnTop;
 			Dialog.DataContext = this;
 			Dialog.ShowDialog();
 		}

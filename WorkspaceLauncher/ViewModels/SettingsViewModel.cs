@@ -7,31 +7,71 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkspaceLauncher.Models;
 using WorkspaceLauncher.Views;
+using System.Collections.ObjectModel;
 
 namespace WorkspaceLauncher.ViewModels
 {
 	public class SettingsViewModel : INotifyPropertyChanged
 	{
-		private List<string> _profiles;
-		private string _selectedProfile;
+		public ObservableCollection<Profile> Profiles
+		{
+			get
+			{
+				return new ObservableCollection<Profile>(Configuration.Instance.Profiles);
+			}
+		}
+
+
+		public bool AlwaysOnTop
+		{
+			get { return Configuration.Instance.AlwaysOnTop; }
+			set
+			{
+				Configuration.Instance.AlwaysOnTop = value;
+			}
+		}
+
+		public bool CheckForUpdates
+		{
+			get { return Configuration.Instance.CheckForUpdates; }
+			set
+			{
+				Configuration.Instance.CheckForUpdates = value;
+			}
+		}
+
+		public int LaunchProfileId
+		{
+			get { return Configuration.Instance.LaunchProfileId; }
+			set
+			{
+				Configuration.Instance.LaunchProfileId = value;
+			}
+		}
+
+
+
+		private Profile _selectedProfile;
 		private WindowsProgram _selectedProgram;
-		private List<WindowsProgram> _programs;
+		public ObservableCollection<WindowsProgram> Programs
+		{
+			get
+			{
+				if(SelectedProfile != null)
+				{
+					return new ObservableCollection<WindowsProgram>(SelectedProfile.Programs);
+				}
+				return null;
+			}
+		}
 
 		public SettingsViewModel()
 		{
-			Profiles = Configuration.Profiles;
-			if (Profiles.Count > 0)
-			{
-				SelectedProfile = Profiles[0];
-			}
-
 			SettingsView SettingsDialog = new SettingsView();
-			SettingsDialog.Topmost = Configuration.AlwaysOnTop;
+			SettingsDialog.Topmost = Configuration.Instance.AlwaysOnTop;
 			SettingsDialog.DataContext = this;
 			SettingsDialog.ShowDialog();
 		}
-
-		public string Version { get { return Configuration.Version; } }
 
 		public bool ProgramSelected { get { return SelectedProgram != null; } }
 
@@ -48,81 +88,17 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public List<string> ProfilesList
-		{
-			get
-			{
-				List<string> ReturnList = new List<string>();
-				ReturnList.Add("None");
-				foreach (string P in Profiles)
-				{
-					ReturnList.Add(P);
-				}
-				return ReturnList;
-			}
-		}
-
-		public bool CheckForUpdates
-		{
-			get { return Configuration.CheckForUpdates; }
-			set
-			{
-				Configuration.CheckForUpdates = value;
-				OnPropertyChanged("CheckForUpdates");
-			}
-		}
-
-		public bool AlwaysOnTop
-		{
-			get { return Configuration.AlwaysOnTop; }
-			set
-			{
-				Configuration.AlwaysOnTop = value;
-				OnPropertyChanged("AlwaysOnTop");
-			}
-		}
-
-		public string LaunchProfile
-		{
-			get { return Configuration.LaunchProfile; }
-			set
-			{
-				Configuration.LaunchProfile = value;
-				OnPropertyChanged("LaunchProfile");
-			}
-		}
-
-		public List<string> Profiles
-		{
-			get { return _profiles; }
-			set
-			{
-				_profiles = value;
-				OnPropertyChanged("Profiles");
-			}
-		}
-
-		public string SelectedProfile
+		public Profile SelectedProfile
 		{
 			get { return _selectedProfile; }
 			set
 			{
 				_selectedProfile = value;
-				Programs = Configuration.Programs(SelectedProfile);
 				if (Programs.Count > 0)
 				{
 					SelectedProgram = Programs[0];
 				}
 				OnPropertyChanged("SelectedProfile");
-			}
-		}
-
-		public List<WindowsProgram> Programs
-		{
-			get { return _programs; }
-			set
-			{
-				_programs = value;
 				OnPropertyChanged("Programs");
 			}
 		}
@@ -141,11 +117,10 @@ namespace WorkspaceLauncher.ViewModels
 		public Command DeleteProfileCommand { get { return new Command(_deleteProfile); } }
 		private void _deleteProfile(object parameter)
 		{
-			if ((SelectedProfile != null))
+			if (SelectedProfile != null)
 			{
+				Configuration.Instance.Profiles.Remove(SelectedProfile);
 
-				Configuration.DeleteProfile(SelectedProfile);
-				Profiles = Configuration.Profiles;
 				if (Profiles.Count > 0)
 				{
 					SelectedProfile = Profiles[0];
@@ -157,17 +132,12 @@ namespace WorkspaceLauncher.ViewModels
 		public Command RenameProfileCommand { get { return new Command(_renameProfile); } }
 		private void _renameProfile(object parameter)
 		{
-			if ((SelectedProfile != null))
+			if (SelectedProfile != null)
 			{
-				ReturnStringDialogViewModel renamer = new ReturnStringDialogViewModel("Rename Profile", "Please choose a new name for profile: " + SelectedProfile);
+				ReturnStringDialogViewModel renamer = new ReturnStringDialogViewModel("Rename Profile", "Please choose a new name for profile: " + SelectedProfile.Name);
 				if(renamer.DialogResult == 1)
 				{
-					Configuration.RenameProfile(SelectedProfile, renamer.Value);
-					Profiles = Configuration.Profiles;
-					if (Profiles.Count > 0)
-					{
-						SelectedProfile = renamer.Value;
-					}
+					SelectedProfile.Name = renamer.Value;
 				}
 			}
 		}
@@ -175,10 +145,10 @@ namespace WorkspaceLauncher.ViewModels
 		public Command AddProgramsCommand { get { return new Command(_addPrograms); } }
 		private void _addPrograms(object parameter)
 		{
-			if ((SelectedProfile != null))
+			if (SelectedProfile != null)
 			{
-				SelectProcessesViewModel SelectNew = new SelectProcessesViewModel(SelectedProfile);
-				Programs = Configuration.Programs(SelectedProfile);
+				SelectProcessesViewModel SelectNew = new SelectProcessesViewModel(SelectedProfile.Id);
+
 				if (Programs.Count > 0)
 				{
 					SelectedProgram = Programs[0];
@@ -186,18 +156,24 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
+		public Command ClearLaunchProfile { get { return new Command(_clearLaunchProfile); } }
+		private void _clearLaunchProfile(object parameter)
+		{
+			LaunchProfileId = 0;
+			OnPropertyChanged("LaunchProfileId");
+		}
+
 		public Command RemoveProgramCommand { get { return new Command(_removeProgram); } }
 		private void _removeProgram(object parameter)
 		{
-			if ((SelectedProgram != null) && (SelectedProfile != null))
+			if (SelectedProfile != null && SelectedProgram != null)
 			{
-
-				Configuration.RemoveProgram(SelectedProfile, SelectedProgram.Id);
-				Programs = Configuration.Programs(SelectedProfile);
+				SelectedProfile.Programs.Remove(SelectedProgram);
 				if (Programs.Count > 0)
 				{
 					SelectedProgram = Programs[0];
 				}
+				OnPropertyChanged("Programs");
 
 			}
 		}

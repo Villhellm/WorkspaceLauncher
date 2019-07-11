@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,104 +8,129 @@ using System.Xml.Linq;
 
 namespace WorkspaceLauncher.Models
 {
-	public class WindowsProgram
+	public class WindowsProgram : INotifyPropertyChanged
 	{
-		public string ParentProfileName { get; set; }
+		private int id;
 
-		public int Id { get; set; }
+		public int Id
+		{
+			get { return id; }
+			set
+			{
+				id = value;
+				OnPropertyChanged("Id");
+			}
+		}
+
+		private string processName;
 
 		public string ProcessName
 		{
-			get { return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("ProcessName").Value; }
+			get { return processName; }
 			set
 			{
-				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, Id).Element("ProcessName").Value = value;
-				xConfig.Save(Configuration.ConfigurationFile);
+				processName = value;
+				OnPropertyChanged("ProcessName");
 			}
 		}
+		private string startPath;
 
 		public string StartPath
 		{
-			get { return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("StartPath").Value; }
+			get { return startPath; }
 			set
 			{
-				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, Id).Element("StartPath").Value = value;
-				xConfig.Save(Configuration.ConfigurationFile);
+				startPath = value;
+				OnPropertyChanged("StartPath");
 			}
 		}
+		private string argument;
 
 		public string Argument
 		{
-			get { return Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("Argument").Value; }
+			get { return argument; }
 			set
 			{
-				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, Id).Element("Argument").Value = value;
-				xConfig.Save(Configuration.ConfigurationFile);
+				argument = value;
+				OnPropertyChanged("Argument");
 			}
 		}
+		private int windowWidth;
 
 		public int WindowWidth
 		{
-			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowWidth").Value); }
+			get { return windowWidth; }
 			set
 			{
-				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, Id).Element("WindowWidth").Value = value.ToString();
-				xConfig.Save(Configuration.ConfigurationFile);
+				windowWidth = value;
+				OnPropertyChanged("WindowWidth");
 			}
 		}
+		private int windowHeight;
 
 		public int WindowHeight
 		{
-			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowHeight").Value); }
+			get { return windowHeight; }
 			set
 			{
-				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, Id).Element("WindowHeight").Value = value.ToString();
-				xConfig.Save(Configuration.ConfigurationFile);
+				windowHeight = value;
+				OnPropertyChanged("WindowHeight");
 			}
 		}
+		private int xPos;
 
 		public int XPos
 		{
-			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("XPos").Value); }
+			get { return xPos; }
 			set
 			{
-				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, Id).Element("XPos").Value = value.ToString();
-				xConfig.Save(Configuration.ConfigurationFile);
+				xPos = value;
+				OnPropertyChanged("XPos");
 			}
 		}
+
+		private int yPos;
 
 		public int YPos
 		{
-			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("YPos").Value); }
+			get { return yPos; }
 			set
 			{
-				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, Id).Element("YPos").Value = value.ToString();
-				xConfig.Save(Configuration.ConfigurationFile);
+				yPos = value;
+				OnPropertyChanged("YPos");
 			}
 		}
+
+		private int windowState;
 
 		public int WindowState
 		{
-			get { return Convert.ToInt32(Configuration.Program(Configuration.xConfiguration, ParentProfileName, Id).Element("WindowState").Value); }
+			get { return windowState; }
 			set
 			{
-				XDocument xConfig = Configuration.xConfiguration;
-				Configuration.Program(xConfig, ParentProfileName, Id).Element("WindowState").Value = value.ToString();
-				xConfig.Save(Configuration.ConfigurationFile);
+				windowState = value;
+				OnPropertyChanged("WindowState");
 			}
 		}
 
-		public WindowsProgram(string ParentProfileName, int Id)
+		public static int NextId(int profileId)
 		{
-			this.ParentProfileName = ParentProfileName;
-			this.Id = Id;
+			var profile = Configuration.Instance.Profiles.SingleOrDefault(x => x.Id == profileId);
+			if (profile.Programs.Count > 0)
+			{
+				return profile.Programs.OrderByDescending(x => x.id).FirstOrDefault().id++;
+			}
+			return 1;
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void OnPropertyChanged(string Property)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged.Invoke(this, new PropertyChangedEventArgs(Property));
+			}
 		}
 	}
 }
