@@ -21,7 +21,7 @@ namespace WorkspaceLauncher
 		static string MemeCacheBlockerUR = "?t=" + DateTime.Now.ToString().Replace(" ", "");
 		string ApplicationLocation { get { return System.Reflection.Assembly.GetExecutingAssembly().Location; } }
 
-		public static int LatestVersion
+		public static decimal LatestVersion
 		{
 			get
 			{
@@ -29,8 +29,10 @@ namespace WorkspaceLauncher
 				{
 					WebClient checker = new WebClient();
 					checker.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
-					string download = checker.DownloadString(ReleaseVersionURL);
-					return 0;
+					string download = checker.DownloadString(ReleaseVersionURL + MemeCacheBlockerUR);
+					decimal version = -1;
+					decimal.TryParse(download, out version);
+					return version;
 				}
 				catch (WebException ex)
 				{
@@ -130,6 +132,7 @@ namespace WorkspaceLauncher
 		public void UpdateVersion()
 		{
 			Configuration.Instance.Version = LatestVersion;
+			Configuration.Save();
 		}
 
 	}
