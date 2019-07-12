@@ -30,7 +30,11 @@
 				<RowDefinition Height="auto"/>
 				<RowDefinition/>
 			</Grid.RowDefinitions>
-			<TextBlock Text="Profiles"/>
+			<StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Margin="0 5 0 0">
+				<TextBlock Text="Profiles" Margin="10 5 0 0"/>
+				<Button Style="{DynamicResource AddButton}" Command="{Binding AddProfileCommand}" Padding="0" Margin="10 0 0 5"/>
+				<Button Style="{DynamicResource DeleteButton}" Command="{Binding DeleteProfileCommand}" Margin="10 0 0 0" Padding="0"/>
+			</StackPanel>
 			<ListBox Grid.Row="1" x:Name="ProfileList" ItemsSource="{Binding Profiles}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedProfile}">
 				<ListBox.ContextMenu>
 					<ContextMenu>

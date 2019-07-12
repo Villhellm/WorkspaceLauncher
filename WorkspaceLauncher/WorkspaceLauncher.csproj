@@ -90,6 +90,12 @@
     </ApplicationDefinition>
     <Compile Include="Command.cs" />
     <Compile Include="GithubUpdater.cs" />
+    <Compile Include="Images\add.xaml.cs">
+      <DependentUpon>add.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Images\delete.xaml.cs">
+      <DependentUpon>delete.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="ViewModels\ConfirmationDialogViewModel.cs" />
@@ -113,6 +119,14 @@
       <DependentUpon>ToastView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowController.cs" />
+    <Page Include="Images\add.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Images\delete.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ConfirmationDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -185,7 +199,6 @@
   <ItemGroup>
     <Resource Include="Main.ico" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="CurrentRelease\Version.txt" />
   </ItemGroup>

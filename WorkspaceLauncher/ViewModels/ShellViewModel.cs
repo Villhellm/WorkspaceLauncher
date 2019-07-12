@@ -66,12 +66,19 @@ namespace WorkspaceLauncher.ViewModels
 		}
 
 		public Command SetProgramsCommand { get { return new Command(_setPrograms); } }
-
 		private void _setPrograms(object parameter)
 		{
 			if (SelectedProfile != null)
 			{
 				SelectProcessesViewModel SelectProcessesDialog = new SelectProcessesViewModel(SelectedProfile);
+			}
+			else
+			{
+				_addProfile(null);
+				if (SelectedProfile != null)
+				{
+					SelectProcessesViewModel SelectProcessesDialog = new SelectProcessesViewModel(SelectedProfile);
+				}
 			}
 		}
 

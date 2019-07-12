@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:WorkspaceLauncher.Views.Styles">
+					xmlns:im="clr-namespace:WorkspaceLauncher.Images">
 	<Style TargetType="Grid">
 		<Setter Property="Background" Value="#FF252526"/>
 	</Style>
@@ -35,5 +35,29 @@
 	</Style>
 	<Style TargetType="Button">
 		<Setter Property="Margin" Value="10,5"/>
+	</Style>
+	<Style TargetType="Button" x:Key="AddButton">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="ToolTip" Value="Add"/>
+		<Setter Property="ContentTemplate">
+			<Setter.Value>
+				<DataTemplate>
+					<im:add/>
+				</DataTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style TargetType="Button" x:Key="DeleteButton">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="ToolTip" Value="Delete"/>
+		<Setter Property="ContentTemplate">
+			<Setter.Value>
+				<DataTemplate>
+					<im:delete/>
+				</DataTemplate>
+			</Setter.Value>
+		</Setter>
 	</Style>
 </ResourceDictionary>
