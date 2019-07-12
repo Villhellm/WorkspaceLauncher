@@ -46,9 +46,9 @@
 			<ListBox Height="185" ItemsSource="{Binding Profiles}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProfile}" Margin="10,0">
 				<ListBox.ContextMenu>
 					<ContextMenu>
-						<MenuItem Header="Delete Profile" Command="{Binding DeleteProfileCommand}"/>
-						<MenuItem Header="Rename Profile" Command="{Binding RenameProfileCommand}"/>
-						<MenuItem Header="Add Programs" Command="{Binding AddProgramsCommand}"/>
+						<MenuItem Header="Delete profile" Command="{Binding DeleteProfileCommand}"/>
+						<MenuItem Header="Rename profile" Command="{Binding RenameProfileCommand}"/>
+						<MenuItem Header="Clear all programs" Command="{Binding ClearProgramsCommand}"/>
 					</ContextMenu>
 				</ListBox.ContextMenu>
 			</ListBox>
@@ -58,6 +58,7 @@
 			<ListBox Height="185" ItemsSource="{Binding Programs}" DisplayMemberPath="ProcessName" SelectedItem="{Binding SelectedProgram}" Margin="10,0">
 				<ListBox.ContextMenu>
 					<ContextMenu>
+						<MenuItem Header="Add program" Command="{Binding AddProgramsCommand}"/>
 						<MenuItem Header="Remove program" Command="{Binding RemoveProgramCommand}"/>
 					</ContextMenu>
 				</ListBox.ContextMenu>

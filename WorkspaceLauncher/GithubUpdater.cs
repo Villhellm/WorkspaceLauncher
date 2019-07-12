@@ -51,24 +51,26 @@ namespace WorkspaceLauncher
 
 		public void CheckForUpdate(object sender, DoWorkEventArgs e)
 		{
-			if (Configuration.Instance.Version != -1 && (LatestVersion > Configuration.Instance.Version))
+			decimal latestVersion = LatestVersion;
+			if (Configuration.Instance.Version != -1 && (latestVersion > Configuration.Instance.Version))
 			{
-				MessageBoxResult DR = MessageBox.Show("Version " + LatestVersion + " is available, would you like to update ?\n \n" + "Changes: ", "Update", MessageBoxButton.YesNo);
+				MessageBoxResult DR = MessageBox.Show("Version " + latestVersion + " is available, would you like to update ?\n \n", "Update", MessageBoxButton.YesNo);
 				if (DR == MessageBoxResult.Yes)
 				{
-					UpdateProgram();
+					UpdateProgram(latestVersion);
 				}
 			}
 		}
 
 		public int LaunchUpdater()
 		{
-			if (Configuration.Instance.Version != -1 && (LatestVersion > Configuration.Instance.Version))
+			decimal latestVersion = LatestVersion;
+			if (Configuration.Instance.Version != -1 && (latestVersion > Configuration.Instance.Version))
 			{
-				MessageBoxResult DR = MessageBox.Show("Version " + LatestVersion + " is available, would you like to update ?\n \n" + "Changes: ", "Update", MessageBoxButton.YesNo);
+				MessageBoxResult DR = MessageBox.Show("Version " + latestVersion + " is available, would you like to update ?\n \n", "Update", MessageBoxButton.YesNo);
 				if (DR == MessageBoxResult.Yes)
 				{
-					UpdateProgram();
+					UpdateProgram(latestVersion);
 				}
 				return 1;
 			}
@@ -110,13 +112,13 @@ namespace WorkspaceLauncher
 			}
 		}
 
-		private void UpdateProgram()
+		private void UpdateProgram(decimal latestVersion)
 		{
 			DownloadInternetFile(ReleaseDownloadURL + MemeCacheBlockerUR, ApplicationLocation + "t");
-			SelfDestruct();
+			SelfDestruct(latestVersion);
 		}
 
-		private void SelfDestruct()
+		private void SelfDestruct(decimal latestVersion)
 		{
 			if (File.Exists(ApplicationLocation + "t"))
 			{

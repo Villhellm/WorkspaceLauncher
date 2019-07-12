@@ -9,25 +9,25 @@ namespace WorkspaceLauncher.Models
 {
 	public class Profile : INotifyPropertyChanged
 	{
-		private int id;
+		private int _id;
+		private string _name;
 
 		public int Id
 		{
-			get { return id; }
+			get { return _id; }
 			set
 			{
-				id = value;
+				_id = value;
 				OnPropertyChanged("Id");
 			}
 		}
-		private string name;
 
 		public string Name
 		{
-			get { return name; }
+			get { return _name; }
 			set
 			{
-				name = value;
+				_name = value;
 				OnPropertyChanged("Name");
 			}
 		}

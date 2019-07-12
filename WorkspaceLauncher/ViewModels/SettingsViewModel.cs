@@ -13,6 +13,9 @@ namespace WorkspaceLauncher.ViewModels
 {
 	public class SettingsViewModel : INotifyPropertyChanged
 	{
+		private Profile _selectedProfile;
+		private WindowsProgram _selectedProgram;
+
 		public ObservableCollection<Profile> Profiles
 		{
 			get
@@ -49,10 +52,6 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-
-
-		private Profile _selectedProfile;
-		private WindowsProgram _selectedProgram;
 		public ObservableCollection<WindowsProgram> Programs
 		{
 			get
@@ -65,11 +64,12 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public SettingsViewModel()
+		public SettingsViewModel(Profile selectedProfile)
 		{
 			SettingsView SettingsDialog = new SettingsView();
 			SettingsDialog.Topmost = Configuration.Instance.AlwaysOnTop;
 			SettingsDialog.DataContext = this;
+			SelectedProfile = selectedProfile;
 			SettingsDialog.ShowDialog();
 		}
 
@@ -94,9 +94,12 @@ namespace WorkspaceLauncher.ViewModels
 			set
 			{
 				_selectedProfile = value;
-				if (Programs.Count > 0)
+				if(value != null)
 				{
-					SelectedProgram = Programs[0];
+					if (Programs.Count > 0)
+					{
+						SelectedProgram = Programs[0];
+					}
 				}
 				OnPropertyChanged("SelectedProfile");
 				OnPropertyChanged("Programs");
@@ -147,12 +150,24 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if (SelectedProfile != null)
 			{
-				SelectProcessesViewModel SelectNew = new SelectProcessesViewModel(SelectedProfile.Id);
+				SelectProcessesViewModel SelectNew = new SelectProcessesViewModel(SelectedProfile);
 
 				if (Programs.Count > 0)
 				{
 					SelectedProgram = Programs[0];
 				}
+				OnPropertyChanged("Programs");
+			}
+		}
+
+		public Command ClearProgramsCommand { get { return new Command(_clearPrograms); } }
+		private void _clearPrograms(object parameter)
+		{
+			if (SelectedProfile != null)
+			{
+				Configuration.ProfileById(SelectedProfile.Id).Programs = new List<WindowsProgram>();
+				Configuration.Save();
+				OnPropertyChanged("ProfilePrograms");
 			}
 		}
 

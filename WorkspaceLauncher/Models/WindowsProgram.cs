@@ -10,105 +10,102 @@ namespace WorkspaceLauncher.Models
 {
 	public class WindowsProgram : INotifyPropertyChanged
 	{
-		private int id;
+		private int _id;
+		private string _processName;
+		private string _startPath;
+		private string _argument;
+		private int _windowWidth;
+		private int _windowHeight;
+		private int _xPos;
+		private int _yPos;
+		private int _windowState;
 
 		public int Id
 		{
-			get { return id; }
+			get { return _id; }
 			set
 			{
-				id = value;
+				_id = value;
 				OnPropertyChanged("Id");
 			}
 		}
 
-		private string processName;
-
 		public string ProcessName
 		{
-			get { return processName; }
+			get { return _processName; }
 			set
 			{
-				processName = value;
+				_processName = value;
 				OnPropertyChanged("ProcessName");
 			}
 		}
-		private string startPath;
 
 		public string StartPath
 		{
-			get { return startPath; }
+			get { return _startPath; }
 			set
 			{
-				startPath = value;
+				_startPath = value;
 				OnPropertyChanged("StartPath");
 			}
 		}
-		private string argument;
 
 		public string Argument
 		{
-			get { return argument; }
+			get { return _argument; }
 			set
 			{
-				argument = value;
+				_argument = value;
 				OnPropertyChanged("Argument");
 			}
 		}
-		private int windowWidth;
 
 		public int WindowWidth
 		{
-			get { return windowWidth; }
+			get { return _windowWidth; }
 			set
 			{
-				windowWidth = value;
+				_windowWidth = value;
 				OnPropertyChanged("WindowWidth");
 			}
 		}
-		private int windowHeight;
 
 		public int WindowHeight
 		{
-			get { return windowHeight; }
+			get { return _windowHeight; }
 			set
 			{
-				windowHeight = value;
+				_windowHeight = value;
 				OnPropertyChanged("WindowHeight");
 			}
 		}
-		private int xPos;
 
 		public int XPos
 		{
-			get { return xPos; }
+			get { return _xPos; }
 			set
 			{
-				xPos = value;
+				_xPos = value;
 				OnPropertyChanged("XPos");
 			}
 		}
 
-		private int yPos;
-
 		public int YPos
 		{
-			get { return yPos; }
+			get { return _yPos; }
 			set
 			{
-				yPos = value;
+				_yPos = value;
 				OnPropertyChanged("YPos");
 			}
 		}
 
-		private int windowState;
-
 		public int WindowState
 		{
-			get { return windowState; }
+			get { return _windowState; }
 			set
 			{
-				windowState = value;
+				_windowState = value;
 				OnPropertyChanged("WindowState");
 			}
 		}
@@ -118,7 +115,7 @@ namespace WorkspaceLauncher.Models
 			var profile = Configuration.Instance.Profiles.SingleOrDefault(x => x.Id == profileId);
 			if (profile.Programs.Count > 0)
 			{
-				return profile.Programs.OrderByDescending(x => x.id).FirstOrDefault().id++;
+				return profile.Programs.OrderByDescending(x => x._id).FirstOrDefault()._id++;
 			}
 			return 1;
 		}

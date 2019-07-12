@@ -13,14 +13,15 @@ namespace WorkspaceLauncher.ViewModels
 {
 	public class SelectProcessesViewModel : INotifyPropertyChanged
 	{
-		private int _selectedProfileId;
-		private List<Process> _openWindows;
+		private Profile _selectedProfile;
+		private ObservableCollection<Process> _openWindows;
 		private WindowsProgram _selectedProgram;
+		private Process _selectedOpenWindow;
 
-		public SelectProcessesViewModel(int selectedProfileId)
+		public SelectProcessesViewModel(Profile selectedProfile)
 		{
 			SelectedProcesses = new List<Process>();
-			this.SelectedProfileId = selectedProfileId;
+			this.SelectedProfile = selectedProfile;
 			_refreshOpenWindows(null);
 			SelectProcessesView NewDialog = new SelectProcessesView();
 			NewDialog.Topmost = Configuration.Instance.AlwaysOnTop;
@@ -32,7 +33,7 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			get
 			{
-				return new ObservableCollection<WindowsProgram>(Configuration.Instance.ProfileById(SelectedProfileId).Programs);
+				return new ObservableCollection<WindowsProgram>(Configuration.ProfileById(SelectedProfile.Id).Programs);
 			}
 		}
 
@@ -48,17 +49,27 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
-		public int SelectedProfileId
+		public Process SelectedOpenWindow
 		{
-			get { return _selectedProfileId; }
+			get { return _selectedOpenWindow; }
 			set
 			{
-				_selectedProfileId = value;
-				OnPropertyChanged("SelectedProfileId");
+				_selectedOpenWindow = value;
+				OnPropertyChanged("SelectedOpenWindow");
 			}
 		}
 
-		public List<Process> OpenWindows
+		public Profile SelectedProfile
+		{
+			get { return _selectedProfile; }
+			set
+			{
+				_selectedProfile = value;
+				OnPropertyChanged("SelectedProfile");
+			}
+		}
+
+		public ObservableCollection<Process> OpenWindows
 		{
 			get { return _openWindows; }
 			set
@@ -68,10 +79,34 @@ namespace WorkspaceLauncher.ViewModels
 			}
 		}
 
+		private void addProgram(Process aProc)
+		{
+			WindowsProgram addProgram = new WindowsProgram() { Id = WindowsProgram.NextId(SelectedProfile.Id) };
+			addProgram.StartPath = aProc.MainModule.FileName;
+			addProgram.WindowWidth = WindowController.GetWindowWidth(aProc);
+			addProgram.WindowHeight = WindowController.GetWindowHeight(aProc);
+			addProgram.XPos = WindowController.WindowXPosition(aProc);
+			addProgram.YPos = WindowController.WindowYPosition(aProc);
+			addProgram.WindowState = WindowController.GetWindowStatus(aProc);
+			addProgram.ProcessName = aProc.ProcessName;
+
+			if (aProc.ProcessName == "chrome")
+			{
+				ReturnStringDialogViewModel ArgumentSetter = new ReturnStringDialogViewModel("Chrome website", "Which website should be opened when chrome is launched?");
+				if (ArgumentSetter.DialogResult == 1)
+				{
+					addProgram.Argument = ArgumentSetter.Value;
+				}
+			}
+
+			Configuration.ProfileById(SelectedProfile.Id).Programs.Add(addProgram);
+			Configuration.Save();
+		}
+
 		public Command RefreshOpenWindowsCommand { get { return new Command(_refreshOpenWindows); } }
 		private void _refreshOpenWindows(object parameter)
 		{
-			OpenWindows = new List<Process>();
+			OpenWindows = new ObservableCollection<Process>();
 			foreach (Process Proc in Process.GetProcesses())
 			{
 				if (!string.IsNullOrEmpty(Proc.MainWindowTitle))
@@ -88,26 +123,7 @@ namespace WorkspaceLauncher.ViewModels
 			{
 				foreach (Process aProc in SelectedProcesses)
 				{
-					WindowsProgram addProgram = new WindowsProgram() { Id = WindowsProgram.NextId(SelectedProfileId) };
-					addProgram.StartPath = aProc.MainModule.FileName;
-					addProgram.WindowWidth = WindowController.GetWindowWidth(aProc);
-					addProgram.WindowHeight = WindowController.GetWindowHeight(aProc);
-					addProgram.XPos = WindowController.WindowXPosition(aProc);
-					addProgram.YPos = WindowController.WindowYPosition(aProc);
-					addProgram.WindowState = WindowController.GetWindowStatus(aProc);
-					addProgram.ProcessName = aProc.ProcessName;
-
-					if (aProc.ProcessName == "chrome")
-					{
-						ReturnStringDialogViewModel ArgumentSetter = new ReturnStringDialogViewModel("Chrome website", "Which website should be opened when chrome is launched?");
-						if(ArgumentSetter.DialogResult == 1)
-						{
-							addProgram.Argument = ArgumentSetter.Value;
-						}
-					}
-
-					Configuration.Instance.Profiles.SingleOrDefault(x => x.Id == SelectedProfileId).Programs.Add(addProgram);
-					Configuration.Save();
+					addProgram(aProc);
 				}
 				OnPropertyChanged("ProfilePrograms");
 			}
@@ -116,7 +132,7 @@ namespace WorkspaceLauncher.ViewModels
 		public Command ClearProcessesCommand { get { return new Command(_clearProcesses); } }
 		private void _clearProcesses(object parameter)
 		{
-			Configuration.Instance.Profiles.SingleOrDefault(x => x.Id == SelectedProfileId).Programs = new List<WindowsProgram>();
+			Configuration.ProfileById(SelectedProfile.Id).Programs = new List<WindowsProgram>();
 			Configuration.Save();
 			OnPropertyChanged("ProfilePrograms");
 		}
@@ -126,7 +142,17 @@ namespace WorkspaceLauncher.ViewModels
 		{
 			if(SelectedProgram != null)
 			{
-				Configuration.Instance.Profiles.SingleOrDefault(x => x.Id == SelectedProfileId).Programs.Remove(Configuration.Instance.Profiles.SingleOrDefault(x => x.Id == SelectedProfileId).Programs.SingleOrDefault(x => x.Id == SelectedProgram.Id));
+				Configuration.ProfileById(SelectedProfile.Id).Programs.Remove(Configuration.ProgramById(SelectedProfile.Id, SelectedProgram.Id));
+			}
+			OnPropertyChanged("ProfilePrograms");
+		}
+
+		public Command AddSelectedProgramCommand { get { return new Command(_addSelectedProgram); } }
+		private void _addSelectedProgram(object parameter)
+		{
+			if (SelectedOpenWindow != null)
+			{
+				addProgram(SelectedOpenWindow);
 			}
 			OnPropertyChanged("ProfilePrograms");
 		}

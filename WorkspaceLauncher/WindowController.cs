@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Linq;
 using WorkspaceLauncher.Models;
 
 namespace WorkspaceLauncher
@@ -78,77 +79,56 @@ namespace WorkspaceLauncher
 
 		public static int WindowXPosition(Process proc)
 		{
-			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
 			RECT wnd;
-			GetWindowRect(procHndl, out wnd);
+			GetWindowRect(proc.MainWindowHandle, out wnd);
 			return wnd.Left;
 		}
 
 		public static int WindowYPosition(Process proc)
 		{
-			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
 			RECT wnd;
-			GetWindowRect(procHndl, out wnd);
+			GetWindowRect(proc.MainWindowHandle, out wnd);
 			return wnd.Top;
 		}
 
 		public static int GetWindowHeight(Process proc)
 		{
-			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
 			RECT wnd;
-			GetWindowRect(procHndl, out wnd);
+			GetWindowRect(proc.MainWindowHandle, out wnd);
 			return wnd.Bottom - wnd.Top;
 		}
 
 		public static int GetWindowWidth(Process proc)
 		{
-			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
 			RECT wnd;
-			GetWindowRect(procHndl, out wnd);
+			GetWindowRect(proc.MainWindowHandle, out wnd);
 			return wnd.Right - wnd.Left;
 		}
 
 		public static int GetWindowStatus(Process proc)
 		{
-			IntPtr procHndl = GetWindowHandleByProcess(proc.ProcessName);
 			WINDOWPLACEMENT current = new WINDOWPLACEMENT();
-			GetWindowPlacement(procHndl, ref current);
+			GetWindowPlacement(proc.MainWindowHandle, ref current);
 			return current.showCmd;
 		}
 
 		public static IntPtr GetWindowHandleByCaption(string captionText)
 		{
-			IntPtr prog = new IntPtr();
 			Process[] processList = Process.GetProcesses();
-			foreach (Process prcs in processList)
-			{
-				if (!String.IsNullOrEmpty(prcs.MainWindowTitle))
-				{
-					if (prcs.MainWindowTitle.ToLower().Contains(captionText))
-					{
-						return prcs.MainWindowHandle;
-					}
-				}
-			}
-			return prog;
+			return processList.SingleOrDefault(x => x.MainWindowTitle.ToLower().Contains(captionText)).MainWindowHandle;
 		}
 
 		public static IntPtr GetWindowHandleByProcess(string processName)
 		{
-			IntPtr prog = new IntPtr();
 			processName = processName.ToLower();
 			Process[] processList = Process.GetProcesses();
-			foreach (Process prcs in processList)
-			{
-				if (!String.IsNullOrEmpty(prcs.MainWindowTitle))
-				{
-					if (prcs.ProcessName.ToLower().Contains(processName))
-					{
-						return prcs.MainWindowHandle;
-					}
-				}
-			}
-			return prog;
+			return processList.SingleOrDefault(x => x.ProcessName.ToLower().Contains(processName)).MainWindowHandle;
+		}
+
+		public static IntPtr GetWindowHandleById(int id)
+		{
+			Process[] processList = Process.GetProcesses();
+			return processList.SingleOrDefault(x => x.Id == id).MainWindowHandle;
 		}
 
 		public static void LaunchAll(List<WindowsProgram> programs)

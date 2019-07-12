@@ -35,5 +35,15 @@ namespace WorkspaceLauncher.Views
 				Current.SelectedProcesses.Add((Process)item);
 			}
 		}
+
+		private void OpenProcesses_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			SelectProcessesViewModel Current = (SelectProcessesViewModel)DataContext;
+			Current.SelectedProcesses = new List<Process>();
+			var itemIndex = OpenProcesses.SelectedItems.Count - 1;
+			var item = OpenProcesses.SelectedItems[itemIndex];
+			OpenProcesses.SelectedItems.Clear();
+			OpenProcesses.SelectedItems.Add(item);
+		}
 	}
 }

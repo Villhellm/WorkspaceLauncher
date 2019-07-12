@@ -14,8 +14,13 @@ namespace WorkspaceLauncher.Models
 		public static string AppDataRoamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\WorkspaceLauncher";
 		public static string ConfigurationFile = AppDataRoamingPath + @"\configuration.json";
 
-		private static Configuration instance = null;
+		private int _launchProfileId;
+		private decimal _version;
+		private int _lastOpenProfileId;
+		private bool _checkForUpdates;
+		private bool _alwaysOnTop;
 
+		private static Configuration instance = null;
 		private Configuration() { Profiles = new List<Profile>(); }
 		public static Configuration Instance
 		{
@@ -27,7 +32,6 @@ namespace WorkspaceLauncher.Models
 					{
 						Directory.CreateDirectory(AppDataRoamingPath);
 						string json = JsonConvert.SerializeObject(new Configuration());
-						//write string to file
 						File.WriteAllText(ConfigurationFile, json);
 						instance = new Configuration();
 					}
@@ -41,64 +45,57 @@ namespace WorkspaceLauncher.Models
 			}
 		}
 
-		private int launchProfileId;
+		public List<Profile> Profiles;
 
 		public int LaunchProfileId
 		{
-			get { return launchProfileId; }
+			get { return _launchProfileId; }
 			set
 			{
-				launchProfileId = value;
+				_launchProfileId = value;
 				OnPropertyChanged("LaunchProfileId");
 			}
 		}
 
-
-		private decimal version;
 		public decimal Version
 		{
-			get { return version; }
+			get { return _version; }
 			set
 			{
-				version = value;
+				_version = value;
 				OnPropertyChanged("Version");
 			}
 		}
 
-		private int lastOpenProfileId;
 		public int LastOpenProfileId
 		{
-			get { return lastOpenProfileId; }
+			get { return _lastOpenProfileId; }
 			set
 			{
-				lastOpenProfileId = value;
+				_lastOpenProfileId = value;
 				OnPropertyChanged("LastOpenProfileId");
 			}
 		}
 
-		private bool checkForUpdates;
 		public bool CheckForUpdates
 		{
-			get { return checkForUpdates; }
+			get { return _checkForUpdates; }
 			set
 			{
-				checkForUpdates = value;
+				_checkForUpdates = value;
 				OnPropertyChanged("CheckForUpdates");
 			}
 		}
 
-		private bool alwaysOnTop;
 		public bool AlwaysOnTop
 		{
-			get { return alwaysOnTop; }
+			get { return _alwaysOnTop; }
 			set
 			{
-				alwaysOnTop = value;
+				_alwaysOnTop = value;
 				OnPropertyChanged("AlwaysOnTop");
 			}
 		}
-
-		public List<Profile> Profiles;
 
 		public static void Save()
 		{
@@ -106,7 +103,7 @@ namespace WorkspaceLauncher.Models
 			File.WriteAllText(ConfigurationFile, json);
 		}
 
-		public Profile ProfileById(int id)
+		public static Profile ProfileById(int id)
 		{
 			if(Instance.Profiles.Any(x=>x.Id == id))
 			{
@@ -115,7 +112,7 @@ namespace WorkspaceLauncher.Models
 			return null;
 		}
 
-		public WindowsProgram ProgramById(int profileId, int programId)
+		public static WindowsProgram ProgramById(int profileId, int programId)
 		{
 			var profile = ProfileById(profileId);
 			if (profile != null)
